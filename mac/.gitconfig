@@ -1,0 +1,21 @@
+[alias]
+   co = checkout
+   br = branch
+   st = status
+
+[user]
+   name = Craig Vyvial
+   email = cp16net@gmail.com
+
+[color]
+   ui = auto
+   branch = auto
+   diff = auto
+   interactive = auto
+   status = auto
+
+[gitreview]
+   username = cp16net
+
+[core]
+   excludesfile = *.idea
