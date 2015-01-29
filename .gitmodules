@@ -1,0 +1,3 @@
+[submodule "linux/.emacs.d/zencoding"]
+	path = linux/.emacs.d/zencoding
+	url = https://github.com/rooney/zencoding.git
