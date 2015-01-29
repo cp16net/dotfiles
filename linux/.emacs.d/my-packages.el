@@ -13,8 +13,20 @@
 ; not create them.
 (defvar required-packages
   '(
+    ac-python
+    auto-complete
+    color-theme
+    color-theme-zenburn
+    diff-hl
+    fill-column-indicator
+    git-commit-mode
+    git-rebase-mode
     magit
+    org
+    popup
+    yalinum
     yasnippet
+    zenburn-theme
     ) "a list of packages to ensure are installed at launch.")
 
 ; method to check if all packages are installed
