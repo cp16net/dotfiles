@@ -14,6 +14,12 @@
  )
 
 
+;; load up the packaging goodness
+(require 'package)
+(package-initialize)
+(load "~/.emacs.d/my-loadpackages.el")
+
+
 (defun ask-before-closing ()
   "Ask whether or not to close, and then close if y was pressed"
   (interactive)
@@ -66,10 +72,6 @@
               ("PHONE" :foreground "forest green" :weight bold))))
 
 
-;; load up the packaging goodness
-(require 'package)
-(package-initialize)
-(load "~/.emacs.d/my-loadpackages.el")
 
 
 ;; pretty diff view of whats changed in a file
