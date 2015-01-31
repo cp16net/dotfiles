@@ -5,7 +5,8 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (tango-dark)))
  '(font-use-system-font t)
- '(inhibit-startup-screen t))
+ '(inhibit-startup-screen t)
+ '(python-skeleton-autoinsert t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
