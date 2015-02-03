@@ -5,20 +5,13 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (tango-dark)))
  '(font-use-system-font t)
- '(inhibit-startup-screen t)
- '(python-skeleton-autoinsert t))
+ '(inhibit-startup-screen t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-
-;; load up the packaging goodness
-(require 'package)
-(package-initialize)
-(load "~/.emacs.d/my-loadpackages.el")
 
 
 (defun ask-before-closing ()
@@ -49,7 +42,7 @@
 ;;; Org Mode
 ;;;
 (add-to-list 'load-path (expand-file-name "~/code/org-mode/lisp"))
-(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
 (require 'org)
 ;;
 ;; Standard key bindings
@@ -59,12 +52,13 @@
 ;;
 ;; TODO keywords list setup
 (setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+      (quote ((sequence "TODO(t)" "NEXT(n)" "IN PROGRESS(i)" "|" "DONE(d)")
               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
 
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
               ("NEXT" :foreground "blue" :weight bold)
+	      ("IN PROGRESS" :foreground "green" :weight bold)
               ("DONE" :foreground "forest green" :weight bold)
               ("WAITING" :foreground "orange" :weight bold)
               ("HOLD" :foreground "magenta" :weight bold)
@@ -73,6 +67,10 @@
               ("PHONE" :foreground "forest green" :weight bold))))
 
 
+;; load up the packaging goodness
+(require 'package)
+(package-initialize)
+(load "~/.emacs.d/my-loadpackages.el")
 
 
 ;; pretty diff view of whats changed in a file
