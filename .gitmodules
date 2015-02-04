@@ -1,6 +1,3 @@
 [submodule "linux/.emacs.d/zencoding"]
 	path = linux/.emacs.d/zencoding
 	url = https://github.com/rooney/zencoding.git
-[submodule "linux/.emacs.d/sites-lisp/ecb"]
-	path = linux/.emacs.d/sites-lisp/ecb
-	url = https://github.com/rooney/zencoding.git
