@@ -29,3 +29,16 @@ If point was already at that position, move point to beginning of line."
          (beginning-of-line))))
 (global-set-key [s-right] 'move-end-of-line)
 (global-set-key [s-left] 'smart-beginning-of-line)
+
+
+;; (require 'ecb)
+;; (setq stack-trace-on-error nil) ;;don’t popup Backtrace window
+;; ;;(setq ecb-tip-of-the-day nil)
+;; (setq ecb-auto-activate t)
+;; (setq ecb-layout-name "left6")
+;; (setq ecb-options-version "2.40")
+;; (setq ecb-primary-secondary-mouse-buttons (quote mouse-1–mouse-2))
+;; (setq ecb-source-path (quote ("~/")))
+
+(add-to-list 'load-path "~/.emacs.d/sites-lisp/ecb")
+(require 'ecb)
