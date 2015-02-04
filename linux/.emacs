@@ -25,7 +25,9 @@
  ((string-equal system-type "gnu/linux") ; linux
   (setq ecb-source-path
       (quote
-       (("~/code" "code"))))
+       (("~/code" "code")
+	("/home/cp16net/code/etherpy" "etherpy")
+	)))
   )
  )
 
