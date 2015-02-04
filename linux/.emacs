@@ -4,6 +4,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (tango-dark)))
+ '(ecb-options-version "2.40")
+ '(ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
  '(font-use-system-font t)
  '(inhibit-startup-screen t))
 (custom-set-faces
@@ -13,6 +15,19 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; check OS type
+(cond
+ ((string-equal system-type "darwin")   ; Mac OS X
+  (setq ecb-source-path
+      (quote
+       (("~/code/private/Cloud-Database" "Cloud-Database"))))
+  )
+ ((string-equal system-type "gnu/linux") ; linux
+  (setq ecb-source-path
+      (quote
+       (("~/code" "code"))))
+  )
+ )
 
 (defun ask-before-closing ()
   "Ask whether or not to close, and then close if y was pressed"
