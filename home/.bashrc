@@ -3,6 +3,19 @@
 if [ "$(uname)" == "Darwin" ]; then
     # Do something under Mac OS X platform
 
+    export CLICOLOR=1
+    export LSCOLORS=fxGxBxDxcxegedabagacdx
+
+    export PS1="\[\e[37;40m\]________________________________________________________________________________\n\[\e[32;40m\]\u\e[31;40m\] in \[\e[36;40m\]\w\[\e[33;40m\]\n\e[36;40m\]\h\e[33;40m\]->\$ \[\e[0m\]"
+
+    # MacPorts Installer addition on 2012-02-26_at_19:19:40: adding an appropriate PATH variable for use with MacPorts.
+    export PATH=~/bin:/opt/local/bin:/opt/local/sbin:$PATH
+    # Finished adapting your PATH environment variable for use with MacPorts.
+
+    if [ -f $(brew --prefix)/etc/bash_completion ]; then
+	. $(brew --prefix)/etc/bash_completion
+    fi
+
     export DEFAULT_SUPERNOVA_ENV=fabric-inova-ord
     alias emacs='emacs-24.3'
     export EDITOR=emacs-24.3
@@ -179,16 +192,17 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     export VAGRANT_DEFAULT_PROVIDER=libvirt
     export WORKON_HOME=$HOME/.virtualenvs
     export PROJECT_HOME=$HOME/Devel
+
 fi
 
+PS1='[${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00m\]$(__git_ps1 " (%s)")\$ '
+export LSCOLORS=ExFxCxDxBxegedabagacad
 
 alias clean_pyc_files='find . -name "*.pyc" -exec rm -rf {} \;'
 
 export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
 source /usr/local/bin/virtualenvwrapper_lazy.sh
 source "$HOME/.git-completion.sh"
-PS1='[${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00m\]$(__git_ps1 " (%s)")\$ '
-export LSCOLORS=ExFxCxDxBxegedabagacad
 
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
