@@ -4,3 +4,6 @@
 [submodule "linux/.emacs.d/sites-lisp/ecb"]
 	path = linux/.emacs.d/sites-lisp/ecb
 	url = https://github.com/cp16net/ecb.git
+[submodule "linux/.emacs.d/sites-lisp/Pymacs"]
+	path = linux/.emacs.d/sites-lisp/Pymacs
+	url = https://github.com/pinard/Pymacs.git
