@@ -1,0 +1,11 @@
+[user]
+	name = Craig Vyvial
+	email = cp16net@gmail.com
+[core]
+	editor = emacs -nw
+[alias]
+	st = status
+	br = branch
+	co = checkout
+[color]
+	ui = auto

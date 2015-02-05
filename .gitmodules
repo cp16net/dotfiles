@@ -7,3 +7,12 @@
 [submodule "linux/.emacs.d/sites-lisp/Pymacs"]
 	path = linux/.emacs.d/sites-lisp/Pymacs
 	url = https://github.com/pinard/Pymacs.git
+[submodule "home/.emacs.d/zencoding"]
+	path = home/.emacs.d/zencoding
+	url = https://github.com/rooney/zencoding.git
+[submodule "home/.emacs.d/sites-lisp/ecb"]
+	path = home/.emacs.d/sites-lisp/ecb
+	url = https://github.com/cp16net/ecb.git
+[submodule "home/.emacs.d/sites-lisp/Pymacs"]
+	path = home/.emacs.d/sites-lisp/Pymacs
+	url = https://github.com/pinard/Pymacs.git
