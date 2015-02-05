@@ -68,6 +68,7 @@ If point was already at that position, move point to beginning of line."
 
 (add-to-list 'load-path "~/.emacs.d/sites-lisp/ecb")
 (require 'ecb)
+(semantic-mode 1)
 
 (load-file "~/.emacs.d/sites-lisp/smooth-scrolling.el")
 (require 'smooth-scrolling)
