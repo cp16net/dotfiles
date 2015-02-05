@@ -4,6 +4,13 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (tango-dark)))
+ '(ecb-layout-window-sizes
+   (quote
+    (("left8"
+      (ecb-directories-buffer-name 0.1865671641791045 . 0.2911392405063291)
+      (ecb-sources-buffer-name 0.1865671641791045 . 0.24050632911392406)
+      (ecb-methods-buffer-name 0.1865671641791045 . 0.2911392405063291)
+      (ecb-history-buffer-name 0.1865671641791045 . 0.16455696202531644)))))
  '(ecb-options-version "2.40")
  '(ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
  '(font-use-system-font t)
