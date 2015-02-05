@@ -33,7 +33,8 @@ if [ "$(uname)" == "Darwin" ]; then
     export LSCOLORS=ExFxCxDxBxegedabagacad
 
     source /usr/local/bin/virtualenvwrapper.sh
-    source ~/.profile
+    export PATH=/usr/local/mysql/bin:$PATH
+    export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
 
     # added these 2 flags for pycrpto to install with pip
     export CFLAGS=-Qunused-arguments
