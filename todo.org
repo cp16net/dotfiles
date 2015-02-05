@@ -1,0 +1,4 @@
+TODO stuffs
+* TODO make .emacs just load a single file so it should stay clean
+* TODO make an autoload all scripts in dir
+* TODO break up into separate *.el files
