@@ -23,23 +23,15 @@ if [ "$(uname)" == "Darwin" ]; then
     alias tv='cd ~/code/public/trove-vagrant-vmware'
     alias tp='cd ~/code/public/trove'
     alias public='cd ~/code/public/'
-    alias clean_pyc_files='find . -name "*.pyc" -exec rm -rf {} \;'
     alias fabhelper='cd ~/code/backup/code/helpers/; workon supernova'
     alias irc="ssh -t irc 'screen -dr'"
 
-    source /Users/craig.vyvial/.git-completion.sh
-
-    PS1='[${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00m\]$(__git_ps1 " (%s)")\$ '
-    export LSCOLORS=ExFxCxDxBxegedabagacad
-
-    source /usr/local/bin/virtualenvwrapper.sh
     export PATH=/usr/local/mysql/bin:$PATH
     export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
 
     # added these 2 flags for pycrpto to install with pip
     export CFLAGS=-Qunused-arguments
     export CPPFLAGS=-Qunused-arguments
-
 
     irssi_notifier() {
 	ssh irc 'echo -n "" > ~/.irssi/fnotify; tail -f ~/.irssi/fnotify' | \
@@ -187,12 +179,16 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     export VAGRANT_DEFAULT_PROVIDER=libvirt
     export WORKON_HOME=$HOME/.virtualenvs
     export PROJECT_HOME=$HOME/Devel
-    export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
-    source /usr/local/bin/virtualenvwrapper_lazy.sh
 fi
 
-source /Users/craig.vyvial/.git-completion.sh
+
+alias clean_pyc_files='find . -name "*.pyc" -exec rm -rf {} \;'
+
+export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
+source /usr/local/bin/virtualenvwrapper_lazy.sh
+source "$HOME/.git-completion.sh"
 PS1='[${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]]:\[\033[01;34m\]\w\[\033[00m\]$(__git_ps1 " (%s)")\$ '
 export LSCOLORS=ExFxCxDxBxegedabagacad
+
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
