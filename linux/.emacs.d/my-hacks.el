@@ -72,3 +72,7 @@ If point was already at that position, move point to beginning of line."
 
 (load-file "~/.emacs.d/sites-lisp/smooth-scrolling.el")
 (require 'smooth-scrolling)
+
+
+;; scroll one line at a time (less "jumpy" than defaults)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
