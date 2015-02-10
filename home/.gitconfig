@@ -7,5 +7,8 @@
 	st = status
 	br = branch
 	co = checkout
+	sclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$"; }; f"
+	bclean = "!f() { git sclean ${1-master} | xargs -n 1 git branch -d; }; f"
+	delete-merged-branches = "!git co master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 [color]
 	ui = auto
