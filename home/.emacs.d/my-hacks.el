@@ -27,17 +27,16 @@
   (setq ecb-source-path
       (quote
        (("~/code" "code")
-	("/home/cp16net/code/etherpy" "etherpy")
-	)))
+        ("/home/cp16net/code/etherpy" "etherpy")
+        )))
   )
  )
 (setq ecb-layout-window-sizes
       (quote
-       (("left8"
-	 (ecb-directories-buffer-name 0.1865671641791045 . 0.2911392405063291)
-	 (ecb-sources-buffer-name 0.1865671641791045 . 0.24050632911392406)
-	 (ecb-methods-buffer-name 0.1865671641791045 . 0.2911392405063291)
-	 (ecb-history-buffer-name 0.1865671641791045 . 0.16455696202531644)))))
+       (("left4"
+         (ecb-directories-buffer-name 0.1865671641791045 . 0.2911392405063291)
+         (ecb-sources-buffer-name 0.1865671641791045 . 0.24050632911392406)
+         (ecb-methods-buffer-name 0.1865671641791045 . 0.2911392405063291)))))
 
 ;; CLOSE emacs for REAL?
 (defun ask-before-closing ()
@@ -78,7 +77,7 @@
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "red" :weight bold)
               ("NEXT" :foreground "blue" :weight bold)
-	      ("IN PROGRESS" :foreground "green" :weight bold)
+              ("IN PROGRESS" :foreground "green" :weight bold)
               ("DONE" :foreground "forest green" :weight bold)
               ("WAITING" :foreground "orange" :weight bold)
               ("HOLD" :foreground "magenta" :weight bold)
@@ -159,23 +158,9 @@
 (add-hook 'after-change-major-mode-hook 'fci-mode)
 
 
-(defun smart-beginning-of-line ()
-  "Move point to first non-whitespace character or beginning-of-line.
-
-Move point to the first non-whitespace character on this line.
-If point was already at that position, move point to beginning of line."
-  (interactive)
-  (let ((oldpos (point)))
-    (back-to-indentation)
-    (and (= oldpos (point))
-         (beginning-of-line))))
-(global-set-key [s-right] 'move-end-of-line)
-(global-set-key [s-left] 'smart-beginning-of-line)
-
-
 ;; (require 'ecb)
 ;; (setq stack-trace-on-error nil) ;;don’t popup Backtrace window
-;; ;;(setq ecb-tip-of-the-day nil)
+;; (setq ecb-tip-of-the-day nil)
 ;; (setq ecb-auto-activate t)
 ;; (setq ecb-layout-name "left6")
 ;; (setq ecb-options-version "2.40")
