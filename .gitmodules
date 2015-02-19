@@ -9,4 +9,4 @@
 	url = https://github.com/pinard/Pymacs.git
 [submodule "home/.emacs.d/prelude"]
 	path = home/.emacs.d/prelude
-	url = https://github.com/bbatsov/prelude.git
+	url = git@github.com:cp16net/prelude.git
