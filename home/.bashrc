@@ -189,7 +189,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 	fi
     fi
 
-    export VAGRANT_DEFAULT_PROVIDER=libvirt
+#    export VAGRANT_DEFAULT_PROVIDER=libvirt
     export WORKON_HOME=$HOME/.virtualenvs
     export PROJECT_HOME=$HOME/Devel
 
