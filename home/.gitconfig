@@ -13,3 +13,5 @@
 	delete-merged-branches = "!git co master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 [color]
 	ui = auto
+[push]
+	default = simple
