@@ -16,27 +16,25 @@ if [ "$(uname)" == "Darwin" ]; then
         . $(brew --prefix)/etc/bash_completion
     fi
 
-    export DEFAULT_SUPERNOVA_ENV=fabric-inova-ord
-    alias emacs='emacs-24.3'
-    export EDITOR=emacs-24.3
-    # export VAGRANT_DEFAULT_PROVIDER='vmware_fusion'
+    # export DEFAULT_SUPERNOVA_ENV=fabric-inova-ord
+    # alias emacs='emacs-24.3'
+    export EDITOR=emacs
+    export VAGRANT_DEFAULT_PROVIDER='vmware_fusion'
 
     # trove vagrant vm memory default
-    export TROVE_VM_MEMORY=4096
+    # export TROVE_VM_MEMORY=4096
 
     alias ll="ls -al"
     alias la='ls -A'
     alias l='ls -CF'
 
     alias sublime='open -a Sublime\ Text .'
-    alias cdb='cd ~/code/private/Cloud-Database/'
+    # alias cdb='cd ~/code/private/Cloud-Database/'
     alias pt='cd ~/code/public/trove'
     alias ptv='cd ~/code/public/trove-vagrant-vmware'
-    alias cdbv='cd ~/code/private/Cloud-Database/vagrant/puppet'
-    alias tv='cd ~/code/public/trove-vagrant-vmware'
-    alias tp='cd ~/code/public/trove'
+    # alias cdbv='cd ~/code/private/Cloud-Database/vagrant/puppet'
     alias public='cd ~/code/public/'
-    alias fabhelper='cd ~/code/backup/code/helpers/; workon supernova'
+    # alias fabhelper='cd ~/code/backup/code/helpers/; workon supernova'
     alias irc="ssh -t irc 'screen -dr'"
 
     export PATH=/usr/local/mysql/bin:$PATH
@@ -71,9 +69,9 @@ if [ "$(uname)" == "Darwin" ]; then
     PERL_MM_OPT="INSTALL_BASE=/Users/craig.vyvial/perl5"; export PERL_MM_OPT;
 
     # swap ssh configs
-    alias swapsshhome='cp ~/.ssh/home.config ~/.ssh/config'
-    alias swapsshwork='cp ~/.ssh/work.config ~/.ssh/config'
-    alias sshw='ssh -F ~/.ssh/work.config $@'
+    # alias swapsshhome='cp ~/.ssh/home.config ~/.ssh/config'
+    # alias swapsshwork='cp ~/.ssh/work.config ~/.ssh/config'
+    # alias sshw='ssh -F ~/.ssh/work.config $@'
 
     # to build lxml on mac 10.9
     STATIC_DEPS=true
