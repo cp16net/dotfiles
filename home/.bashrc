@@ -201,6 +201,7 @@ PS1='[${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]]:\[\033
 export LSCOLORS=ExFxCxDxBxegedabagacad
 
 alias clean_pyc_files='find . -name "*.pyc" -exec rm -rf {} \;'
+alias uuid="python -c 'import sys,uuid; sys.stdout.write(uuid.uuid4().hex)' | pbcopy && pbpaste && echo"
 
 export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
 source /usr/local/bin/virtualenvwrapper_lazy.sh
