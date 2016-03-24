@@ -20,4 +20,6 @@ fi
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
-PATH="/usr/local/sbin:/usr/sbin:/sbin:$PATH"
+
+export GOPATH=$HOME/gospace
+PATH="/usr/local/sbin:/usr/sbin:/sbin:$PATH:/usr/local/go/bin"

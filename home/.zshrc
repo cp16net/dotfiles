@@ -93,3 +93,7 @@ export PROJECT_HOME=$HOME/Devel
 export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
 source /usr/local/bin/virtualenvwrapper_lazy.sh
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+
+export PATH="$PATH:/usr/local/go/bin"
+export GOPATH=$HOME/gospace
+export PATH=$PATH:$GOPATH/bin
