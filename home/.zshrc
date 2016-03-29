@@ -72,6 +72,9 @@ plugins=(git
 export PATH="/home/cp16net/bin:/home/cp16net/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
 # export MANPATH="/usr/local/man:$MANPATH"
 
+source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+fpath=($HOME/.homesick/repos/homeshick/completions $fpath)
+
 source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
@@ -107,7 +110,6 @@ export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
 export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
 source /usr/local/bin/virtualenvwrapper_lazy.sh
-source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 
 export PATH="$PATH:/usr/local/go/bin"
 export GOPATH=$HOME/gospace
