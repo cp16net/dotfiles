@@ -4,10 +4,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (tango-dark)))
- '(ecb-options-version "2.40")
- '(ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
+ ;; '(ecb-options-version "2.40")
+ ;; '(ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
  '(font-use-system-font t)
- '(inhibit-startup-screen t))
+ '(inhibit-startup-screen t)
+)
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -17,26 +19,26 @@
 
 ;; ecb config
 ;; check OS type
-(cond
- ((string-equal system-type "darwin")   ; Mac OS X
-  (setq ecb-source-path
-      (quote
-       (("~/code/private/Cloud-Database" "Cloud-Database"))))
-  )
- ((string-equal system-type "gnu/linux") ; linux
-  (setq ecb-source-path
-      (quote
-       (("~/code" "code")
-        ("/home/cp16net/code/etherpy" "etherpy")
-        )))
-  )
- )
-(setq ecb-layout-window-sizes
-      (quote
-       (("left4"
-         (ecb-directories-buffer-name 0.1865671641791045 . 0.2911392405063291)
-         (ecb-sources-buffer-name 0.1865671641791045 . 0.24050632911392406)
-         (ecb-methods-buffer-name 0.1865671641791045 . 0.2911392405063291)))))
+;; (cond
+;;  ((string-equal system-type "darwin")   ; Mac OS X
+;;   (setq ecb-source-path
+;;       (quote
+;;        (("~/code/private/Cloud-Database" "Cloud-Database"))))
+;;   )
+;;  ((string-equal system-type "gnu/linux") ; linux
+;;   (setq ecb-source-path
+;;       (quote
+;;        (("~/code" "code")
+;;         ("/home/cp16net/code/etherpy" "etherpy")
+;;         )))
+;;   )
+;;  )
+;; (setq ecb-layout-window-sizes
+;;       (quote
+;;        (("left4"
+;;          (ecb-directories-buffer-name 0.1865671641791045 . 0.2911392405063291)
+;;          (ecb-sources-buffer-name 0.1865671641791045 . 0.24050632911392406)
+;;          (ecb-methods-buffer-name 0.1865671641791045 . 0.2911392405063291)))))
 
 ;; CLOSE emacs for REAL?
 (defun ask-before-closing ()
@@ -115,7 +117,9 @@
 
 ;;(add-to-list 'load-path "~/.emacs.d")    ; This may not be appeared if you have already added.
 
+;; delete the trailing whitespace on lines before save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 (load-theme 'zenburn t)
 (require 'yalinum)
 ;;(add-hook 'yalinum-mode 'python-mode)
@@ -151,13 +155,14 @@
                    (auto-complete-mode))))
 
 
-
+;; 80 character bar limit
 (require 'fill-column-indicator)
 (setq fci-rule-column 80)
 (setq fci-rule-color "darkgrey")
 (add-hook 'after-change-major-mode-hook 'fci-mode)
 
 
+;; bunch of ecb plugin stuff
 ;; (require 'ecb)
 ;; (setq stack-trace-on-error nil) ;;don’t popup Backtrace window
 ;; (setq ecb-tip-of-the-day nil)
@@ -167,13 +172,16 @@
 ;; (setq ecb-primary-secondary-mouse-buttons (quote mouse-1–mouse-2))
 ;; (setq ecb-source-path (quote ("~/")))
 
-(add-to-list 'load-path "~/.emacs.d/sites-lisp/ecb")
-(require 'ecb)
-(semantic-mode 1)
+;; (add-to-list 'load-path "~/.emacs.d/sites-lisp/ecb")
+;; (require 'ecb)
+;; (semantic-mode 1)
+
 
 (load-file "~/.emacs.d/sites-lisp/smooth-scrolling.el")
 (require 'smooth-scrolling)
-
-
 ;; scroll one line at a time (less "jumpy" than defaults)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+
+
+;; load the go setup
+(load-file "~/.emacs.d/my-gochanges.el")

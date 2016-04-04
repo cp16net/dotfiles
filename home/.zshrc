@@ -55,6 +55,7 @@ plugins=(git
          tmuxinator
          python
          pip
+         tox
          history
          fabric
          docker
@@ -63,7 +64,6 @@ plugins=(git
          common-aliases
          golang
          git-extras
-         emacs
          zsh_reload
         )
 
@@ -113,4 +113,5 @@ source /usr/local/bin/virtualenvwrapper_lazy.sh
 
 export PATH="$PATH:/usr/local/go/bin"
 export GOPATH=$HOME/gospace
-export PATH=$PATH:$GOPATH/bin
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN

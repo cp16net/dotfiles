@@ -18,9 +18,12 @@
     color-theme
     color-theme-zenburn
     diff-hl
+    exec-path-from-shell
     fill-column-indicator
     git-commit-mode
     git-rebase-mode
+    go-mode
+    go-autocomplete
     magit
     org
     popup
