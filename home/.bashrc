@@ -44,21 +44,22 @@ if [ "$(uname)" == "Darwin" ]; then
     export CFLAGS=-Qunused-arguments
     export CPPFLAGS=-Qunused-arguments
 
-    irssi_notifier() {
-        ssh irc 'echo -n "" > ~/.irssi/fnotify; tail -f ~/.irssi/fnotify' | \
-            while read heading message; do
-                url=`echo \"$message\" | grep -Eo 'https?://[^ >]+' | head -1`;
+    # IRC notification setup
+    # irssi_notifier() {
+    #     ssh irc 'echo -n "" > ~/.irssi/fnotify; tail -f ~/.irssi/fnotify' | \
+    #         while read heading message; do
+    #             url=`echo \"$message\" | grep -Eo 'https?://[^ >]+' | head -1`;
 
-                if [ ! "$url" ]; then
-                    terminal-notifier -title "\"$heading\"" -message "\"$message\"" -activate com.googlecode.iTerm2;
-                else
-                    terminal-notifier -title "\"$heading\"" -message "\"$message\"" -open "\"$url\"";
-                fi;
-            done
-    }
-    if [ 2 -gt $(ps axu | grep fnotify | wc -l | xargs) ]; then
-        irssi_notifier &
-    fi
+    #             if [ ! "$url" ]; then
+    #                 terminal-notifier -title "\"$heading\"" -message "\"$message\"" -activate com.googlecode.iTerm2;
+    #             else
+    #                 terminal-notifier -title "\"$heading\"" -message "\"$message\"" -open "\"$url\"";
+    #             fi;
+    #         done
+    # }
+    # if [ 2 -gt $(ps axu | grep fnotify | wc -l | xargs) ]; then
+    #     irssi_notifier &
+    # fi
 
     # adding bash completion for vagrant
     if [ -f `brew --prefix`/etc/bash_completion.d/vagrant ]; then
