@@ -115,3 +115,7 @@ export PATH="$PATH:/usr/local/go/bin"
 export GOPATH=$HOME/gospace
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
+
+export KUBERNETES_ENDPOINT=http://192.168.33.2:8080/api/v1
+export HCP_MASTER_IP=192.168.33.2
+export HCP_NODE_IP=192.168.33.3
