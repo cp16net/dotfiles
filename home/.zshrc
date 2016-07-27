@@ -114,4 +114,7 @@ source /usr/local/bin/virtualenvwrapper_lazy.sh
 export PATH="$PATH:/usr/local/go/bin"
 export GOPATH=$HOME/gospace
 export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN
+export PATH=$PATH:$GOBIN:$HOME/bin
+
+# tmux window names displaying properly
+export DISABLE_AUTO_TITLE=true

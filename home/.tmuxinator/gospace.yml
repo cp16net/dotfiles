@@ -1,7 +1,7 @@
 # ~/.tmuxinator/gospace.yml
 
 name: gospace
-root: ~/
+root: ~/gospace/src/github.com/hpcloud
 
 # Optional tmux socket
 # socket_name: foo
@@ -38,16 +38,10 @@ root: ~/
 
 windows:
     - hsm:
-        - cd ~/gospace/src/github.com/hpcloud/hsm
+        - cd hsm
     - hsm-cli:
-        - cd ~/gospace/src/github.com/hpcloud/hsm-cli
+        - cd hsm-cli
+    - catalog-templates:
+        - cd catalog-templates
     - catalog-service-manager:
-        - cd ~/gospace/src/github.com/hpcloud/catalog-service-manager
-    - ucp:
-        - cd ~/work/ucp-developer
-    - hcf:
-        - cd ~/code/hpcloud/hcf
-    - scratch:
-        - cd ~/gospace/src/github.com/hpcloud/hsm
-    - scratch:
-        - cd ~/gospace/src/github.com/hpcloud/hsm
+        - cd catalog-service-manager
