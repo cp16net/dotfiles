@@ -37,6 +37,8 @@ root: ~/gospace/src/github.com/hpcloud
 #   - logs: tail -f log/development.log
 
 windows:
+    - hcp:
+        - cd ~/work/hcp-developer
     - hsm:
         - cd hsm
     - hsm-cli:
@@ -44,4 +46,8 @@ windows:
     - catalog-templates:
         - cd catalog-templates
     - catalog-service-manager:
-        - cd catalog-service-manager
+        - cd ~/gospace/src/github.com/hpcloud/catalog-service-manager
+    - scratch:
+        - cd ~/gospace/src/github.com/hpcloud/hsm
+    - scratch:
+        - cd ~/gospace/src/github.com/hpcloud/hsm
