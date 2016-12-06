@@ -22,6 +22,22 @@ alias l='ls -CF'
 alias remove_all_pyc_files='find . -name "*.pyc" -exec rm -rf {} \;'
 alias codehsm='cd ~/gospace/src/github.com/hpcloud/hsm'
 
+# kube aliases
+
+alias k="kubectl"
+alias kd="kubectl describe"
+alias kg="kubectl get"
+alias kc="kubectl create"
+alias kdel="kubectl delete"
+alias ke="kubectl exec -it"
+alias kdes="kubectl describe"
+alias kl="kubectl logs"
+
+setns() {
+    export CONTEXT=$(kubectl config view | grep current-context | awk '{print $2}')
+    kubectl config set-context $CONTEXT --namespace=$1
+}
+
 if [ -f ~/.bash_aliases ]; then
    . ~/.local.bash_aliases
 fi

@@ -65,6 +65,7 @@ plugins=(git
          golang
          git-extras
          zsh_reload
+         kubectl
         )
 
 # User configuration
