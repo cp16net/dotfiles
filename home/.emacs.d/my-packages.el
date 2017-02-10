@@ -15,21 +15,22 @@
   '(
     ac-python
     auto-complete
-    color-theme
-    color-theme-zenburn
+    ;; color-theme
+    ;; color-theme-zenburn
     diff-hl
     exec-path-from-shell
     fill-column-indicator
-    git-commit-mode
-    git-rebase-mode
-    go-mode
-    go-autocomplete
+    ;; git-commit-mode
+    ;; git-rebase-mode
+    ;; go-mode
+    ;; go-autocomplete
     magit
     org
     popup
     yalinum
     yasnippet
-    zenburn-theme
+    monokai-theme
+    ;; zenburn-theme
     ) "a list of packages to ensure are installed at launch.")
 
 ; method to check if all packages are installed

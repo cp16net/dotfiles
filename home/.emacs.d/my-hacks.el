@@ -3,7 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (tango-dark)))
+ ;;'(custom-enabled-themes (quote (tango-dark)))
  ;; '(ecb-options-version "2.40")
  ;; '(ecb-primary-secondary-mouse-buttons (quote mouse-1--C-mouse-1))
  '(font-use-system-font t)
@@ -17,7 +17,9 @@
  ;; If there is more than one, they won't work right.
  )
 
+;;
 ;; ecb config
+;;
 ;; check OS type
 ;; (cond
 ;;  ((string-equal system-type "darwin")   ; Mac OS X
@@ -40,7 +42,9 @@
 ;;          (ecb-sources-buffer-name 0.1865671641791045 . 0.24050632911392406)
 ;;          (ecb-methods-buffer-name 0.1865671641791045 . 0.2911392405063291)))))
 
+;;
 ;; CLOSE emacs for REAL?
+;;
 (defun ask-before-closing ()
   "Ask whether or not to close, and then close if y was pressed"
   (interactive)
@@ -65,65 +69,78 @@
 ;;;
 ;;; Org Mode
 ;;;
-(add-to-list 'load-path (expand-file-name "~/code/org-mode/lisp"))
-(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
-(require 'org)
-;; Standard key bindings
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-;; TODO keywords list setup
-(setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "IN PROGRESS(i)" "|" "DONE(d)")
-              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
-(setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "red" :weight bold)
-              ("NEXT" :foreground "blue" :weight bold)
-              ("IN PROGRESS" :foreground "green" :weight bold)
-              ("DONE" :foreground "forest green" :weight bold)
-              ("WAITING" :foreground "orange" :weight bold)
-              ("HOLD" :foreground "magenta" :weight bold)
-              ("CANCELLED" :foreground "forest green" :weight bold)
-              ("MEETING" :foreground "forest green" :weight bold)
-              ("PHONE" :foreground "forest green" :weight bold))))
+;; (add-to-list 'load-path (expand-file-name "~/code/org-mode/lisp"))
+;; (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
+;; (require 'org)
+;; ;; Standard key bindings
+;; (global-set-key "\C-cl" 'org-store-link)
+;; (global-set-key "\C-ca" 'org-agenda)
+;; (global-set-key "\C-cb" 'org-iswitchb)
+;; ;; TODO keywords list setup
+;; (setq org-todo-keywords
+;;       (quote ((sequence "TODO(t)" "NEXT(n)" "IN PROGRESS(i)" "|" "DONE(d)")
+;;               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+;; (setq org-todo-keyword-faces
+;;       (quote (("TODO" :foreground "red" :weight bold)
+;;               ("NEXT" :foreground "blue" :weight bold)
+;;               ("IN PROGRESS" :foreground "green" :weight bold)
+;;               ("DONE" :foreground "forest green" :weight bold)
+;;               ("WAITING" :foreground "orange" :weight bold)
+;;               ("HOLD" :foreground "magenta" :weight bold)
+;;               ("CANCELLED" :foreground "forest green" :weight bold)
+;;               ("MEETING" :foreground "forest green" :weight bold)
+;;               ("PHONE" :foreground "forest green" :weight bold))))
 
 
 
+;;
 ;; load up the packaging goodness
+;;
 (require 'package)
 (package-initialize)
 (load "~/.emacs.d/my-loadpackages.el")
 
 
+;;
 ;; pretty diff view of whats changed in a file
-(global-diff-hl-mode)
+;;
+;; (global-diff-hl-mode)
 
 
+;;
 ;; zencoding - nice add for adding code
-(add-to-list 'load-path "~/.emacs.d/zencoding/")
-(require 'zencoding-mode)
-(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
+;;
+;; (add-to-list 'load-path "~/.emacs.d/zencoding/")
+;; (require 'zencoding-mode)
+;; (add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
 
 
 
-
+;;
 ;; load my-keys after init
+;;
 (add-hook 'after-init-hook '(lambda ()
   (load "~/.emacs.d/my-keys.el")
 ))
 
 
 
-
 ;;(add-to-list 'load-path "~/.emacs.d")    ; This may not be appeared if you have already added.
 
+;;
 ;; delete the trailing whitespace on lines before save
+;;
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(load-theme 'zenburn t)
+
+;;
+;; load theme
+;;
+(load-theme 'monokai t)
 (require 'yalinum)
-;;(add-hook 'yalinum-mode 'python-mode)
+(add-hook 'yalinum-mode 'python-mode)
 (global-yalinum-mode t)
+(setq yalinum-format "%4d \u2502 ")
 
 ;; auto complete enabled
 ;; (require 'auto-complete-config)
@@ -140,11 +157,11 @@
        (define-key ac-menu-map "\C-n" 'ac-next)
        (define-key ac-menu-map "\C-p" 'ac-previous))
 
-;;(after 'auto-complete-config
-;;       (ac-config-default)
-;;       (when (file-exists-p (expand-file-name "/Users/craig.vyvial/.emacs.d/sites-lisp/Pymacs"))
-;;         (ac-ropemacs-initialize)
-;;         (ac-ropemacs-setup)))
+(after 'auto-complete-config
+      (ac-config-default)
+      (when (file-exists-p (expand-file-name "~/.emacs.d/sites-lisp/Pymacs"))
+        (ac-ropemacs-initialize)
+        (ac-ropemacs-setup)))
 
 (after 'auto-complete-autoloads
        (autoload 'auto-complete-mode "auto-complete" "enable auto-complete-mode" t nil)
@@ -183,5 +200,7 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 
 
+;;
 ;; load the go setup
-(load-file "~/.emacs.d/my-gochanges.el")
+;;
+;;(load-file "~/.emacs.d/my-gochanges.el")

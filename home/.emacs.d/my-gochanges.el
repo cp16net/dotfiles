@@ -1,3 +1,7 @@
+;;
+;; not used because no go coding
+;;
+
 (setenv "GOPATH" "/Users/cp16net/gospace")
 (defun my-go-mode-hook ()
   ; Use goimports instead of go-fmt
