@@ -104,7 +104,8 @@
 ;;
 ;; pretty diff view of whats changed in a file
 ;;
-;; (global-diff-hl-mode)
+(global-diff-hl-mode)
+(diff-hl-margin-mode)
 
 
 ;;
@@ -137,10 +138,16 @@
 ;; load theme
 ;;
 (load-theme 'monokai t)
-(require 'yalinum)
-(add-hook 'yalinum-mode 'python-mode)
-(global-yalinum-mode t)
-(setq yalinum-format "%4d \u2502 ")
+
+
+;;
+;; set line numbers on the left side
+;;
+;; (require 'yalinum)
+;; (add-hook 'yalinum-mode 'python-mode)
+;; (global-yalinum-mode t)
+;; (setq yalinum-format "%4d ")
+
 
 ;; auto complete enabled
 ;; (require 'auto-complete-config)
@@ -204,3 +211,25 @@
 ;; load the go setup
 ;;
 ;;(load-file "~/.emacs.d/my-gochanges.el")
+
+
+;;
+;; load diredful (colors on dired mode)
+;;
+;;(require 'diredful)
+(diredful-mode 1)
+
+;;
+;; yaml mode
+;;
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+;; make enter <newline> with indent
+(add-hook 'yaml-mode-hook
+	  '(lambda ()
+	     (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+
+;;
+;; remove the file menu bar at the top (annoying)
+;;
+(menu-bar-mode -1)

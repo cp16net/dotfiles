@@ -18,6 +18,7 @@
     ;; color-theme
     ;; color-theme-zenburn
     diff-hl
+    diredful
     exec-path-from-shell
     fill-column-indicator
     ;; git-commit-mode
@@ -28,6 +29,7 @@
     org
     popup
     yalinum
+    yaml-mode
     yasnippet
     monokai-theme
     ;; zenburn-theme
