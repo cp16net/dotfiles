@@ -1,3 +1,4 @@
+#!/bin/bash
 # My Aliases
 
 # enable color support of ls and also add handy aliases
