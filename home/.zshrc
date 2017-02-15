@@ -5,7 +5,8 @@ export ZSH=~/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="xiong-chiamiov-plus"
+#ZSH_THEME="xiong-chiamiov-plus"
+#ZSH_THEME="cp16net"
 DEFAULT_USER="cp16net"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -123,3 +124,31 @@ export PATH=$PATH:$GOBIN:$HOME/bin
 
 # tmux window names displaying properly
 export DISABLE_AUTO_TITLE=true
+
+
+#
+# (cp16net) customized the theme slightly modified from xiong-chiamiov-plus.zsh-theme
+# user, host, full path, and time/date
+# on two lines for easier vgrepping
+# entry in a nice long thread on the Arch Linux forums: http://bbs.archlinux.org/viewtopic.php?pid=521888#p521888
+#
+kube_prompt()
+{
+    local kubectl_current_context=$(kubectl config current-context)
+    local kubectl_prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}k8s:($fg[cyan]$kubectl_current_context%{\e[1;37m%})%{\e[0;34m%}%B]%b%{\e[0m%}"
+    echo $kubectl_prompt
+}
+dir_prompt()
+{
+   local prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}%~%{\e[0;34m%}%B]%b%{\e[0m%}"
+   echo $prompt
+}
+time_prompt()
+{
+    local prompt='%{\e[0;34m%}%B[%b%{\e[0;33m%}'%D{"%a %b %d, %H:%M"}%b$'%{\e[0;34m%}%B]%b%{\e[0m%}'
+    echo $prompt
+}
+
+PROMPT=$'%{\e[0;34m%}%B┌─[%b%{\e[0m%}%{\e[1;32m%}%n%{\e[1;30m%}@%{\e[0m%}%{\e[0;36m%}%m%{\e[0;34m%}%B]%b%{\e[0m%} - $(dir_prompt) - $(kube_prompt) - $(time_prompt)
+%{\e[0;34m%}%B└─%B[%{\e[1;35m%}$%{\e[0;34m%}%B] <$(git_prompt_info)>%{\e[0m%}%b '
+PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
