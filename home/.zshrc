@@ -134,11 +134,11 @@ export DISABLE_AUTO_TITLE=true
 #
 kube_prompt()
 {
-    if ! kubectl &>/dev/null; then;
+    if [ ! kubectl &>/dev/null ]; then;
 	echo "kubectl missing - "
 	return
     fi
-    if ! yaml2json &>/dev/null; then;
+    if [ ! yaml2json &>/dev/null ]; then;
 	echo "yaml2json missing - "
 	return
     fi
