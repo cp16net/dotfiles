@@ -135,8 +135,12 @@ export DISABLE_AUTO_TITLE=true
 kube_prompt()
 {
     local kubectl_current_context=$(kubectl config current-context)
-    local kubectl_current_namespace=$(kubectl config view | yaml2json | jq '.contexts[] | select(.name=="'${kubectl_current_context}'")' | jq -r '.context.namespace')
-    local kubectl_prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}k8s:($fg[cyan]$kubectl_current_context$fg[white]:$fg[cyan]$kubectl_current_namespace%{\e[1;37m%})%{\e[0;34m%}%B]%b%{\e[0m%}"
+    if [[ "$(yaml2json &> /dev/null)" != "0" ]]; then;
+	echo ""
+	return 0
+    fi
+    #local kubectl_current_namespace=$(kubectl config view | yaml2json | jq '.contexts[] | select(.name=="'${kubectl_current_context}'")' | jq -r '.context.namespace')
+    local kubectl_prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}k8s:($fg[cyan]$kubectl_current_context$fg[white]:$fg[cyan]$kubectl_current_namespace%{\e[1;37m%})%{\e[0;34m%}%B]%b%{\e[0m%} - "
     echo $kubectl_prompt
 }
 dir_prompt()
@@ -150,6 +154,6 @@ time_prompt()
     echo $prompt
 }
 
-PROMPT=$'%{\e[0;34m%}%B┌─[%b%{\e[0m%}%{\e[1;32m%}%n%{\e[1;30m%}@%{\e[0m%}%{\e[0;36m%}%m%{\e[0;34m%}%B]%b%{\e[0m%} - $(dir_prompt) - $(kube_prompt) - $(time_prompt)
+PROMPT=$'%{\e[0;34m%}%B┌─[%b%{\e[0m%}%{\e[1;32m%}%n%{\e[1;30m%}@%{\e[0m%}%{\e[0;36m%}%m%{\e[0;34m%}%B]%b%{\e[0m%} - $(dir_prompt) - $(kube_prompt)$(time_prompt)
 %{\e[0;34m%}%B└─%B[%{\e[1;35m%}$%{\e[0;34m%}%B] <$(git_prompt_info)>%{\e[0m%}%b '
 PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
