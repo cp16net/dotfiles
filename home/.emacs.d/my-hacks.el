@@ -96,8 +96,6 @@
 ;;
 ;; load up the packaging goodness
 ;;
-(require 'package)
-(package-initialize)
 (load "~/.emacs.d/my-loadpackages.el")
 
 
