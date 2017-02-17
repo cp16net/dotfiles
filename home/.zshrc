@@ -71,7 +71,7 @@ plugins=(git
 
 # User configuration
 
-export PATH="/home/cp16net/bin:/home/cp16net/bin:/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/usr/local/games:/usr/games"
+export PATH="/Users/cp16net/bin:/home/cp16net/bin:/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/usr/local/games:/usr/games"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
