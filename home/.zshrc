@@ -135,7 +135,8 @@ export DISABLE_AUTO_TITLE=true
 kube_prompt()
 {
     local kubectl_current_context=$(kubectl config current-context)
-    local kubectl_prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}k8s:($fg[cyan]$kubectl_current_context%{\e[1;37m%})%{\e[0;34m%}%B]%b%{\e[0m%}"
+    local kubectl_current_namespace=$(kubectl config view | yaml2json | jq '.contexts[] | select(.name=="'${kubectl_current_context}'")' | jq -r '.context.namespace')
+    local kubectl_prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}k8s:($fg[cyan]$kubectl_current_context$fg[white]:$fg[cyan]$kubectl_current_namespace%{\e[1;37m%})%{\e[0;34m%}%B]%b%{\e[0m%}"
     echo $kubectl_prompt
 }
 dir_prompt()
