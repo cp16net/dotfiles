@@ -134,6 +134,11 @@ export DISABLE_AUTO_TITLE=true
 #
 kube_prompt()
 {
+    # mac is weird and i'm not using it for this anyway
+    if [[ $(uname) == "Darwin" ]]; then;
+	echo ""
+	return
+    fi
     if [ ! kubectl &>/dev/null ]; then;
 	echo "kubectl missing - "
 	return
