@@ -23,6 +23,7 @@ If point was already at that position, move point to beginning of line."
 
 
 (global-set-key (kbd "C-c C-f") 'find-grep-dired)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
 
 (defvar grep-and-find-map (make-sparse-keymap))
  (define-key global-map "\C-xf" grep-and-find-map)

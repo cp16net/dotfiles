@@ -4,6 +4,28 @@
 ;;; Code:
 
 
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-backends
+   (quote
+    (company-bbdb company-nxml company-css company-eclim company-semantic company-clang company-xcode company-cmake company-capf company-files
+		  (company-dabbrev-code company-gtags company-etags company-keywords)
+		  company-oddmuse company-dabbrev company-jedi)))
+;; '(font-use-system-font t)
+;; '(inhibit-startup-screen t)
+ '(org-agenda-files (quote ("~/org/work.org" "~/org/personal.org"))))
+;;(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ ;;)
+
 ;; (custom-set-variables
 ;;  ;; custom-set-variables was added by Custom.
 ;;  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -51,11 +73,19 @@
 ;;          (ecb-methods-buffer-name 0.1865671641791045 . 0.2911392405063291)))))
 
 
+;; setup the python env for pymacs to use
+(push "~/.virtualenvs/default/bin" exec-path)
+(setenv "PATH"
+        (concat
+         "~/.virtualenvs/default/bin" ":"
+         (getenv "PATH")
+         ))
+
+
 ;;
 ;; load up the packaging goodness
 ;;
 ;;(require 'cl)
-(require 'package)
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
@@ -63,58 +93,59 @@
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;; (unless (package-installed-p 'use-package)
+;;   (package-refresh-contents)
+;;   (package-install 'use-package))
 
-(eval-when-compile
-  (require 'use-package))
-(require 'diminish)
-(require 'bind-key)
+;; (eval-when-compile
+;;   (require 'use-package))
+;; (require 'diminish)
+;; (require 'bind-key)
 
 ; defvar is the correct way to declare global variables
 ; you might see setq as well, but setq is supposed to be use just to set variables,
 ; not create them.
-(defvar required-packages
-  '(
-    ;; ac-python
-    ;; auto-complete
-    ;; color-theme
-    ;; color-theme-zenburn
-    diff-hl
-    diredful
-    exec-path-from-shell
-    ;; fill-column-indicator
-    ;; git-commit-mode
-    ;; git-rebase-mode
-    ;; go-mode
-    ;; go-autocomplete
-    magit
-    org
-    popup
-    ;; yalinum
-    yaml-mode
-    yasnippet
-    monokai-theme
-    ) "A list of packages to ensure are installed at launch.")
 
-; method to check if all packages are installed
-(defun packages-installed-p ()
-  "Install a list of pacakges."
-  (loop for p in required-packages
-        when (not (package-installed-p p)) do (return nil)
-        finally (return t)))
+;; (defvar required-packages
+;;   '(
+;;     ;; ac-python
+;;     ;; auto-complete
+;;     ;; color-theme
+;;     ;; color-theme-zenburn
+;;     diff-hl
+;;     diredful
+;;     exec-path-from-shell
+;;     ;; fill-column-indicator
+;;     ;; git-commit-mode
+;;     ;; git-rebase-mode
+;;     ;; go-mode
+;;     ;; go-autocomplete
+;;     magit
+;;     org
+;;     popup
+;;     ;; yalinum
+;;     yaml-mode
+;;     yasnippet
+;;     monokai-theme
+;;     ) "A list of packages to ensure are installed at launch.")
 
-; if not all packages are installed, check one by one and install the missing ones.
-(unless (packages-installed-p)
-  ; check for new packages (package versions)
-  (message "%s" "Emacs is now refreshing its package database...")
-  (package-refresh-contents)
-  (message "%s" " done.")
-  ; install the missing packages
-  (dolist (p required-packages)
-    (when (not (package-installed-p p))
-      (package-install p))))
+;; ; method to check if all packages are installed
+;; (defun packages-installed-p ()
+;;   "Install a list of pacakges."
+;;   (loop for p in required-packages
+;;         when (not (package-installed-p p)) do (return nil)
+;;         finally (return t)))
+
+;; ; if not all packages are installed, check one by one and install the missing ones.
+;; (unless (packages-installed-p)
+;;   ; check for new packages (package versions)
+;;   (message "%s" "Emacs is now refreshing its package database...")
+;;   (package-refresh-contents)
+;;   (message "%s" " done.")
+;;   ; install the missing packages
+;;   (dolist (p required-packages)
+;;     (when (not (package-installed-p p))
+;;       (package-install p))))
 
 (require 'magit)
 (define-key global-map (kbd "C-c m") 'magit-status)
