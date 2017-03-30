@@ -2,3 +2,4 @@ linux/.emacs.d/auto-save-list/*
 linux/.emacs.d/elpa/*
 *.dat
 linux/.emacs.d/eshell/
+.emacs.desktop
