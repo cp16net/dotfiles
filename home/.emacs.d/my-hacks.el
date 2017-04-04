@@ -442,4 +442,6 @@
 (setq jedi:environment-virtualenv (list (expand-file-name "~/.emacs.d/.python-environments/")))
 
 
+(put 'upcase-region 'disabled nil)
+
 ;;; my-hacks.el ends here
