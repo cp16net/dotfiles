@@ -206,7 +206,8 @@
 	      )))
 (setq org-default-notes-file "~/Dropbox/org/notes.org")
 (define-key global-map "\C-cc" 'org-capture)
-
+(define-key global-map "\C-cx"
+  (lambda () (interactive) (org-capture nil "t")))
 
 
 ;;
