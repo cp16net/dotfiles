@@ -149,6 +149,8 @@
 
 (require 'magit)
 (define-key global-map (kbd "C-c m") 'magit-status)
+;; override the mailto keyboard default because i keep screwing up
+(define-key global-map (kbd "C-x m") 'magit-status)
 
 (require 'yasnippet)
 (yas-global-mode 1)
@@ -202,7 +204,8 @@
               ("DONE" :foreground "forest green" :weight bold)
               ("CANCELLED" :foreground "forest green" :weight bold)
 	      )))
-
+(setq org-default-notes-file "~/Dropbox/org/notes.org")
+(define-key global-map "\C-cc" 'org-capture)
 
 
 
