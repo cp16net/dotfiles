@@ -448,4 +448,10 @@
 
 (put 'upcase-region 'disabled nil)
 
+
+;;
+;; gotta have some nyancat
+;;
+(nyan-mode 1)
+
 ;;; my-hacks.el ends here
