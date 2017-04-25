@@ -335,7 +335,7 @@
 ;; load diredful (colors on dired mode)
 ;;
 ;;(require 'diredful)
-(diredful-mode 1)
+;;(diredful-mode 1)
 
 ;;
 ;; yaml mode
