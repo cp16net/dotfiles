@@ -143,13 +143,13 @@ kube_prompt()
 	echo "kubectl missing - "
 	return
     fi
-    if [ ! yaml2json &>/dev/null ]; then;
-	echo "yaml2json missing - "
+    if [ ! any-json &>/dev/null ]; then;
+	echo "any-json missing - install with: npm install any-json -g"
 	return
     fi
 
     local kubectl_current_context=$(kubectl config current-context)
-    local kubectl_current_namespace=$(kubectl config view | yaml2json | jq '.contexts[] | select(.name=="'${kubectl_current_context}'")' | jq -r '.context.namespace')
+    local kubectl_current_namespace=$(kubectl config view | any-json -format=yaml | jq '.contexts[] | select(.name=="'${kubectl_current_context}'")' | jq -r '.context.namespace')
     local kubectl_prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}k8s:($fg[cyan]$kubectl_current_context$fg[white]:$fg[cyan]$kubectl_current_namespace%{\e[1;37m%})%{\e[0;34m%}%B]%b%{\e[0m%} - "
     echo $kubectl_prompt
 }
