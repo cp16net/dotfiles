@@ -73,7 +73,15 @@
 ;;          (ecb-methods-buffer-name 0.1865671641791045 . 0.2911392405063291)))))
 
 
+;;
+;; set the font size
+;;
+(set-face-attribute 'default nil :height 105)
+
+
+;;
 ;; setup the python env for pymacs to use
+;;
 (push "~/.virtualenvs/default/bin" exec-path)
 (setenv "PATH"
         (concat
@@ -247,7 +255,7 @@
 ;; load theme
 ;;
 (load-theme 'monokai t)
-
+;;(load-theme 'tangotango t)
 
 ;;
 ;; set line numbers on the left side
@@ -473,6 +481,14 @@ ARG: something?"
       (comment-or-uncomment-region (line-beginning-position) (line-end-position))
     (comment-dwim arg)))
 (global-set-key "\M-;" 'comment-dwim-line)
+
+
+;;
+;; workgroups stuff
+;;
+(require 'workgroups2)
+;; Change some settings
+(workgroups-mode 1)        ; put this one at the bottom of .emacs
 
 
 ;;; my-hacks.el ends here
