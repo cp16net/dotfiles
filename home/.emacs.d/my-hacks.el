@@ -404,6 +404,7 @@
 ;;
 (require 'helm-config)
 (require 'helm)
+(global-set-key (kbd "M-x") #'helm-M-x)
 (helm-mode 1)
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
