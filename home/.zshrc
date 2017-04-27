@@ -133,6 +133,8 @@ export DISABLE_AUTO_TITLE=true
 # on two lines for easier vgrepping
 # entry in a nice long thread on the Arch Linux forums: http://bbs.archlinux.org/viewtopic.php?pid=521888#p521888
 #
+# requirements here are that you install `npm install any-json -g` on your system
+#
 kube_prompt()
 {
     # mac is weird and i'm not using it for this anyway
