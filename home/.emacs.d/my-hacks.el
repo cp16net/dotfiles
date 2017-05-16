@@ -558,6 +558,12 @@ ARG: something?"
    (require 'go-autocomplete))
 
 
+
+;;
+;; javascript custom stuff
+;;
+(setq js-indent-level 2)
+
 ;;
 ;; workgroups stuff
 ;;
