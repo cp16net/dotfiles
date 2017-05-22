@@ -38,10 +38,12 @@
  '(org-export-backends (quote (ascii html icalendar latex md confluence)))
  '(package-selected-packages
    (quote
-    (neotree flymake-go go-guru go-autocomplete go-eldoc go-mode traad js2-mode web-mode yaml-mode yalinum workgroups2 vue-mode virtualenvwrapper use-package tangotango-theme smex pandoc ox-pandoc nyan-mode multiple-cursors monokai-theme magit lua-mode jedi helm-projectile git-gutter-fringe git-gutter-fringe+ flycheck-pyflakes fill-column-indicator exec-path-from-shell emojify elpy dockerfile-mode diredful diff-hl company-shell company-jedi company-anaconda color-theme-tango ac-python))))
+    (kotlin-mode neotree flymake-go go-guru go-autocomplete go-eldoc go-mode traad js2-mode web-mode yaml-mode yalinum workgroups2 vue-mode virtualenvwrapper use-package tangotango-theme smex pandoc ox-pandoc nyan-mode multiple-cursors monokai-theme magit lua-mode jedi helm-projectile git-gutter-fringe git-gutter-fringe+ flycheck-pyflakes fill-column-indicator exec-path-from-shell emojify elpy dockerfile-mode diredful diff-hl company-shell company-jedi company-anaconda color-theme-tango ac-python))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;; (org-babel-load-file "~/.emacs.d/configuration.org")
