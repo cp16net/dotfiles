@@ -1,0 +1,451 @@
+#+TITLE Emacs Configuration
+
+Took the idea of orgifiying the emacs configuration from a video i watched talking about [[https://github.com/hrs/dotfiles/blob/master/emacs.d/configuration.org][this emacs configuration]].
+
+* Set personal information
+
+** Who am I? Where am I?
+
+#+BEGIN_SRC emacs-lisp
+  (setq user-full-name "Craig Vyvial"
+        user-mail-address "cp16net@gmail.com"
+        calendar-latitude 30.2
+        calendar-longitude -97.7
+	calendar-standard-time-zone-name "CST"
+	calendar-daylight-time-zone-name "CDT"
+        calendar-location-name "Austin, TX")
+#+END_SRC
+
+* Package Manager
+
+** el-get is a package installer (maybe better than the default one?)
+
+#+BEGIN_SRC emacs-lisp
+ (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+
+ (unless (require 'el-get nil 'noerror)
+   (with-current-buffer
+       (url-retrieve-synchronously
+	"https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+     (goto-char (point-max))
+     (eval-print-last-sexp)))
+
+ (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+ (el-get 'sync)
+#+END_SRC
+
+** add package archives
+
+#+BEGIN_SRC emacs-lisp
+ (require 'package)
+ (setq package-enable-at-startup nil)
+ (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+ (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+ (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+ (package-initialize)
+#+END_SRC
+
+* UI Preferences
+
+** Set font size
+
+#+BEGIN_SRC emacs-lisp
+ (set-face-attribute 'default nil :height 105)
+#+END_SRC
+
+** Close Emacs for real?
+
+#+BEGIN_SRC emacs-lisp
+ (defun ask-before-closing ()
+    "Ask whether or not to close, and then close if y was pressed."
+    (interactive)
+    (if (y-or-n-p (format "Are you sure you want to exit Emacs? "))
+	(if (< emacs-major-version 22)
+	    (save-buffers-kill-terminal)
+	  (save-buffers-kill-emacs))
+      (message "Canceled exit")))
+  (when window-system
+    (global-set-key (kbd "C-x C-c") 'ask-before-closing))
+#+END_SRC
+
+** store back and autosave file in system tmp
+
+#+BEGIN_SRC emacs-lisp
+ (setq backup-directory-alist
+       `((".*" . ,temporary-file-directory)))
+ (setq auto-save-file-name-transforms
+	     `((".*" ,temporary-file-directory t)))
+#+END_SRC
+
+** pretty diff views
+
+#+BEGIN_SRC emacs-lisp
+ (global-diff-hl-mode)
+ (diff-hl-margin-mode)
+#+END_SRC
+
+** smooth scrolling
+
+#+BEGIN_SRC emacs-lisp
+ (load-file "~/.emacs.d/sites-lisp/smooth-scrolling.el")
+ (require 'smooth-scrolling)
+ ;; scroll one line at a time (less "jumpy" than defaults)
+ (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+#+END_SRC
+
+** theme
+
+#+BEGIN_SRC emacs-lisp
+ (load-theme 'monokai t)
+#+END_SRC
+
+** trim trailing whitespace
+
+#+BEGIN_SRC emacs-lisp
+ (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+
+** Tweak window
+
+remove bars at top
+
+#+BEGIN_SRC emacs-lisp
+ (menu-bar-mode 0)
+ (tool-bar-mode 0)
+#+END_SRC
+
+The default frame title isn’t useful. This binds it to the name of the current project:
+
+#+BEGIN_SRC emacs-lisp
+ (setq frame-title-format '((:eval (projectile-project-name))))
+#+END_SRC
+
+** flycheck
+
+#+BEGIN_SRC emacs-lisp
+ (add-hook 'after-init-hook #'global-flycheck-mode)
+#+END_SRC
+
+** Allow convert to upcase a region
+
+#+BEGIN_SRC emacs-lisp
+ (put 'upcase-region 'disabled nil)
+#+END_SRC
+
+** commenting line
+
+This allows me to comment out the current line i have point on instead of adding a comment at the end of the line.
+
+#+BEGIN_SRC emacs-lisp
+ (defun comment-dwim-line (&optional arg)
+ "Replacement for the 'comment-dwim' command.
+ If no region is selected and current line is not blank and we
+ are not at the end of the line, then comment current line.
+ Replaces default behaviour of 'comment-dwim', when it inserts
+ comment at the end of the line.
+ ARG: something?"
+   (interactive "*P")
+   (comment-normalize-vars)
+   (if (and (not (region-active-p)) (not (looking-at "[ \t]*$")))
+       (comment-or-uncomment-region (line-beginning-position) (line-end-position))
+     (comment-dwim arg)))
+ (global-set-key "\M-;" 'comment-dwim-line)
+#+END_SRC
+
+* Custom keybindings
+
+This moves the point to the start of the first character in the line or to the beginning of the line.
+
+#+BEGIN_SRC emacs-lisp
+ (defun smart-beginning-of-line ()
+   "Move point to first non-whitespace character or beginning-of-line.
+
+ Move point to the first non-whitespace character on this line.
+ If point was already at that position, move point to beginning of line."
+   (interactive)
+   (let ((oldpos (point)))
+     (back-to-indentation)
+     (and (= oldpos (point))
+	  (beginning-of-line))))
+ ;; (global-set-key [s-right] 'move-end-of-line)
+ ;; (global-set-key [s-left] 'smart-beginning-of-line)
+ (global-set-key [home] 'smart-beginning-of-line)
+ (global-set-key (kbd "C-a") 'smart-beginning-of-line)
+#+END_SRC
+
+This is really helpful searching lots of file for a string. Naturally it uses grep.
+
+#+BEGIN_SRC emacs-lisp
+ (defvar grep-and-find-map (make-sparse-keymap))
+  (define-key global-map "\C-xf" grep-and-find-map)
+  (define-key global-map "\C-xfg" 'find-grep-dired)
+  (define-key global-map "\C-xff" 'find-name-dired)
+  (define-key global-map "\C-xfl" (lambda (dir pattern)
+	 (interactive "DFind-name locate-style (directory):
+		      \nsFind-name locate-style (filename wildcard): ")
+	 (find-dired dir (concat "-name '*" pattern "*'"))))
+  (define-key global-map "\C-xg" 'grep)
+ (global-set-key (kbd "C-c C-f") 'find-grep-dired)
+ (global-set-key (kbd "C-x C-f") 'helm-find-files)
+#+END_SRC
+
+This moves a window around in the buffer. (havnt used this much at all)
+
+#+BEGIN_SRC emacs-lisp
+ (global-set-key (kbd "C-c C-j") 'windmove-left)
+ (global-set-key (kbd "C-c C-k") 'windmove-down)
+ (global-set-key (kbd "C-c C-l") 'windmove-up)
+ (global-set-key (kbd "C-c C-;") 'windmove-right)
+#+END_SRC
+
+Make an easy to use key binding for switching to other window.
+
+#+BEGIN_SRC emacs-lisp
+ (global-set-key (kbd "M-o") 'other-window)
+#+END_SRC
+
+* Programming Customizations
+
+** Git integration with Magit
+
+#+BEGIN_SRC emacs-lisp
+ (require 'magit)
+ (define-key global-map (kbd "C-c m") 'magit-status)
+ ;; override the mailto keyboard default because i keep screwing up and i dont use it.
+ (define-key global-map (kbd "C-x m") 'magit-status)
+#+END_SRC
+
+** Python
+
+*** Virtualenv location for pymacs
+
+#+BEGIN_SRC emacs-lisp
+ (push "~/.virtualenvs/default/bin" exec-path)
+ (setenv "PATH"
+         (concat
+          "~/.virtualenvs/default/bin" ":"
+          (getenv "PATH")
+          ))
+#+END_SRC
+
+*** virtualenv wrapper
+
+#+BEGIN_SRC emacs-lisp
+ (require 'virtualenvwrapper)
+ (venv-initialize-interactive-shells) ;; if you want interactive shell support
+ (venv-initialize-eshell) ;; if you want eshell support
+ ;; note that setting `venv-location` is not necessary if you
+ ;; use the default location (`~/.virtualenvs`), or if the
+ ;; the environment variable `WORKON_HOME` points to the right place
+ (setq venv-location "/home/cp16net/.virtualenvs/")
+#+END_SRC
+
+*** jedi mode
+
+Jedi needs a python package installed in a virtualenv so set the per-installed venv here.
+
+#+BEGIN_SRC emacs-lisp
+ (setq jedi:environment-virtualenv (list (expand-file-name "~/.emacs.d/.python-environments/")))
+#+END_SRC
+
+Setup jedi mode to do python code completion with docs.
+
+#+BEGIN_SRC emacs-lisp
+ (add-hook 'python-mode-hook 'jedi:setup)
+ (setq jedi:setup-keys t)                      ; optional
+ (setq jedi:complete-on-dot t)                 ; optional
+ (setq jedi:environment-root "/home/cp16net/.virtualenvs/")
+ (setq jedi:environment-virtualenv nil)
+#+END_SRC
+
+Sphinx dox enabled for python
+
+#+BEGIN_SRC emacs-lisp
+ ;; C-c M-d
+(add-hook 'python-mode-hook (lambda ()
+			      (require 'sphinx-doc)
+			      (sphinx-doc-mode t)))
+#+END_SRC
+
+** go
+
+#+BEGIN_SRC emacs-lisp
+ ;; Snag the user's PATH and GOPATH
+ (when (memq window-system '(mac ns))
+   (exec-path-from-shell-initialize)
+   (exec-path-from-shell-copy-env "GOPATH"))
+
+ ;; Define function to call when go-mode loads
+ (defun my-go-mode-hook ()
+   "Custom go mode hook to load my stuff."
+   (setq gofmt-command "goimports")                ; gofmt uses invokes goimports
+   (add-hook 'before-save-hook 'gofmt-before-save) ; gofmt before every save
+      (if (not (string-match "go" compile-command))   ; set compile command default
+       (set (make-local-variable 'compile-command)
+	    "go build -v && go test -v && go vet"))
+
+   ;; guru settings
+   (go-guru-hl-identifier-mode)                    ; highlight identifiers
+
+   ;; Key bindings specific to go-mode
+   (local-set-key (kbd "M-.") 'godef-jump)         ; Go to definition
+   (local-set-key (kbd "M-*") 'pop-tag-mark)       ; Return from whence you came
+   (local-set-key (kbd "M-p") 'compile)            ; Invoke compiler
+   (local-set-key (kbd "M-P") 'recompile)          ; Redo most recent compile cmd
+   (local-set-key (kbd "M-]") 'next-error)         ; Go to next error (or msg)
+   (local-set-key (kbd "M-[") 'previous-error)     ; Go to previous error or msg
+
+   ;; Misc go stuff
+   (auto-complete-mode 1))                         ; Enable auto-complete mode
+
+ ;; Connect go-mode-hook with the function we just defined
+ (add-hook 'go-mode-hook 'my-go-mode-hook)
+
+ ;; Ensure the go specific autocomplete is active in go-mode.
+ (with-eval-after-load 'go-mode
+    (require 'go-autocomplete))
+#+END_SRC
+
+** javascript and coffeescript
+
+#+BEGIN_SRC emacs-lisp
+ (setq js-indent-level 2)
+
+ (add-hook 'coffee-mode-hook
+	   (lambda ()
+	     (yas-minor-mode 1)
+	     (setq coffee-tab-width 2)))
+#+END_SRC
+
+** yaml
+
+#+BEGIN_SRC emacs-lisp
+ (require 'yaml-mode)
+ (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+ ;; make enter <newline> with indent
+ (add-hook 'yaml-mode-hook
+	   '(lambda ()
+	      (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+#+END_SRC
+
+** docker file mode
+
+#+BEGIN_SRC emacs-lisp
+ (require 'dockerfile-mode)
+ (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+#+END_SRC
+
+** Snippets
+
+#+BEGIN_SRC emacs-lisp
+ (require 'yasnippet)
+ (yas-global-mode 1)
+ (yas-load-directory "~/.emacs.d/snippets")
+ (add-hook 'term-mode-hook (lambda() (setq yas-dont-activate t)))
+#+END_SRC
+
+* multiple cursors
+
+This is a really nice way to do multiple edits in a file. I've used ctrl-d in sublime alot and foudn this very similar.
+
+#+BEGIN_SRC emacs-lisp
+ (require 'multiple-cursors)
+ ;; add a cursor to each line in selected region
+ (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+ ;; add cursor not continuous lines (based on keywords in buffer
+ (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+ (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+ (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+ ;; get out of multiple cursor mode (press <return> or C-g)
+ ;; If you want to insert a newline in multiple-cursors-mode, use C-j.
+#+END_SRC
+
+* desktop save mode
+
+This allow me to save history and buffers and reopen emacs like it was when i had to exit. This comes in handy when i need to restart my machine for updates or something.
+
+#+BEGIN_SRC emacs-lisp
+ (desktop-save-mode 1)
+ (setq savehist-additional-variables              ;; also save...
+       '(search-ring regexp-search-ring kill-ring);; ... my search entries
+   savehist-file "~/.emacs.d/savehist")           ;; keep my home clean
+ (savehist-mode t)                                ;; do customization before activate
+ ;; (add-to-list 'savehist-addition-variables 'kill-ring)
+#+END_SRC
+
+* helm mode
+
+#+BEGIN_SRC emacs-lisp
+ (require 'helm-config)
+ (require 'helm)
+ (global-set-key (kbd "M-x") #'helm-M-x)
+ (helm-mode 1)
+ (projectile-global-mode)
+ (setq projectile-completion-system 'helm)
+ (helm-projectile-on)
+#+END_SRC
+
+* company mode
+
+AKA complete anything mode.
+
+#+BEGIN_SRC emacs-lisp
+ (add-hook 'after-init-hook 'global-company-mode)
+ ;; add python completion for company mode
+ (add-hook 'python-mode-hook 'anaconda-mode)
+#+END_SRC
+
+* org mode
+
+I like using =TODO->NEXT->IN PROGRES->DONE->CANCELLED= and my progression.
+
+Org docs are stored in my dropbox location to sync with other tools.
+
+#+BEGIN_SRC emacs-lisp
+ ;; (add-to-list 'load-path (expand-file-name "~/code/org-mode/lisp"))
+ (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
+ (require 'org)
+ ;; Standard key bindings
+ (global-set-key "\C-cl" 'org-store-link)
+ (global-set-key "\C-ca" 'org-agenda)
+ (global-set-key "\C-cb" 'org-iswitchb)
+ ;; TODO keywords list setup
+ (setq org-todo-keywords
+       (quote ((sequence "TODO(t)" "NEXT(n)" "IN PROGRESS(i)" "|" "DONE(d)")
+	       (sequence "|" "CANCELLED(c)"))))
+ (setq org-todo-keyword-faces
+       (quote (("TODO" :foreground "red" :weight bold)
+	       ("NEXT" :foreground "yellow" :weight bold)
+	       ("IN PROGRESS" :foreground "green" :weight bold)
+	       ("DONE" :foreground "forest green" :weight bold)
+	       ("CANCELLED" :foreground "forest green" :weight bold)
+	       )))
+ (setq org-default-notes-file "~/Dropbox/org/notes.org")
+ (define-key global-map "\C-cc" 'org-capture)
+ (define-key global-map "\C-cx"
+   (lambda () (interactive) (org-capture nil "t")))
+#+END_SRC
+
+Make TAB act as if it were issued in a buffer of the language’s major mode.
+
+#+BEGIN_SRC emacs-lisp
+ (setq org-src-tab-acts-natively t)
+#+END_SRC
+
+* nyan mode
+
+Gotta have some nyan cat mode. :)
+
+#+BEGIN_SRC emacs-lisp
+ (nyan-mode 1)
+#+END_SRC
+
+* workgroups
+
+Workgroups allows me to setup different windows for different tasks i'm doing. This could be workgroups for org, dev, web, or email. *Required to be at the end.*
+
+#+BEGIN_SRC emacs-lisp
+ (require 'workgroups2)
+ ;; Change some settings
+ (workgroups-mode 1)        ; put this one at the bottom of .emacs
+#+END_SRC
