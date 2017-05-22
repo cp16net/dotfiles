@@ -1,4 +1,4 @@
-#+TITLE Emacs Configuration
+#+TITLE: Emacs Configuration
 
 Took the idea of orgifiying the emacs configuration from a video i watched talking about [[https://github.com/hrs/dotfiles/blob/master/emacs.d/configuration.org][this emacs configuration]].
 
