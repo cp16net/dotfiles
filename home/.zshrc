@@ -126,6 +126,8 @@ export PATH=$PATH:$GOBIN:$HOME/bin
 # tmux window names displaying properly
 export DISABLE_AUTO_TITLE=true
 
+# add rust cmds to path
+export PATH=$PATH:$HOME/.cargo/bin
 
 #
 # (cp16net) customized the theme slightly modified from xiong-chiamiov-plus.zsh-theme
@@ -143,17 +145,13 @@ kube_prompt()
 	return
     fi
     if [ ! kubectl &>/dev/null ]; then;
-	echo "kubectl missing - "
-	return
-    fi
-    if [ ! any-json &>/dev/null ]; then;
-	echo "any-json missing - install with: npm install any-json -g"
+	echo "kubectl missing"
 	return
     fi
 
     local kubectl_current_context=$(kubectl config current-context)
-    local kubectl_current_namespace=$(kubectl config view | any-json -format=yaml | jq '.contexts[] | select(.name=="'${kubectl_current_context}'")' | jq -r '.context.namespace')
-    local kubectl_prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}k8s:($fg[cyan]$kubectl_current_context$fg[white]:$fg[cyan]$kubectl_current_namespace%{\e[1;37m%})%{\e[0;34m%}%B]%b%{\e[0m%} - "
+    local kubectl_current_namespace=$(kubectl config view -o jsonpath="{.contexts[?(@.name==\"$ctx\")].context.namespace}")
+    local kubectl_prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}k8s:($fg[cyan]$kubectl_current_context$fg[white]:$fg[cyan]$kubectl_current_namespace%{\e[1;37m%})%{\e[0;34m%}%B]%b%{\e[0m%}"
     echo $kubectl_prompt
 }
 dir_prompt()
@@ -166,12 +164,17 @@ time_prompt()
     local prompt='%{\e[0;34m%}%B[%b%{\e[0;33m%}'%D{"%a %b %d, %H:%M"}%b$'%{\e[0;34m%}%B]%b%{\e[0m%}'
     echo $prompt
 }
+system_info()
+{
+    echo '%{\e[0;34m%}%B┌─[%b%{\e[0m%}%{\e[1;32m%}%n%{\e[1;30m%}@%{\e[0m%}%{\e[0;36m%}%m%{\e[0;34m%}%B]%b%{\e[0m%}'
+}
 
-#PROMPT=$'%{\e[0;34m%}%B┌─[%b%{\e[0m%}%{\e[1;32m%}%n%{\e[1;30m%}@%{\e[0m%}%{\e[0;36m%}%m%{\e[0;34m%}%B]%b%{\e[0m%} - $(dir_prompt) - $(kube_prompt)$(time_prompt)
-#%{\e[0;34m%}%B└─%B[%{\e[1;35m%}$%{\e[0;34m%}%B] <$(git_prompt_info)>%{\e[0m%}%b '
-
-PROMPT=$'%{\e[0;34m%}%B┌─[%b%{\e[0m%}%{\e[1;32m%}%n%{\e[1;30m%}@%{\e[0m%}%{\e[0;36m%}%m%{\e[0;34m%}%B]%b%{\e[0m%} - $(dir_prompt) - $(time_prompt)
+PROMPT=$'$(system_info) - $(dir_prompt) - $(kube_prompt) - $(time_prompt)
 %{\e[0;34m%}%B└─%B[%{\e[1;35m%}$%{\e[0;34m%}%B] <$(git_prompt_info)>%{\e[0m%}%b '
+
+# NOTE: prompt without kubectl info
+#PROMPT=$'%{\e[0;34m%}%B┌─[%b%{\e[0m%}%{\e[1;32m%}%n%{\e[1;30m%}@%{\e[0m%}%{\e[0;36m%}%m%{\e[0;34m%}%B]%b%{\e[0m%} - $(dir_prompt) - $(time_prompt)
+#%{\e[0;34m%}%B└─%B[%{\e[1;35m%}$%{\e[0;34m%}%B] <$(git_prompt_info)>%{\e[0m%}%b '
 
 PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
 

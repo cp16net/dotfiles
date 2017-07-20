@@ -80,8 +80,8 @@ Took the idea of orgifiying the emacs configuration from a video i watched talki
 ** pretty diff views
 
 #+BEGIN_SRC emacs-lisp
- (global-diff-hl-mode)
- (diff-hl-margin-mode)
+;; (global-diff-hl-mode)
+;; (diff-hl-margin-mode)
 #+END_SRC
 
 ** smooth scrolling

@@ -49,3 +49,5 @@ fi
 
 # i dont use this alias and now i have rd as a rundeck cli tool
 unalias rd
+
+alias pbcopy='xsel --clipboard --input'

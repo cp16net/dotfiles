@@ -3,6 +3,7 @@
 	email = cp16net@gmail.com
 [core]
 	editor = emacs -q -nw
+	excludesfile = /home/craig/.gitignore
 [alias]
 	st = status
 	br = branch
