@@ -150,7 +150,7 @@ kube_prompt()
     fi
 
     local kubectl_current_context=$(kubectl config current-context)
-    local kubectl_current_namespace=$(kubectl config view -o jsonpath="{.contexts[?(@.name==\"$ctx\")].context.namespace}")
+    local kubectl_current_namespace=$(kubectl config view -o jsonpath="{.contexts[?(@.name==\"${kubectl_current_context}\")].context.namespace}")
     local kubectl_prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}k8s:($fg[cyan]$kubectl_current_context$fg[white]:$fg[cyan]$kubectl_current_namespace%{\e[1;37m%})%{\e[0;34m%}%B]%b%{\e[0m%}"
     echo $kubectl_prompt
 }
