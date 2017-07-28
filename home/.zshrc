@@ -180,3 +180,7 @@ PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+if [ -f ~/.zprofile ]; then
+    source ~/.zprofile
+fi
