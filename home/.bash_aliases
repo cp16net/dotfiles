@@ -21,7 +21,6 @@ alias ll='ls -la'
 alias la='ls -A'
 alias l='ls -CF'
 alias remove_all_pyc_files='find . -name "*.pyc" -exec rm -rf {} \;'
-alias wb='cd ~/wayblazer'
 
 # kube aliases
 
@@ -46,8 +45,5 @@ setcontext() {
 if [ -f ~/.bash_aliases ]; then
    . ~/.local.bash_aliases
 fi
-
-# i dont use this alias and now i have rd as a rundeck cli tool
-unalias rd
 
 alias pbcopy='xsel --clipboard --input'

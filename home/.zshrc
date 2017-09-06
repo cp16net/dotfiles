@@ -1,13 +1,19 @@
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
+export PATH="/Users/cp16net/bin:/home/cp16net/bin:/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/usr/local/games:/usr/games"
+export PATH="$PATH:/usr/local/go/bin"
+export GOPATH=$HOME/gospace
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN:$HOME/bin
+
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 #ZSH_THEME="xiong-chiamiov-plus"
 #ZSH_THEME="cp16net"
-DEFAULT_USER="cp16net"
+DEFAULT_USER="craig"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -53,25 +59,25 @@ DEFAULT_USER="cp16net"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git
          vagrant
-         tmuxinator
          python
          pip
-         tox
          history
-         fabric
          docker
-         debian
-         command-not-found
-         common-aliases
          golang
          git-extras
          zsh_reload
-         kubectl
+	 kubectl
+	 tmuxinator
+	 tox
+	 fabric
+	 debian
+	 command-not-found
+	 common-aliases
         )
+
 
 # User configuration
 
-export PATH="/Users/cp16net/bin:/home/cp16net/bin:/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/usr/local/games:/usr/games"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
@@ -117,11 +123,6 @@ export PROJECT_HOME=$HOME/Devel
 export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
 export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
 source /usr/local/bin/virtualenvwrapper_lazy.sh
-
-export PATH="$PATH:/usr/local/go/bin"
-export GOPATH=$HOME/gospace
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN:$HOME/bin
 
 # tmux window names displaying properly
 export DISABLE_AUTO_TITLE=true
