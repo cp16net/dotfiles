@@ -66,13 +66,8 @@ plugins=(git
          golang
          git-extras
          zsh_reload
-	 kubectl
-	 tmuxinator
-	 tox
-	 fabric
-	 debian
-	 command-not-found
-	 common-aliases
+         kubectl
+         z
         )
 
 
