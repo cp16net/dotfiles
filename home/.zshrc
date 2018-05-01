@@ -68,6 +68,9 @@ plugins=(git
          zsh_reload
          kubectl
          z
+	 debian
+	 command-not-found
+	 common-aliases
         )
 
 
@@ -180,3 +183,9 @@ export NVM_DIR="$HOME/.nvm"
 if [ -f ~/.zprofile ]; then
     source ~/.zprofile
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/craig/google-cloud-sdk/path.zsh.inc' ]; then source '/home/craig/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/craig/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/craig/google-cloud-sdk/completion.zsh.inc'; fi
