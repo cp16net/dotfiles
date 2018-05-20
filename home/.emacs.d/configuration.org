@@ -213,6 +213,36 @@ Make an easy to use key binding for switching to other window.
  (global-set-key (kbd "M-o") 'other-window)
 #+END_SRC
 
+Move a line up or down with M-<up> or M-<down
+
+#+BEGIN_SRC emacs-lisp
+ (defun move-line (n)
+   "Move the current line up or down by N lines."
+   (interactive "p")
+   (setq col (current-column))
+   (beginning-of-line) (setq start (point))
+   (end-of-line) (forward-char) (setq end (point))
+   (let ((line-text (delete-and-extract-region start end)))
+     (forward-line n)
+     (insert line-text)
+     ;; restore point to original column in moved line
+     (forward-line -1)
+     (forward-char col)))
+
+ (defun move-line-up (n)
+   "Move the current line up by N lines."
+   (interactive "p")
+   (move-line (if (null n) -1 (- n))))
+
+ (defun move-line-down (n)
+   "Move the current line down by N lines."
+   (interactive "p")
+   (move-line (if (null n) 1 n)))
+
+ (global-set-key (kbd "M-<up>") 'move-line-up)
+ (global-set-key (kbd "M-<down>") 'move-line-down)
+#+END_SRC
+
 * Programming Customizations
 
 ** Git integration with Magit
@@ -315,15 +345,10 @@ Sphinx dox enabled for python
     (require 'go-autocomplete))
 #+END_SRC
 
-** javascript and coffeescript
+** javascript
 
 #+BEGIN_SRC emacs-lisp
  (setq js-indent-level 2)
-
- (add-hook 'coffee-mode-hook
-	   (lambda ()
-	     (yas-minor-mode 1)
-	     (setq coffee-tab-width 2)))
 #+END_SRC
 
 ** yaml
@@ -388,6 +413,7 @@ This allow me to save history and buffers and reopen emacs like it was when i ha
  (require 'helm-config)
  (require 'helm)
  (global-set-key (kbd "M-x") #'helm-M-x)
+ (global-set-key (kbd "C-x b") 'helm-mini)
  (helm-mode 1)
  (projectile-global-mode)
  (setq projectile-completion-system 'helm)
@@ -439,6 +465,24 @@ Make TAB act as if it were issued in a buffer of the language’s major mode.
 
 #+BEGIN_SRC emacs-lisp
  (setq org-src-tab-acts-natively t)
+#+END_SRC
+
+* emacs neotree
+
+https://github.com/jaypei/emacs-neotree
+
+A nice tree broswer on the side for directories/files.
+
+#+BEGIN_SRC emacs-lisp
+ (require 'neotree)
+ ;; shortcut for neotree
+ (global-set-key [f8] 'neotree-toggle)
+ ;; theme icons for tree these look terrible on ubunut linux emacs i've been using so disabling it for now.
+ ;; (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+ ;; open neotree to file node in tree
+ (setq neo-smart-open t)
+ ;; projectile switches to the node in the tree automatically
+ (setq projectile-switch-project-action 'neotree-projectile-action)
 #+END_SRC
 
 * nyan mode
