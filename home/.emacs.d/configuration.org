@@ -467,6 +467,22 @@ Make TAB act as if it were issued in a buffer of the language’s major mode.
  (setq org-src-tab-acts-natively t)
 #+END_SRC
 
+** org-jira mode
+
+This is a mode for adding jira support.
+
+#+BEGIN_SRC emacs-lisp
+ (setq jiralib-url "https://hello.planet.com/jira")
+ ; you need make sure the jiralib-url is correct. Login your jira
+ ; server in browser, the home page URL should be like:
+ ; https://issues.apache.org/jira/secure/Dashboard.jspa
+ ; remove the "/secure/Dashboard.jspa" part and you get the jiralib-url:
+ ; "https://issues.apache.org/jira"
+
+ (require 'org-jira)
+ ; jiralib is not explicitly required, since org-jira will load it
+#+END_SRC
+
 * emacs neotree
 
 https://github.com/jaypei/emacs-neotree

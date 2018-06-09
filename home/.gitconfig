@@ -1,20 +1,22 @@
 [user]
 	name = Craig Vyvial
 	email = cp16net@gmail.com
+	username = cp16net
 [core]
 	editor = emacs -q -nw
-	excludesfile = /home/craig/.gitignore
+	whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+	excludesfile = ~/.gitignore
 [alias]
 	st = status
-	br = branch
+	br = branch -vv
 	co = checkout
 	todo = commit --allow-empty
-	clean-show = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$"; }; f"
-	clean-delete = "!f() { git sclean ${1-master} | xargs -n 1 git branch -d; }; f"
 	delete-merged-branches = "!git co master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
-	brf = "!f() { for k in `git branch|perl -pe s/^..//`;do echo -e `git show --pretty=format:'%Cgreen%ci %Cblue%cr%Creset' $k|head -n 1`\\t$k;done|sort -r }; f"
-	b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
 [color]
 	ui = auto
 [push]
 	default = simple
+[rebase]
+	abbreviateCommands = true
+[include]
+	path = .local.gitconfig

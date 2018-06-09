@@ -6,3 +6,4 @@
 ;;(package-initialize)
 
 (org-babel-load-file "~/.emacs.d/configuration.org")
+(put 'downcase-region 'disabled nil)
