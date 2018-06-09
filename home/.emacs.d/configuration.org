@@ -139,6 +139,7 @@ The default frame title isn’t useful. This binds it to the name of the current
 
 #+BEGIN_SRC emacs-lisp
  (put 'upcase-region 'disabled nil)
+ (put 'downcase-region 'disabled nil)
 #+END_SRC
 
 ** commenting line
@@ -427,6 +428,7 @@ AKA complete anything mode.
 
 #+BEGIN_SRC emacs-lisp
  (add-hook 'after-init-hook 'global-company-mode)
+
  ;; add python completion for company mode
  (add-hook 'python-mode-hook 'anaconda-mode)
 #+END_SRC
@@ -438,7 +440,6 @@ I like using =TODO->NEXT->IN PROGRES->DONE->CANCELLED= and my progression.
 Org docs are stored in my dropbox location to sync with other tools.
 
 #+BEGIN_SRC emacs-lisp
- ;; (add-to-list 'load-path (expand-file-name "~/code/org-mode/lisp"))
  (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
  (require 'org)
  ;; Standard key bindings
@@ -456,7 +457,7 @@ Org docs are stored in my dropbox location to sync with other tools.
 	       ("DONE" :foreground "forest green" :weight bold)
 	       ("CANCELLED" :foreground "forest green" :weight bold)
 	       )))
- (setq org-default-notes-file "~/Dropbox/org/notes.org")
+ (setq org-default-notes-file "~/orgfiles/notes.org")
  (define-key global-map "\C-cc" 'org-capture)
  (define-key global-map "\C-cx"
    (lambda () (interactive) (org-capture nil "t")))

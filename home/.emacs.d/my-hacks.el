@@ -1,6 +1,7 @@
 ;;; package --- my-hacks
 ;;; Commentary:
-;;; this is my hacked up Emacs init script.
+;;; (DEPRECATED)
+;;; this is whats left of my hacks for my EMACS init script.
 ;;; Code:
 
 
@@ -48,22 +49,6 @@
 
 
 ;;
-;; el-get is a package installer (maybe better than the default one?)
-;;
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-(el-get 'sync)
-
-
-;;
 ;; ecb config
 ;;
 ;; check OS type
@@ -94,28 +79,6 @@
 ;;
 (set-face-attribute 'default nil :height 105)
 
-
-;;
-;; setup the python env for pymacs to use
-;;
-(push "~/.virtualenvs/default/bin" exec-path)
-(setenv "PATH"
-        (concat
-         "~/.virtualenvs/default/bin" ":"
-         (getenv "PATH")
-         ))
-
-
-;;
-;; load up the packaging goodness
-;;
-;;(require 'cl)
-(require 'package)
-(setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-(package-initialize)
 
 ;; (unless (package-installed-p 'use-package)
 ;;   (package-refresh-contents)
@@ -171,75 +134,6 @@
 ;;     (when (not (package-installed-p p))
 ;;       (package-install p))))
 
-(require 'magit)
-(define-key global-map (kbd "C-c m") 'magit-status)
-;; override the mailto keyboard default because i keep screwing up
-(define-key global-map (kbd "C-x m") 'magit-status)
-
-(require 'yasnippet)
-(yas-global-mode 1)
-(yas-load-directory "~/.emacs.d/snippets")
-(add-hook 'term-mode-hook (lambda()
-			    (setq yas-dont-activate t)))
-
-
-;;
-;; CLOSE emacs for REAL?
-;;
-(defun ask-before-closing ()
-  "Ask whether or not to close, and then close if y was pressed."
-  (interactive)
-  (if (y-or-n-p (format "Are you sure you want to exit Emacs? "))
-      (if (< emacs-major-version 22)
-          (save-buffers-kill-terminal)
-        (save-buffers-kill-emacs))
-    (message "Canceled exit")))
-(when window-system
-  (global-set-key (kbd "C-x C-c") 'ask-before-closing))
-
-
-;;
-;; store the backup and autosave in the system's tmp directory
-;;
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-            `((".*" ,temporary-file-directory t)))
-
-
-;;;
-;;; Org Mode
-;;;
-;; (add-to-list 'load-path (expand-file-name "~/code/org-mode/lisp"))
-(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
-(require 'org)
-;; Standard key bindings
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-;; TODO keywords list setup
-(setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "IN PROGRESS(i)" "|" "DONE(d)")
-              (sequence "|" "CANCELLED(c)"))))
-(setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "red" :weight bold)
-              ("NEXT" :foreground "yellow" :weight bold)
-              ("IN PROGRESS" :foreground "green" :weight bold)
-              ("DONE" :foreground "forest green" :weight bold)
-              ("CANCELLED" :foreground "forest green" :weight bold)
-	      )))
-(setq org-default-notes-file "~/Dropbox/org/notes.org")
-(define-key global-map "\C-cc" 'org-capture)
-(define-key global-map "\C-cx"
-  (lambda () (interactive) (org-capture nil "t")))
-
-
-;;
-;; pretty diff view of whats changed in a file
-;;
-(global-diff-hl-mode)
-(diff-hl-margin-mode)
-
 
 ;;
 ;; zencoding - nice add for adding code
@@ -249,29 +143,6 @@
 ;; (add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
 
 
-
-;;
-;; load my-keys after init
-;;
-(add-hook 'after-init-hook '(lambda ()
-  (load "~/.emacs.d/my-keys.el")
-))
-
-
-
-;;(add-to-list 'load-path "~/.emacs.d")    ; This may not be appeared if you have already added.
-
-;;
-;; delete the trailing whitespace on lines before save
-;;
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-
-;;
-;; load theme
-;;
-(load-theme 'monokai t)
-;;(load-theme 'tangotango t)
 
 ;;
 ;; set line numbers on the left side
@@ -335,12 +206,6 @@
 ;; (semantic-mode 1)
 
 
-(load-file "~/.emacs.d/sites-lisp/smooth-scrolling.el")
-(require 'smooth-scrolling)
-;; scroll one line at a time (less "jumpy" than defaults)
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-
-
 ;;
 ;; load the go setup
 ;;
@@ -353,70 +218,6 @@
 ;;(require 'diredful)
 ;;(diredful-mode 1)
 
-;;
-;; yaml mode
-;;
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-;; make enter <newline> with indent
-(add-hook 'yaml-mode-hook
-	  '(lambda ()
-	     (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
-
-;;
-;; remove the file menu bar at the top (annoying)
-;;
-(menu-bar-mode -1)
-
-;;
-;; docker file mode
-;;
-(require 'dockerfile-mode)
-(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
-
-;;
-;; multiple cursors setup
-;;
-(require 'multiple-cursors)
-;; add a cursor to each line in selected region
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-;; add cursor not continuous lines (based on keywords in buffer
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-;; get out of multiple cursor mode (press <return> or C-g)
-;; If you want to insert a newline in multiple-cursors-mode, use C-j.
-
-
-;;
-;; emacs save buffers and history
-;;
-(desktop-save-mode 1)
-(setq savehist-additional-variables              ;; also save...
-      '(search-ring regexp-search-ring kill-ring);; ... my search entries
-  savehist-file "~/.emacs.d/savehist")           ;; keep my home clean
-(savehist-mode t)                                ;; do customization before activate
-;; (add-to-list 'savehist-addition-variables 'kill-ring)
-
-
-;;
-;; use helm
-;;
-(require 'helm-config)
-(require 'helm)
-(global-set-key (kbd "M-x") #'helm-M-x)
-(helm-mode 1)
-(projectile-global-mode)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
-
-
-;;
-;; Company mode (complete anything)
-;;
-(add-hook 'after-init-hook 'global-company-mode)
-;; add python completion for company mode
-(add-hook 'python-mode-hook 'anaconda-mode)
 
 ;;
 ;; autopep8 (auto format python code)
@@ -452,124 +253,6 @@
 ;;   :init (global-flycheck-mode))
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-
-;;
-;; virtualenvs setup
-;;
-(require 'virtualenvwrapper)
-(venv-initialize-interactive-shells) ;; if you want interactive shell support
-(venv-initialize-eshell) ;; if you want eshell support
-;; note that setting `venv-location` is not necessary if you
-;; use the default location (`~/.virtualenvs`), or if the
-;; the environment variable `WORKON_HOME` points to the right place
-(setq venv-location "/home/cp16net/.virtualenvs/")
-
-
-;;
-;; jedi-mode setup
-;;
-(setq jedi:environment-virtualenv (list (expand-file-name "~/.emacs.d/.python-environments/")))
-
-
-(put 'upcase-region 'disabled nil)
-
-
-;;
-;; gotta have some nyancat
-;;
-(nyan-mode 1)
-
-
-;;
-;; commenting line not end of line
-;;
-;; Original idea from
-;; http://www.opensubscriber.com/message/emacs-devel@gnu.org/10971693.html
-(defun comment-dwim-line (&optional arg)
-"Replacement for the 'comment-dwim' command.
-If no region is selected and current line is not blank and we
-are not at the end of the line, then comment current line.
-Replaces default behaviour of 'comment-dwim', when it inserts
-comment at the end of the line.
-ARG: something?"
-  (interactive "*P")
-  (comment-normalize-vars)
-  (if (and (not (region-active-p)) (not (looking-at "[ \t]*$")))
-      (comment-or-uncomment-region (line-beginning-position) (line-end-position))
-    (comment-dwim arg)))
-(global-set-key "\M-;" 'comment-dwim-line)
-
-
-;;
-;; jedi mode (python code completion/docs)
-;;
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:setup-keys t)                      ; optional
-(setq jedi:complete-on-dot t)                 ; optional
-(setq jedi:environment-root "/home/cp16net/.virtualenvs/")
-(setq jedi:environment-virtualenv nil)
-
-
-;;
-;; sphinx doc enabled for python
-;; C-c M-d
-(add-hook 'python-mode-hook (lambda ()
-			      (require 'sphinx-doc)
-			      (sphinx-doc-mode t)))
-
-
-;;
-;; golang setup
-;;
-
-;; Snag the user's PATH and GOPATH
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize)
-  (exec-path-from-shell-copy-env "GOPATH"))
-
-;; Define function to call when go-mode loads
-(defun my-go-mode-hook ()
-  "Custom go mode hook to load my stuff."
-  (add-hook 'before-save-hook 'gofmt-before-save) ; gofmt before every save
-  (setq gofmt-command "goimports")                ; gofmt uses invokes goimports
-  (if (not (string-match "go" compile-command))   ; set compile command default
-      (set (make-local-variable 'compile-command)
-           "go build -v && go test -v && go vet"))
-
-  ;; guru settings
-  (go-guru-hl-identifier-mode)                    ; highlight identifiers
-
-  ;; Key bindings specific to go-mode
-  (local-set-key (kbd "M-.") 'godef-jump)         ; Go to definition
-  (local-set-key (kbd "M-*") 'pop-tag-mark)       ; Return from whence you came
-  (local-set-key (kbd "M-p") 'compile)            ; Invoke compiler
-  (local-set-key (kbd "M-P") 'recompile)          ; Redo most recent compile cmd
-  (local-set-key (kbd "M-]") 'next-error)         ; Go to next error (or msg)
-  (local-set-key (kbd "M-[") 'previous-error)     ; Go to previous error or msg
-
-  ;; Misc go stuff
-  (auto-complete-mode 1))                         ; Enable auto-complete mode
-
-;; Connect go-mode-hook with the function we just defined
-(add-hook 'go-mode-hook 'my-go-mode-hook)
-
-;; Ensure the go specific autocomplete is active in go-mode.
-(with-eval-after-load 'go-mode
-   (require 'go-autocomplete))
-
-
-
-;;
-;; javascript custom stuff
-;;
-(setq js-indent-level 2)
-
-;;
-;; workgroups stuff
-;;
-(require 'workgroups2)
-;; Change some settings
-(workgroups-mode 1)        ; put this one at the bottom of .emacs
 
 
 ;;; my-hacks.el ends here
