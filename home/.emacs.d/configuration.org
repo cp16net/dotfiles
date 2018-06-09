@@ -194,6 +194,7 @@ This is really helpful searching lots of file for a string. Naturally it uses gr
 		      \nsFind-name locate-style (filename wildcard): ")
 	 (find-dired dir (concat "-name '*" pattern "*'"))))
   (define-key global-map "\C-xg" 'grep)
+
  (global-set-key (kbd "C-c C-f") 'find-grep-dired)
  (global-set-key (kbd "C-x C-f") 'helm-find-files)
 #+END_SRC
@@ -317,8 +318,8 @@ Sphinx dox enabled for python
  ;; Define function to call when go-mode loads
  (defun my-go-mode-hook ()
    "Custom go mode hook to load my stuff."
-   (setq gofmt-command "goimports")                ; gofmt uses invokes goimports
-   (add-hook 'before-save-hook 'gofmt-before-save) ; gofmt before every save
+   (setq gofmt-command "goimports")                   ; gofmt uses invokes goimports
+   (add-hook 'before-save-hook 'gofmt-before-save)    ; gofmt before every save
       (if (not (string-match "go" compile-command))   ; set compile command default
        (set (make-local-variable 'compile-command)
 	    "go build -v && go test -v && go vet"))
