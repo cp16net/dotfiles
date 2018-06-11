@@ -145,7 +145,7 @@ The default frame title isn’t useful. This binds it to the name of the current
 ** flycheck
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'after-init-hook #'global-flycheck-mode)
+  ;; (add-hook 'after-init-hook #'global-flycheck-mode)
 #+END_SRC
 
 ** Allow convert to upcase a region
