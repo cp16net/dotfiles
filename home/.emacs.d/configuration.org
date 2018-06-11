@@ -448,10 +448,10 @@ This allow me to save history and buffers and reopen emacs like it was when i ha
 AKA complete anything mode.
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'after-init-hook 'global-company-mode)
+  ;; (add-hook 'after-init-hook 'global-company-mode)
 
   ;; add python completion for company mode
-  (add-hook 'python-mode-hook 'anaconda-mode)
+  ;; (add-hook 'python-mode-hook 'anaconda-mode)
 #+END_SRC
 
 * org mode
