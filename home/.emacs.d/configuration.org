@@ -49,6 +49,12 @@ Took the idea of orgifiying the emacs configuration from a video i watched talki
 	    dockerfile-mode helm multiple-cursors yaml-mode
 	    sphinx-doc neotree workgroups2 smooth-scrolling el-get
 	    projectile helm-projectile nyan-mode))
+
+  (if (eq system-type 'darwin)
+      ;; something for OS X if true
+      ;; optional something if not
+      (el-get 'sync '(exec-path-from-shell)))
+
 #+END_SRC
 
 ** add package archives
@@ -126,8 +132,8 @@ Took the idea of orgifiying the emacs configuration from a video i watched talki
 remove bars at top
 
 #+BEGIN_SRC emacs-lisp
-  (menu-bar-mode 0)
-  (tool-bar-mode 0)
+  ;; (menu-bar-mode 0)
+  ;; (tool-bar-mode 0)
 #+END_SRC
 
 The default frame title isn’t useful. This binds it to the name of the current project:
@@ -455,7 +461,7 @@ I like using =TODO->NEXT->IN PROGRES->DONE->CANCELLED= and my progression.
 Org docs are stored in my dropbox location to sync with other tools.
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list '(and )uto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
+  (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
   (require 'org)
   ;; Standard key bindings
   (global-set-key "\C-cl" 'org-store-link)
