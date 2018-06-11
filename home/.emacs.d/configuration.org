@@ -319,6 +319,8 @@ Setup jedi mode to do python code completion with docs.
   (setq jedi:environment-virtualenv nil)
 #+END_SRC
 
+*** Sphinx
+
 Sphinx dox enabled for python
 
 #+BEGIN_SRC emacs-lisp
