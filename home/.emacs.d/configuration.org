@@ -499,8 +499,8 @@ I like using =TODO->NEXT->IN PROGRES->DONE->CANCELLED= and my progression.
 Org docs are stored in my dropbox location to sync with other tools.
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
   (require 'org)
+  (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\)$" . org-mode))
   ;; Standard key bindings
   (global-set-key "\C-cl" 'org-store-link)
   (global-set-key "\C-ca" 'org-agenda)
