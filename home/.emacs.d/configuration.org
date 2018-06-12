@@ -48,7 +48,7 @@ Took the idea of orgifiying the emacs configuration from a video i watched talki
 	    go-mode go-eldoc go-autocomplete magit virtualenvwrapper
 	    dockerfile-mode helm multiple-cursors yaml-mode
 	    sphinx-doc neotree workgroups2 smooth-scrolling el-get
-	    projectile helm-projectile nyan-mode))
+	    projectile helm-projectile nyan-mode switch-window))
 
   (if (eq system-type 'darwin)
       ;; something for OS X if true
@@ -297,7 +297,7 @@ ref: https://www.emacswiki.org/emacs/MoveLine
 
 * Programming Customizations
 
-** Git integration with Magit
+** [[https://magit.vc/manual/][Git integration with Magit]]
 
 #+BEGIN_SRC emacs-lisp
   (require 'magit)
@@ -306,7 +306,7 @@ ref: https://www.emacswiki.org/emacs/MoveLine
   (define-key global-map (kbd "C-x m") 'magit-status)
 #+END_SRC
 
-** Python
+** [[https://github.com/fgallina/python.el][Python]]
 
 *** Virtualenv location for pymacs
 
@@ -360,7 +360,9 @@ Sphinx dox enabled for python
 				(sphinx-doc-mode t)))
 #+END_SRC
 
-** go
+** [[https://github.com/dominikh/go-mode.el][go-mode]]
+
+Some of this is taken from this article [[http://tleyden.github.io/blog/2014/05/22/configure-emacs-as-a-go-editor-from-scratch/][configure-emacs-as-a-go-editor-from-scratch]]
 
 #+BEGIN_SRC emacs-lisp
   ;; Snag the user's PATH and GOPATH
@@ -399,13 +401,15 @@ Sphinx dox enabled for python
      (require 'go-autocomplete))
 #+END_SRC
 
+I'd like to try out company-mode with go-mode and see if its any better.
+
 ** javascript
 
 #+BEGIN_SRC emacs-lisp
   (setq js-indent-level 2)
 #+END_SRC
 
-** yaml
+** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 
 #+BEGIN_SRC emacs-lisp
   (require 'yaml-mode)
@@ -416,21 +420,23 @@ Sphinx dox enabled for python
 	       (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 #+END_SRC
 
-** docker file mode
+** [[https://github.com/spotify/dockerfile-mode][dockerfile-mode]]
 
 #+BEGIN_SRC emacs-lisp
   (require 'dockerfile-mode)
   (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
 #+END_SRC
 
-** Snippets
+** [[https://github.com/joaotavora/yasnippet][yasnippet]]
 
 #+BEGIN_SRC emacs-lisp
   (require 'yasnippet)
   (yas-global-mode 1)
-  (yas-load-directory "~/.emacs.d/snippets")
+  (setq yas-load-directory "~/.emacs.d/snippets")
   (add-hook 'term-mode-hook (lambda() (setq yas-dont-activate t)))
 #+END_SRC
+
+[[https://github.com/AndreaCrotti/yasnippet-snippets][yasnippet-snippets]] view the snippets for current mode via `M-x yas-describe-tables`
 
 * multiple cursors
 
