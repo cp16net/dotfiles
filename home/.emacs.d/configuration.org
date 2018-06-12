@@ -76,6 +76,12 @@ Took the idea of orgifiying the emacs configuration from a video i watched talki
   (set-face-attribute 'default nil :height 105)
 #+END_SRC
 
+** line numbers
+
+#+BEGIN_SRC emacs-lisp
+  (global-display-line-numbers-mode t)
+#+END_SRC
+
 ** Close Emacs for real?
 
 #+BEGIN_SRC emacs-lisp
@@ -184,7 +190,9 @@ This allows me to comment out the current line i have point on instead of adding
 
 * Custom keybindings
 
-This moves the point to the start of the first character in the line or to the beginning of the line.
+** smart beginning of line
+
+This moves the point to the start of the first character in the line or to the beginning of the line. (love this)
 
 #+BEGIN_SRC emacs-lisp
   (defun smart-beginning-of-line ()
@@ -203,6 +211,8 @@ This moves the point to the start of the first character in the line or to the b
   (global-set-key (kbd "C-a") 'smart-beginning-of-line)
 #+END_SRC
 
+** grep and find files
+
 This is really helpful searching lots of file for a string. Naturally it uses grep.
 
 #+BEGIN_SRC emacs-lisp
@@ -220,46 +230,66 @@ This is really helpful searching lots of file for a string. Naturally it uses gr
   (global-set-key (kbd "C-x C-f") 'helm-find-files)
 #+END_SRC
 
-This moves a window around in the buffer. (havnt used this much at all)
+** custom window switching
+
+This switches to windows around in the buffer. (havnt used this much at all)
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c C-j") 'windmove-left)
   (global-set-key (kbd "C-c C-k") 'windmove-down)
   (global-set-key (kbd "C-c C-l") 'windmove-up)
   (global-set-key (kbd "C-c C-;") 'windmove-right)
-#+END_SRC
-
-Make an easy to use key binding for switching to other window.
-
-#+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "M-o") 'other-window)
 #+END_SRC
 
-Move a line up or down with M-<up> or M-<down
+** switch-window pkg
+
+Trying out another tool to switch windows easier. (testing)
 
 #+BEGIN_SRC emacs-lisp
-  (defun move-line (n)
-    "Move the current line up or down by N lines."
-    (interactive "p")
-    (setq col (current-column))
-    (beginning-of-line) (setq start (point))
-    (end-of-line) (forward-char) (setq end (point))
-    (let ((line-text (delete-and-extract-region start end)))
-      (forward-line n)
-      (insert line-text)
-      ;; restore point to original column in moved line
-      (forward-line -1)
-      (forward-char col)))
+  (require 'switch-window)
+  (global-set-key (kbd "C-x o") 'switch-window)
+  (global-set-key (kbd "C-c 1") 'switch-window-then-maximize)
+  (global-set-key (kbd "C-c 2") 'switch-window-then-split-below)
+  (global-set-key (kbd "C-c 3") 'switch-window-then-split-right)
+  (global-set-key (kbd "C-c 0") 'switch-window-then-delete)
 
-  (defun move-line-up (n)
-    "Move the current line up by N lines."
-    (interactive "p")
-    (move-line (if (null n) -1 (- n))))
+  (global-set-key (kbd "C-x 4 d") 'switch-window-then-dired)
+  (global-set-key (kbd "C-x 4 f") 'switch-window-then-find-file)
+  (global-set-key (kbd "C-x 4 r") 'switch-window-then-find-file-read-only)
 
-  (defun move-line-down (n)
-    "Move the current line down by N lines."
-    (interactive "p")
-    (move-line (if (null n) 1 n)))
+  (global-set-key (kbd "C-x 4 C-f") 'switch-window-then-find-file)
+  (global-set-key (kbd "C-x 4 C-o") 'switch-window-then-display-buffer)
+
+  (global-set-key (kbd "C-x 4 0") 'switch-window-then-kill-buffer)
+#+END_SRC
+
+** move lines up/down
+
+Move a line up or down with M-<up> or M-<down>
+
+ref: https://www.emacswiki.org/emacs/MoveLine
+
+#+BEGIN_SRC emacs-lisp
+  (defmacro save-column (&rest body)
+    `(let ((column (current-column)))
+       (unwind-protect
+	   (progn ,@body)
+	 (move-to-column column))))
+  (put 'save-column 'lisp-indent-function 0)
+
+  (defun move-line-up ()
+    (interactive)
+    (save-column
+      (transpose-lines 1)
+      (forward-line -2)))
+
+  (defun move-line-down ()
+    (interactive)
+    (save-column
+      (forward-line 1)
+      (transpose-lines 1)
+      (forward-line -1)))
 
   (global-set-key (kbd "M-<up>") 'move-line-up)
   (global-set-key (kbd "M-<down>") 'move-line-down)
