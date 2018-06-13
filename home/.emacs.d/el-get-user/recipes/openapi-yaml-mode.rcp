@@ -1,0 +1,4 @@
+(:name openapi-yaml-mode
+       :description "Openapi yaml mode for emacs"
+       :type github
+       :pkgname "magoyette/openapi-yaml-mode")

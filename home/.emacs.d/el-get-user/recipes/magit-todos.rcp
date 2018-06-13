@@ -1,0 +1,4 @@
+(:name magit-todos
+       :description "Magit todos in status buffer"
+       :type github
+       :pkgname "alphapapa/magit-todos")

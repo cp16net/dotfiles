@@ -1,0 +1,4 @@
+(:name gitlab
+       :description "gitlab REST client"
+       :type github
+       :pkgname "nlamirault/emacs-gitlab")
