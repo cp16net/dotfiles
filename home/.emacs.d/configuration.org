@@ -203,6 +203,8 @@ This allows me to comment out the current line i have point on instead of adding
 ** emojify
 
 #+BEGIN_SRC emacs-lisp
+  (require 'emojify)
+  (add-to-list 'emojify-inhibit-major-modes 'go-mode)
   (add-hook 'after-init-hook #'global-emojify-mode)
 #+END_SRC
 
@@ -410,6 +412,7 @@ Some of this is taken from these articles
     (local-set-key (kbd "M-P") 'recompile)          ; Redo most recent compile cmd
     (local-set-key (kbd "M-]") 'next-error)         ; Go to next error (or msg)
     (local-set-key (kbd "M-[") 'previous-error)     ; Go to previous error or msg
+    (local-set-key (kbd "M-\\") 'go-rename)     ; Go to previous error or msg
 
     ;; Misc go stuff
     (auto-complete-mode 1)                          ; Enable auto-complete mode
