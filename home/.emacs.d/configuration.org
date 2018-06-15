@@ -392,6 +392,7 @@ Some of this is taken from these articles
        (if (not (string-match "go" compile-command))   ; set compile command default
 	(set (make-local-variable 'compile-command)
 	     "go build -v && go test -v -race && go vet"))
+    (setq compilation-scroll-output 'first-error)      ; auto scroll to the first error on compile
 
     ;; guru settings
     (go-guru-hl-identifier-mode)                    ; highlight identifiers
