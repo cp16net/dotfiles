@@ -49,7 +49,8 @@ Took the idea of orgifiying the emacs configuration from a video i watched talki
 	    dockerfile-mode helm multiple-cursors yaml-mode
 	    sphinx-doc neotree workgroups2 smooth-scrolling el-get
 	    projectile helm-projectile nyan-mode switch-window
-	    company-mode go-company undo-tree))
+	    undo-tree flycheck-gometalinter))
+  ;; company-mode go-company
 
   (if (eq system-type 'darwin)
       ;; something for OS X if true
@@ -152,7 +153,7 @@ The default frame title isn’t useful. This binds it to the name of the current
 ** flycheck
 
 #+BEGIN_SRC emacs-lisp
-  ;; (add-hook 'after-init-hook #'global-flycheck-mode)
+  (add-hook 'after-init-hook #'global-flycheck-mode)
 #+END_SRC
 
 ** Allow convert to upcase a region
@@ -390,7 +391,7 @@ Some of this is taken from these articles
     (add-hook 'before-save-hook 'gofmt-before-save)    ; gofmt before every save
        (if (not (string-match "go" compile-command))   ; set compile command default
 	(set (make-local-variable 'compile-command)
-	     "go build -v && go test -v && go vet"))
+	     "go build -v && go test -v -race && go vet"))
 
     ;; guru settings
     (go-guru-hl-identifier-mode)                    ; highlight identifiers
@@ -404,14 +405,46 @@ Some of this is taken from these articles
     (local-set-key (kbd "M-[") 'previous-error)     ; Go to previous error or msg
 
     ;; Misc go stuff
-    (auto-complete-mode 1))                         ; Enable auto-complete mode
+    (auto-complete-mode 1)                          ; Enable auto-complete mode
+  )
+
+  (add-hook 'go-mode-hook 'my-go-mode-hook)
 
   ;; Connect go-mode-hook with the function we just defined
-  (add-hook 'go-mode-hook 'my-go-mode-hook)
+  ;; trying out company mode here
+  ;; (add-hook 'go-mode-hook 'company-mode)
+  ;; (add-hook 'go-mode-hook (lambda ()
+  ;;   (set (make-local-variable 'company-backends) '(company-go))
+  ;;   (company-mode)))
 
   ;; Ensure the go specific autocomplete is active in go-mode.
   (with-eval-after-load 'go-mode
-     (require 'go-autocomplete))
+    (require 'go-autocomplete))
+
+  ;; flycheck gometalinter setup
+  (require 'flycheck-gometalinter)
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-gometalinter-setup))
+
+  ;; set the concurrency
+  (setq flycheck-gometalinter-concurrency 2)
+  ;; skips 'vendor' directories and sets GO15VENDOREXPERIMENT=1
+  (setq flycheck-gometalinter-vendor t)
+  ;; only show errors
+  ;;(setq flycheck-gometalinter-errors-only t)
+  ;; only run fast linters
+  (setq flycheck-gometalinter-fast t)
+  ;; use in tests files
+  (setq flycheck-gometalinter-test t)
+  ;; disable linters
+  ;;(setq flycheck-gometalinter-disable-linters '("gotype" "gocyclo"))
+  ;; Only enable selected linters
+  ;;(setq flycheck-gometalinter-disable-all t)
+  ;;(setq flycheck-gometalinter-enable-linters '("golint"))
+  ;; Set different deadline (default: 5s)
+  (setq flycheck-gometalinter-deadline "10s")
+  ;; Use a gometalinter configuration file (default: nil)
+  ;;(setq flycheck-gometalinter-config "/path/to/gometalinter-config.json")
 #+END_SRC
 
 I'd like to try out company-mode with go-mode and see if its any better.
@@ -540,6 +573,16 @@ Make TAB act as if it were issued in a buffer of the language’s major mode.
 
 #+BEGIN_SRC emacs-lisp
   (setq org-src-tab-acts-natively t)
+#+END_SRC
+
+Add icons to org-agenda categories.
+Not working because the hook is bad also tried just using the normal add-to-list and it says the variable list is no defined on startup so it fails.
+leaving this in the init.el for now....
+
+#+BEGIN_SRC emacs-lisp
+  ;; (add-hook org-add-hook '(lambda ()
+  ;; 			  (add-to-list 'org-agenda-category-icon-alist '("Football" "~/.emacs.d/icons/Soccer_ball.png" nil nil :ascent center))
+  ;; 			  ))
 #+END_SRC
 
 * emacs neotree
