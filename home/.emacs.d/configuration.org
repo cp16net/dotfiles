@@ -48,7 +48,8 @@ Took the idea of orgifiying the emacs configuration from a video i watched talki
 	    go-mode go-eldoc go-autocomplete magit virtualenvwrapper
 	    dockerfile-mode helm multiple-cursors yaml-mode
 	    sphinx-doc neotree workgroups2 smooth-scrolling el-get
-	    projectile helm-projectile nyan-mode switch-window))
+	    projectile helm-projectile nyan-mode switch-window
+	    company-mode go-company undo-tree))
 
   (if (eq system-type 'darwin)
       ;; something for OS X if true
@@ -186,6 +187,16 @@ This allows me to comment out the current line i have point on instead of adding
 #+BEGIN_SRC emacs-lisp
   (setq vc-follow-symlinks t)
   (setq find-file-visit-truename t)
+#+END_SRC
+
+** winner mode
+#+BEGIN_SRC emacs-lisp
+  (winner-mode 1)
+#+END_SRC
+
+** undo tree
+#+BEGIN_SRC emacs-lisp
+  (global-undo-tree-mode)
 #+END_SRC
 
 * Custom keybindings
@@ -362,7 +373,9 @@ Sphinx dox enabled for python
 
 ** [[https://github.com/dominikh/go-mode.el][go-mode]]
 
-Some of this is taken from this article [[http://tleyden.github.io/blog/2014/05/22/configure-emacs-as-a-go-editor-from-scratch/][configure-emacs-as-a-go-editor-from-scratch]]
+Some of this is taken from these articles
+- [[http://tleyden.github.io/blog/2014/05/22/configure-emacs-as-a-go-editor-from-scratch/][configure-emacs-as-a-go-editor-from-scratch]]
+- http://yousefourabi.com/blog/2014/05/emacs-for-go/
 
 #+BEGIN_SRC emacs-lisp
   ;; Snag the user's PATH and GOPATH
