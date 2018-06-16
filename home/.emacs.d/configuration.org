@@ -582,12 +582,39 @@ Org docs are stored in my dropbox location to sync with other tools.
   (define-key global-map "\C-cc" 'org-capture)
   (define-key global-map "\C-cx"
     (lambda () (interactive) (org-capture nil "t")))
-#+END_SRC
 
-Make TAB act as if it were issued in a buffer of the language’s major mode.
-
-#+BEGIN_SRC emacs-lisp
+  ;; Make TAB act as if it were issued in a buffer of the language’s major mode.
   (setq org-src-tab-acts-natively t)
+
+  ;; setting up org-protocol mode so that i can capture from browser or other places
+  (server-start)
+  (require 'org-protocol)
+
+  ;; setup org-protocol to capture links and text from browser
+  (defun transform-square-brackets-to-round-ones(string-to-transform)
+    "Transforms [ into ( and ] into ), other chars left unchanged."
+    (concat
+    (mapcar #'(lambda (c) (if (equal c ?[) ?\( (if (equal c ?]) ?\) c))) string-to-transform))
+  )
+
+  (setq org-capture-templates `(
+	("p"
+	 "Protocol"
+	 entry
+	 (file+headline "~/Dropbox/orgfiles/notes.org" "Tasks")
+	 "* %^{Title of Capture}\nSource: %u, %c\nCaptured On: %U\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?" :empty-lines 1)
+	("L"
+	 "Protocol Link"
+	 entry
+	 (file+headline "~/Dropbox/orgfiles/notes.org" "Tasks")
+	 "* %? [[%:link][%(transform-square-brackets-to-round-ones \"%:description\")]]\nCaptured On: %U" :empty-lines 1)
+	("t"
+	 "TODO"
+	 entry
+	 (file+headline "~/Dropbox/orgfiles/notes.org" "Tasks")
+	 "* TODO %?\n%U" :empty-lines 1)
+	;; ... more templates here ...
+  ))
 #+END_SRC
 
 Add icons to org-agenda categories.
