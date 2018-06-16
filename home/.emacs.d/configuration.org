@@ -486,10 +486,13 @@ I'd like to try out company-mode with go-mode and see if its any better.
 ** [[https://github.com/joaotavora/yasnippet][yasnippet]]
 
 #+BEGIN_SRC emacs-lisp
-  (require 'yasnippet)
+(require 'yasnippet)
   (yas-global-mode 1)
   (setq yas-load-directory "~/.emacs.d/snippets")
   (add-hook 'term-mode-hook (lambda() (setq yas-dont-activate t)))
+  (define-key yas-minor-mode-map (kbd "<tab>") nil)
+  (define-key yas-minor-mode-map (kbd "TAB") nil)
+  (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand)
 #+END_SRC
 
 [[https://github.com/AndreaCrotti/yasnippet-snippets][yasnippet-snippets]] view the snippets for current mode via `M-x yas-describe-tables`
