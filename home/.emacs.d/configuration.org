@@ -348,7 +348,7 @@ ref: https://www.emacswiki.org/emacs/MoveLine
   ;; note that setting `venv-location` is not necessary if you
   ;; use the default location (`~/.virtualenvs`), or if the
   ;; the environment variable `WORKON_HOME` points to the right place
-  (setq venv-location "/home/cp16net/.virtualenvs/")
+  (setq venv-location "~/.virtualenvs/")
 #+END_SRC
 
 *** jedi mode
@@ -365,7 +365,7 @@ Setup jedi mode to do python code completion with docs.
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:setup-keys t)                      ; optional
   (setq jedi:complete-on-dot t)                 ; optional
-  (setq jedi:environment-root "/home/cp16net/.virtualenvs/")
+  (setq jedi:environment-root "~/.virtualenvs/")
   (setq jedi:environment-virtualenv nil)
 #+END_SRC
 
@@ -543,6 +543,8 @@ This allow me to save history and buffers and reopen emacs like it was when i ha
 * company mode
 
 AKA complete anything mode.
+
+This mode didnt seem to do much better than autocomplete.
 
 #+BEGIN_SRC emacs-lisp
   ;; (add-hook 'after-init-hook 'global-company-mode)
