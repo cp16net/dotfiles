@@ -594,6 +594,12 @@ Org docs are stored in my dropbox location to sync with other tools.
   ;; Make TAB act as if it were issued in a buffer of the language’s major mode.
   (setq org-src-tab-acts-natively t)
 
+  ;; refiling tasks settings
+  ;;(setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
+  (setq org-refile-allow-creating-parent-nodes 'confirm)
+  ;;(setq org-refile-use-outline-path 'file)
+  ;;(setq org-outline-path-complete-in-steps nil)
+
   ;; setting up org-protocol mode so that i can capture from browser or other places
   (server-start)
   (require 'org-protocol)
