@@ -648,6 +648,8 @@ installed markdown tools
   - markdown-mode
   - markdown-toc (generate toc)
   - markdown-preview-mode
+    installed [[https://github.com/markedjs/marked][marked]] `npm install -g marked`
+    set the `markdown-command` to marked in init.el
 
 customizations for markdown here
 
