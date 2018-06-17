@@ -76,8 +76,8 @@ Took the idea of orgifiying the emacs configuration from a video i watched talki
 
 #+BEGIN_SRC emacs-lisp
   (set-face-attribute 'default nil :height 105)
-  (global-set-key (kbd "C-M--") 'text-scale-decrease))
-  (global-set-key (kbd "C-M-+") 'text-scale-increase))
+  (global-set-key (kbd "C-M--") 'text-scale-decrease)
+  (global-set-key (kbd "C-M-+") 'text-scale-increase)
   ;; (defaults)
   ;; C-x C-0 reset font size
   ;; C-x C-- decrease font size
