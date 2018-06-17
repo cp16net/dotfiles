@@ -49,7 +49,8 @@ Took the idea of orgifiying the emacs configuration from a video i watched talki
 	    dockerfile-mode helm multiple-cursors yaml-mode
 	    sphinx-doc neotree workgroups2 smooth-scrolling el-get
 	    projectile helm-projectile nyan-mode switch-window
-	    undo-tree flycheck-gometalinter emojify))
+	    undo-tree flycheck-gometalinter emojify
+            markdown-mode markdown-toc markdown-preview-mode))
   ;; company-mode go-company
 
   (if (eq system-type 'darwin)
@@ -632,6 +633,20 @@ leaving this in the init.el for now....
   ;; (add-hook org-add-hook '(lambda ()
   ;; 			  (add-to-list 'org-agenda-category-icon-alist '("Football" "~/.emacs.d/icons/Soccer_ball.png" nil nil :ascent center))
   ;; 			  ))
+#+END_SRC
+
+* markdown mode
+
+installed markdown tools
+
+  - markdown-mode
+  - markdown-toc (generate toc)
+  - markdown-preview-mode
+
+customizations for markdown here
+
+#+BEGIN_SRC emacs-lisp
+
 #+END_SRC
 
 * emacs neotree
