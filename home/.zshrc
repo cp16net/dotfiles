@@ -128,6 +128,11 @@ export DISABLE_AUTO_TITLE=true
 # add rust cmds to path
 export PATH=$PATH:$HOME/.cargo/bin
 
+### npm local global setup
+export PATH=~/.npm-global/bin:${PATH}
+export NPM_CONFIG_PREFIX=~/.npm-global
+
+
 #
 # (cp16net) customized the theme slightly modified from xiong-chiamiov-plus.zsh-theme
 # user, host, full path, and time/date
