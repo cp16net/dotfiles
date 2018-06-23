@@ -1,6 +1,6 @@
 #+TITLE: Emacs Configuration
 
-Took the idea of orgifiying the emacs configuration from a video i watched talking about [[https://github.com/hrs/dotfiles/blob/master/emacs.d/configuration.org][this emacs configuration]].
+Took the idea of orgifiying the emacs configuration from a video i watched talking about [[https://github.com/hrs/dotfiles/blob/17fe3a4c791d7361994d1df94331a2f0503f15ad/emacs/.emacs.d/configuration.org][this emacs configuration]].
 
 * Set personal information
 
@@ -330,7 +330,13 @@ ref: https://www.emacswiki.org/emacs/MoveLine
 #+END_SRC
 
 * Programming Customizations
+** highlight brackets ()[]{}
 
+turn on highlight matching brackets when cursor is on one http://ergoemacs.org/emacs/emacs_highlight_parenthesis.html
+
+#+BEGIN_SRC emacs-lisp
+  (show-paran-mode 1)
+#+END_SRC
 ** [[https://magit.vc/manual/][Git integration with Magit]]
 
 #+BEGIN_SRC emacs-lisp
