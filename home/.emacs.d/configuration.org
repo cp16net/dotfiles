@@ -50,8 +50,12 @@ Took the idea of orgifiying the emacs configuration from a video i watched talki
 	    sphinx-doc neotree workgroups2 smooth-scrolling el-get
 	    projectile helm-projectile nyan-mode switch-window
 	    undo-tree flycheck-gometalinter emojify git-gutter
-            markdown-mode markdown-toc markdown-preview-mode))
+	    elfeed
+	    markdown-mode markdown-toc markdown-preview-mode))
   ;; company-mode go-company
+
+  ;; elfeed requires elfeed-org and elfeed-goodies to work but its not in el-get right now
+  ;; TODO create el-get recipe for these locally
 
   (if (eq system-type 'darwin)
       ;; something for OS X if true
@@ -222,6 +226,15 @@ This allows me to comment out the current line i have point on instead of adding
   (global-git-gutter-mode +1)
 #+END_SRC
 
+** save history
+#+BEGIN_SRC emacs-lisp
+(setq savehist-additional-variables
+      ;; also save my search entries
+      '(search-ring regexp-search-ring kill-ring)
+      savehist-file "~/.emacs.d/savehist")
+;;(savehist-save-minibuffer-history)
+(savehist-mode t)
+#+END_SRC
 * Custom keybindings
 
 ** smart beginning of line
@@ -264,6 +277,37 @@ This is really helpful searching lots of file for a string. Naturally it uses gr
   (global-set-key (kbd "C-x C-f") 'helm-find-files)
 #+END_SRC
 
+** move lines up/down
+
+Move a line up or down with M-<up> or M-<down>
+
+ref: https://www.emacswiki.org/emacs/MoveLine
+
+#+BEGIN_SRC emacs-lisp
+  (defmacro save-column (&rest body)
+    `(let ((column (current-column)))
+       (unwind-protect
+	   (progn ,@body)
+	 (move-to-column column))))
+  (put 'save-column 'lisp-indent-function 0)
+
+  (defun move-line-up ()
+    (interactive)
+    (save-column
+      (transpose-lines 1)
+      (forward-line -2)))
+
+  (defun move-line-down ()
+    (interactive)
+    (save-column
+      (forward-line 1)
+      (transpose-lines 1)
+      (forward-line -1)))
+
+  (global-set-key (kbd "M-<up>") 'move-line-up)
+  (global-set-key (kbd "M-<down>") 'move-line-down)
+#+END_SRC
+
 ** custom window switching
 
 This switches to windows around in the buffer. (havnt used this much at all)
@@ -298,44 +342,13 @@ Trying out another tool to switch windows easier. (testing)
   (global-set-key (kbd "C-x 4 0") 'switch-window-then-kill-buffer)
 #+END_SRC
 
-** move lines up/down
-
-Move a line up or down with M-<up> or M-<down>
-
-ref: https://www.emacswiki.org/emacs/MoveLine
-
-#+BEGIN_SRC emacs-lisp
-  (defmacro save-column (&rest body)
-    `(let ((column (current-column)))
-       (unwind-protect
-	   (progn ,@body)
-	 (move-to-column column))))
-  (put 'save-column 'lisp-indent-function 0)
-
-  (defun move-line-up ()
-    (interactive)
-    (save-column
-      (transpose-lines 1)
-      (forward-line -2)))
-
-  (defun move-line-down ()
-    (interactive)
-    (save-column
-      (forward-line 1)
-      (transpose-lines 1)
-      (forward-line -1)))
-
-  (global-set-key (kbd "M-<up>") 'move-line-up)
-  (global-set-key (kbd "M-<down>") 'move-line-down)
-#+END_SRC
-
 * Programming Customizations
 ** highlight brackets ()[]{}
 
 turn on highlight matching brackets when cursor is on one http://ergoemacs.org/emacs/emacs_highlight_parenthesis.html
 
 #+BEGIN_SRC emacs-lisp
-  (show-paran-mode 1)
+  ;;(show-param-mode 1)
 #+END_SRC
 ** [[https://magit.vc/manual/][Git integration with Magit]]
 
@@ -623,6 +636,7 @@ Org docs are stored in my dropbox location to sync with other tools.
     (mapcar #'(lambda (c) (if (equal c ?[) ?\( (if (equal c ?]) ?\) c))) string-to-transform))
   )
 
+  (setq org-directory "~/Dropbox/orgfiles/")
   (setq org-capture-templates `(
 	("p"
 	 "Protocol"
@@ -666,9 +680,21 @@ installed markdown tools
 customizations for markdown here
 
 #+BEGIN_SRC emacs-lisp
+  (setq markdown-command "marked")
   (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
   (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
   (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+#+END_SRC
+
+* elfeed
+
+#+BEGIN_SRC emacs-lisp
+  (require 'elfeed)
+  (require 'elfeed-goodies)
+  (elfeed-org)
+  (elfeed-goodies/setup)
+  (setq rmh-elfeed-org-files (list "~/Dropbox/orgfiles/elfeed.org"))
+  (global-set-key (kbd "C-x w") 'elfeed)
 #+END_SRC
 
 * emacs neotree
@@ -705,4 +731,5 @@ Workgroups allows me to setup different windows for different tasks i'm doing. T
   (require 'workgroups2)
   ;; Change some settings
   (workgroups-mode 1)        ; put this one at the bottom of .emacs
+  (setq wg-session-file "~/.emacs.d/.emacs_workgroups")
 #+END_SRC
