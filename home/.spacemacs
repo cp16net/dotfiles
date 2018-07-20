@@ -104,6 +104,7 @@ This function should only modify configuration layer settings."
      syntax-checking
      (version-control :variables
                       version-control-diff-tool 'diff-hl
+                      version-control-diff-side 'left
                       version-control-global-margin t)
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
