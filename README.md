@@ -4,4 +4,14 @@
     git clone git://github.com/andsens/homeshick.git $HOME/.homesick/repos/homeshick
     source "$HOME/.homesick/repos/homeshick/homeshick.sh"
     source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
-    homeshick link dotfiles
+    homeshick link dot files
+
+# notes
+
+I've been using [spacemacs](https://github.com/syl20bnr/spacemacs/) for a few months and its been pretty nice. Its pretty easy to setup.
+
+## Quick Install:
+
+```bash
+git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+```
