@@ -18,6 +18,11 @@ require("awful.hotkeys_popup.keys")
 local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
 
+-- my libraries
+local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+local weather_widget = require("awesome-wm-widgets.weather-widget.weather")
+local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -49,7 +54,7 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "x-terminal-emulator"
-editor = os.getenv("EDITOR") or "editor"
+editor = os.getenv("EDITOR") or "emacs"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -222,6 +227,9 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "top", screen = s })
 
+    sprtr = wibox.widget.textbox()
+    sprtr:set_text(" : ")
+
     -- Add widgets to the wibox
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
@@ -234,8 +242,14 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
             wibox.widget.systray(),
+            sprtr,
+            weather_widget,
+            sprtr,
+            volume_widget,
+            sprtr,
+            batteryarc_widget,
+            sprtr,
             mytextclock,
             s.mylayoutbox,
         },
@@ -347,9 +361,16 @@ globalkeys = gears.table.join(
                   }
               end,
               {description = "lua execute prompt", group = "awesome"}),
+    awful.key({ "Control", "Shift" }, "l", function() awful.util.spawn("i3lock -c 000000") end,
+              {description = "lock desktop", group = "launcher"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+              {description = "show the menubar", group = "launcher"}),
+
+    -- Custom shortkeys
+    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -D pulse sset Master 5%+") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -D pulse sset Master 5%-") end),
+    awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer -D pulse sset Master toggle") end)
 )
 
 clientkeys = gears.table.join(
@@ -555,7 +576,7 @@ client.connect_signal("request::titlebars", function(c)
         },
         { -- Right
             awful.titlebar.widget.floatingbutton (c),
-            awful.titlebar.widget.maximizedbutton(c),
+            -- awful.titlebar.widget.maximizedbutton(c),
             awful.titlebar.widget.stickybutton   (c),
             awful.titlebar.widget.ontopbutton    (c),
             awful.titlebar.widget.closebutton    (c),
@@ -582,14 +603,22 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- {{{ run once
 -- startup synergys automatically
-awful.util.spawn_with_shell("run_once synergys")
+awful.util.spawn_with_shell("synergys")
 
 -- startup the keyring so i dont have to type passphrases all the time
-awful.util.spawn_with_shell("run_once gnome-keyring-daemon --start")
+awful.util.spawn_with_shell("gnome-keyring-daemon --start")
 
 -- screen settings with arandr
-awful.util.spawn_with_shell("run_once xrandr --output eDP-1-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP-5 --off --output DP-4 --off --output DP-3 --mode 3840x2160 --pos 1920x0 --rotate normal --output DP-2 --off --output DP-1 --off --output DP-0 --off")
+awful.util.spawn_with_shell("xrandr --output eDP-1-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output DP-5 --off --output DP-4 --off --output DP-3 --mode 3840x2160 --pos 1920x0 --rotate normal --output DP-2 --off --output DP-1 --off --output DP-0 --off")
+
+-- compton for better blends
+awful.util.spawn_with_shell("compton")
+
 -- }}}
 
 -- {{{ run each time
 -- }}}
+
+-- {{{ my widgets
+-- }}}
+
