@@ -25,7 +25,6 @@ local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
 local spotify_widget = require("awesome-wm-widgets.spotify-widget.spotify")
 local spotify_shell = require("awesome-wm-widgets.spotify-shell.spotify-shell")
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
-local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
 local calendar = require("calendar.calendar")
 
 -- {{{ Error handling
@@ -257,8 +256,6 @@ awful.screen.connect_for_each_screen(function(s)
             spotify_widget,
             sprtr,
             cpu_widget,
-            sprtr,
-            ramgraph_widget,
             sprtr,
             weather_widget,
             sprtr,
