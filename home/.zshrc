@@ -58,7 +58,7 @@ DEFAULT_USER="craig"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git
-         vagrant
+#         vagrant
          python
          pip
          history

@@ -22,6 +22,11 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
 local weather_widget = require("awesome-wm-widgets.weather-widget.weather")
 local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
+local spotify_widget = require("awesome-wm-widgets.spotify-widget.spotify")
+local spotify_shell = require("awesome-wm-widgets.spotify-shell.spotify-shell")
+local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
+local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
+local calendar = require("calendar.calendar")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -142,6 +147,11 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
+calendar_widget = calendar({
+  fdow = 7,                  -- Set Sunday as first day of the week (default is
+                             -- 1 = Monday)
+})
+calendar_widget:attach(mytextclock)
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -243,6 +253,12 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
+            sprtr,
+            spotify_widget,
+            sprtr,
+            cpu_widget,
+            sprtr,
+            ramgraph_widget,
             sprtr,
             weather_widget,
             sprtr,
@@ -370,7 +386,8 @@ globalkeys = gears.table.join(
     -- Custom shortkeys
     awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -D pulse sset Master 5%+") end),
     awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -D pulse sset Master 5%-") end),
-    awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer -D pulse sset Master toggle") end)
+    awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer -D pulse sset Master toggle") end),
+    awful.key({ modkey,        }, "d", function () spotify_shell.launch() end, {description = "spotify shell", group = "music"})
 )
 
 clientkeys = gears.table.join(
