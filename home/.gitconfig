@@ -6,6 +6,7 @@
 	editor = emacs -q -nw
 	whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
 	excludesfile = ~/.gitignore
+	pager = diff-so-fancy | less --tabs=4 -RFX
 [alias]
 	st = status
 	br = branch -vv
