@@ -210,3 +210,5 @@ source "$HOME/.git-completion.sh"
 
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

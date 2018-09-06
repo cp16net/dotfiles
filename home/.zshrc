@@ -194,3 +194,5 @@ if [ -f '/home/craig/google-cloud-sdk/path.zsh.inc' ]; then source '/home/craig/
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/craig/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/craig/google-cloud-sdk/completion.zsh.inc'; fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
