@@ -73,11 +73,13 @@ def app_or_group(group, app):
     When used in conjunction with dgroups to auto-assign apps to specific
     groups, this can be used as a way to go to an app if it is already
     running. """
+
     def f(qtile):
         try:
             qtile.groupMap[group].cmd_toscreen()
         except KeyError:
             qtile.cmd_spawn(app)
+
     return f
 
 
@@ -91,7 +93,6 @@ keys = [
     Key([mod], "j", lazy.layout.up()),
     Key([mod], "l", lazy.layout.right()),
     Key([mod], "h", lazy.layout.left()),
-
     Key([mod], "Left", go_to_prev_group()),
     Key([mod], "Right", go_to_next_group()),
 
@@ -117,7 +118,6 @@ keys = [
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout()),
     Key([mod], "w", lazy.window.kill()),
-
     Key([mod, "control"], "r", lazy.restart()),
     Key([mod, "control"], "q", lazy.shutdown()),
     Key([mod], "Scroll_Lock", lazy.spawn("i3lock -c 000000")),
@@ -126,8 +126,7 @@ keys = [
     Key([mod], "r", lazy.spawn("rofi -show run")),
 
     # Pulse Audio controls
-    Key([], "XF86AudioMute",
-        lazy.spawn("amixer -D pulse sset Master toggle")),
+    Key([], "XF86AudioMute", lazy.spawn("amixer -D pulse sset Master toggle")),
     Key([], "XF86AudioLowerVolume",
         lazy.spawn("amixer -D pulse sset Master 5%-")),
     Key([], "XF86AudioRaiseVolume",
@@ -137,8 +136,9 @@ keys = [
     # Key([mod], "i", lazy.function(app_or_group("edit", "emacs"))),
     Key([mod], "n", lazy.function(app_or_group("www", "firefox"))),
     Key([mod], "c", lazy.function(app_or_group("chat", "slack"))),
-    # Key([mod], "t", lazy.function(app_or_group("music", "clementine"))),
-
+    # Key([mod], "m", lazy.function(app_or_group("music", "clementine"))),
+    Key([mod], "m",
+        lazy.function(app_or_group("gitter", "flatpak run im.gitter.Gitter"))),
 ]
 
 groups = [Group(i) for i in "asdf"]
@@ -152,18 +152,35 @@ for i in groups:
         Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
     ])
 
-
 # groups with special jobs. I usually navigate to these via my app_or_group
 # function.
 groups.extend([
     # Group('edit', spawn='emacs', layout='monadTall', persist=False,
     #       matches=[Match(wm_class=['Emacs'])]),
-    Group('www', spawn='firefox', layout='max', persist=False,
-          matches=[Match(wm_class=['Firefox', 'TorBrowser', 'google-chrome', 'Google-chrome'])]),
-    Group('chat', spawn='slack', layout='max', persist=False,
-          matches=[Match(wm_class=['Slack'])]),
+    Group(
+        'www',
+        spawn='firefox',
+        layout='max',
+        persist=False,
+        matches=[
+            Match(wm_class=[
+                'Firefox', 'TorBrowser', 'google-chrome', 'Google-chrome'
+            ])
+        ]),
+    Group(
+        'chat',
+        spawn='slack',
+        layout='max',
+        persist=False,
+        matches=[Match(wm_class=['Slack'])]),
     # Group('music', layout='max', persist=False, init=False,
     #       matches=[Match(wm_class=['Clementine', 'Viridian'])]),
+    Group(
+        'gitter',
+        spawn='flatpak run im.gitter.Gitter',
+        layout='max',
+        persist=False,
+        matches=[Match(wm_class=['Gitter'])]),
 ])
 
 
@@ -173,13 +190,13 @@ class Theme(object):
     bar = {
         'size': 24,
         'background': '15181a',
-        }
+    }
     widget = {
         'font': 'Andika',
         'fontsize': 11,
         'background': bar['background'],
         'foreground': '00ff00',
-        }
+    }
     graph = {
         'background': '000000',
         'border_width': 0,
@@ -188,22 +205,22 @@ class Theme(object):
         'margin_x': 0,
         'margin_y': 0,
         'width': 50,
-        }
+    }
     groupbox = widget.copy()
     groupbox.update({
         'padding': 2,
         'borderwidth': 3,
-        })
+    })
     sep = {
         'background': bar['background'],
         'foreground': '444444',
         'height_percent': 75,
-        }
+    }
     systray = widget.copy()
     systray.update({
         'icon_size': 16,
         'padding': 3,
-        })
+    })
     battery = widget.copy()
     battery_text = battery.copy()
     battery_text.update({
@@ -211,7 +228,7 @@ class Theme(object):
         'charge_char': "↑ ",
         'discharge_char': "↓ ",
         'format': '{char}{hour:d}:{min:02d}',
-        })
+    })
 
 
 layout_style = {
@@ -254,13 +271,12 @@ screens = [
                 # widget.CPUGraph(),
                 # widget.MemoryGraph(),
                 widget.Battery(**Theme.battery_text),
-                widget.CheckUpdates(distro="Debian", update_interval=3600),
+                # widget.CheckUpdates(distro="Debian", update_interval=3600),
                 widget.Clock(format='%Y-%m-%d %a %H:%M %p'),
                 widget.CurrentLayout(**Theme.widget),
             ],
             40,
-        ),
-    ),
+        ), ),
     Screen(
         bottom=bar.Bar(
             [
@@ -269,16 +285,21 @@ screens = [
                 widget.CurrentLayout(**Theme.widget),
             ],
             24,
-        ),
-    ),
+        ), ),
 ]
 
 # Drag floating layouts.
 mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(),
-         start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(),
-         start=lazy.window.get_size()),
+    Drag(
+        [mod],
+        "Button1",
+        lazy.window.set_position_floating(),
+        start=lazy.window.get_position()),
+    Drag(
+        [mod],
+        "Button3",
+        lazy.window.set_size_floating(),
+        start=lazy.window.get_size()),
     Click([mod], "Button2", lazy.window.bring_to_front())
 ]
 
@@ -289,20 +310,48 @@ follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(float_rules=[
-    {'wmclass': 'confirm'},
-    {'wmclass': 'dialog'},
-    {'wmclass': 'download'},
-    {'wmclass': 'error'},
-    {'wmclass': 'file_progress'},
-    {'wmclass': 'notification'},
-    {'wmclass': 'splash'},
-    {'wmclass': 'toolbar'},
-    {'wmclass': 'confirmreset'},  # gitk
-    {'wmclass': 'makebranch'},  # gitk
-    {'wmclass': 'maketag'},  # gitk
-    {'wname': 'branchdialog'},  # gitk
-    {'wname': 'pinentry'},  # GPG key password entry
-    {'wmclass': 'ssh-askpass'},  # ssh-askpass
+    {
+        'wmclass': 'confirm'
+    },
+    {
+        'wmclass': 'dialog'
+    },
+    {
+        'wmclass': 'download'
+    },
+    {
+        'wmclass': 'error'
+    },
+    {
+        'wmclass': 'file_progress'
+    },
+    {
+        'wmclass': 'notification'
+    },
+    {
+        'wmclass': 'splash'
+    },
+    {
+        'wmclass': 'toolbar'
+    },
+    {
+        'wmclass': 'confirmreset'
+    },  # gitk
+    {
+        'wmclass': 'makebranch'
+    },  # gitk
+    {
+        'wmclass': 'maketag'
+    },  # gitk
+    {
+        'wname': 'branchdialog'
+    },  # gitk
+    {
+        'wname': 'pinentry'
+    },  # GPG key password entry
+    {
+        'wmclass': 'ssh-askpass'
+    },  # ssh-askpass
 ])
 auto_fullscreen = True
 focus_on_window_activation = "smart"
@@ -326,6 +375,5 @@ def autostart():
         subprocess.call([home + '/.config/qtile/autostart.sh'])
     except Exception as e:
         with open('qtile_log', 'a+') as f:
-            f.write(
-                datetime.now().strftime('%Y-%m-%dT%H:%M') +
-                + ' ' + str(e) + '\n')
+            f.write(datetime.now().strftime('%Y-%m-%dT%H:%M') + + ' ' +
+                    str(e) + '\n')

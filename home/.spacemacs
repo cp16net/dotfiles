@@ -36,14 +36,12 @@ This function should only modify configuration layer settings."
    '(lua
      systemd
      csv
-     html
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     javascript
      (auto-completion :variables
                       auto-completion-return-key-behavior 'complete
                       auto-completion-tab-key-behavior 'cycle
@@ -62,13 +60,18 @@ This function should only modify configuration layer settings."
           git-enable-github-support t
           git-gutter-use-fringe t
           )
-     markdown
+     (markdown :variables
+               markdown-live-preview-engine 'vmd)
      (org :variables
+          org-projectile-file "TODOs.org"
           org-enable-github-support t
           org-enable-bootstrap-support t
           org-default-notes-file "~/Dropbox/orgfiles/notes.org"
           org-agenda-files '("~/Dropbox/orgfiles")
           org-directory "~/Dropbox/orgfiles/"
+          org-journal-dir "~/Dropbox/orgfiles/journal/"
+          org-enable-org-journal-support t
+          ;; org-journal-file-format "%Y-%m-%d"  ;; theres a warning about this format breaks the calendar search
           org-refile-allow-creating-parent-nodes 'confirm
           org-todo-keywords (quote ((sequence "TODO(t)" "NEXT(n)" "IN PROGRESS(i)" "|" "DONE(d)")
 		                                (sequence "|" "CANCELLED(c)")
@@ -90,7 +93,9 @@ This function should only modify configuration layer settings."
          flycheck-gometalinter-tests t
          flycheck-gometalinter-concurrency 2
          )
-     sql
+     (sql :variables
+          sql-capitalize-keywords t
+          sql-capitalize-keywords-blacklist '("name" "varchar"))
      yaml
 ;;     (elfeed :variables
 ;;             rmh-elfeed-org-files (list "~/Dropbox/orgfiles/elfeed.org")
@@ -107,7 +112,7 @@ This function should only modify configuration layer settings."
      spell-checking
      syntax-checking
      (version-control :variables
-                      version-control-diff-tool 'diff-hl
+                      version-control-diff-tool 'diff-so-fancy
                       version-control-diff-side 'left
                       version-control-global-margin t)
      (c-c++ :variables
@@ -115,10 +120,18 @@ This function should only modify configuration layer settings."
             )
      semantic
      cscope
-     html
-     javascript
-     python
+     (html :variables
+           web-fmt-tool 'web-beautify)
+     (javascript :variables
+                 js2-basic-offset 2
+                 js-indent-level 2)
+     (python :variables
+             python-enable-yapf-format-on-save t
+             python-backend 'anaconda)
      ranger
+     (templates :variables
+                templates-private-directory "~/.spacemacs.d/templates")
+     games
      )
 
    ;; List of additional packages that will be installed without being
@@ -625,7 +638,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (zenburn-theme yapfify web-mode tagedit systemd symon string-inflection stickyfunc-enhance srefactor spaceline-all-the-icons all-the-icons memoize powerline slim-mode scss-mode sass-mode ranger pyvenv pytest pyenv-mode py-isort pug-mode prettier-js pippel pipenv pip-requirements password-generator spinner overseer org-category-capture alert log4e gntp org-brain nameless monokai-theme markdown-mode magit-todos magit-svn live-py-mode json-navigator hierarchy importmagic epc ctable concurrent deferred impatient-mode parent-mode helm-xref helm-rtags helm-pydoc helm-purpose window-purpose imenu-list request helm-css-scss helm-cscope xcscope haml-mode google-c-style godoctor go-tag go-rename go-impl go-gen-test go-fill-struct gitignore-templates gitignore-mode flyspell-correct flycheck-rtags flycheck-bashate flycheck flx evil-org magit magit-popup git-commit ghub with-editor evil-lion iedit evil-goggles evil-ediff evil-cleverparens smartparens paredit anzu highlight emmet-mode editorconfig disaster cython-mode cyberpunk-theme csv-mode counsel-projectile projectile counsel swiper ivy pkg-info epl company-web web-completion-data company-rtags rtags pos-tip company-lua lua-mode go-mode company-c-headers company-anaconda company clang-format centered-cursor-mode browse-at-remote yasnippet packed anaconda-mode pythonic f dash s avy auto-complete popup font-lock+ evil goto-chg undo-tree dotenv-mode bind-map bind-key async yasnippet-snippets emojify ht emoji-cheat-sheet-plus company-emoji xterm-color shell-pop multi-term insert-shebang fish-mode eshell-z eshell-prompt-extras esh-help company-shell ox-twbs ox-gfm company-quickhelp helm helm-core org-plus-contrib hydra flycheck-gometalinter magithub ghub+ apiwrap elfeed-web elfeed-org elfeed-goodies noflet elfeed web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode sql-indent git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter diff-hl yaml-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org spaceline smeargle restart-emacs rainbow-delimiters popwin persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree mwim move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word company-statistics company-go column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (yatemplate vmd-mode typit mmt sudoku sqlup-mode pacmacs org-journal 2048-game yasnippet-snippets emojify ht emoji-cheat-sheet-plus company-emoji xterm-color shell-pop multi-term insert-shebang fish-mode eshell-z eshell-prompt-extras esh-help company-shell ox-twbs ox-gfm company-quickhelp helm helm-core org-plus-contrib hydra flycheck-gometalinter magithub ghub+ apiwrap elfeed-web elfeed-org elfeed-goodies noflet elfeed web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode sql-indent git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter diff-hl yaml-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org spaceline smeargle restart-emacs rainbow-delimiters popwin persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree mwim move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word company-statistics company-go column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
