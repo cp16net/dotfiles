@@ -83,6 +83,12 @@ def app_or_group(group, app):
     return f
 
 
+# TODO make some of the keys more like awesome because i think it was a little better.
+# * use mod+control+j(next screen) and k(prev screen) with shift to move the current window to screen
+# * use mod+1-9 for groups with shift to move the window to group
+# * would be nice to have a display of the shortcuts like mod+s in awesomewm
+# * better current time on the bar
+
 keys = [
     # Switch to screen
     Key([mod], "1", lazy.to_screen(0)),
