@@ -49,7 +49,7 @@ def go_to_next_group():
     @lazy.function
     def __inner(qtile):
         index = qtile.groups.index(qtile.currentGroup)
-        if index < len(qtile.groups) - 2:
+        if index < len(qtile.groups) - 1:
             qtile.groups[index + 1].cmd_toscreen()
         else:
             qtile.groups[0].cmd_toscreen()
@@ -64,25 +64,24 @@ def go_to_prev_group():
         if index > 0:
             qtile.groups[index - 1].cmd_toscreen()
         else:
-            qtile.groups[len(qtile.groups) - 2].cmd_toscreen()
+            qtile.groups[len(qtile.groups) - 1].cmd_toscreen()
 
     return __inner
 
 
-def app_or_group(group, app):
-    """ Go to specified group if it exists. Otherwise, run the specified app.
-    When used in conjunction with dgroups to auto-assign apps to specific
-    groups, this can be used as a way to go to an app if it is already
-    running. """
+# def app_or_group(group, app):
+#     """ Go to specified group if it exists. Otherwise, run the specified app.
+#     When used in conjunction with dgroups to auto-assign apps to specific
+#     groups, this can be used as a way to go to an app if it is already
+#     running. """
 
-    def f(qtile):
-        try:
-            qtile.groupMap[group].cmd_toscreen()
-        except KeyError:
-            qtile.cmd_spawn(app)
+#     def f(qtile):
+#         try:
+#             qtile.groupMap[group].cmd_toscreen()
+#         except KeyError:
+#             qtile.cmd_spawn(app)
 
-    return f
-
+#     return f
 
 # TODO make some of the keys more like awesome because i think it was a little better.
 # * use mod+control+j(next screen) and k(prev screen) with shift to move the current window to screen
@@ -92,8 +91,8 @@ def app_or_group(group, app):
 
 keys = [
     # Switch to screen
-    Key([mod], "1", lazy.to_screen(0)),
-    Key([mod], "2", lazy.to_screen(1)),
+    # Key([mod], "1", lazy.to_screen(0)),
+    # Key([mod], "2", lazy.to_screen(1)),
     Key([mod, "control"], "j", lazy.next_screen()),
     Key([mod, "control"], "k", lazy.prev_screen()),
 
@@ -150,26 +149,27 @@ keys = [
 
     # start specific apps
     # Key([mod], "i", lazy.function(app_or_group("edit", "emacs"))),
-    Key([mod], "n", lazy.function(app_or_group("www", browser))),
-    Key([mod], "c", lazy.function(app_or_group("chat", "slack"))),
+    # Key([mod], "n", lazy.function(app_or_group("www", browser))),
+    # Key([mod], "c", lazy.function(app_or_group("chat", "slack"))),
     # Key([mod], "m", lazy.function(app_or_group("music", "clementine"))),
-    Key([mod], "m",
-        lazy.function(app_or_group("gitter", "flatpak run im.gitter.Gitter"))),
+    # Key([mod], "m", lazy.function(app_or_group("gitter", "flatpak run im.gitter.Gitter"))),
 
     # keypad start apps
     Key([mod], "KP_Insert", lazy.spawncmd()),  # Keypad 0
     Key([mod], "KP_End", lazy.spawn('emacs')),  # Keypad 1
-    Key([mod], "KP_Down", lazy.spawn(term + '-e weechat')),  # Keypad 2
-    Key([mod], "KP_Page_Down", lazy.spawn(term + '-e ranger')),  # Keypad 3
-    Key([mod], "KP_Left", lazy.spawn('emacs')),  # Keypad 4
-    Key([mod], "KP_Begin", lazy.spawn('emacs')),  # Keypad 5
-    Key([mod], "KP_Right", lazy.spawn('emacs')),  # Keypad 6
+    Key([mod], "KP_Down", lazy.spawn(term + ' -- ranger')),  # Keypad 2
+    Key([mod], "KP_Page_Down", lazy.spawn(term + ' -- weechat')),  # Keypad 3
+    Key([mod], "KP_Left",
+        lazy.spawn('flatpak run im.gitter.Gitter')),  # Keypad 4
+    Key([mod], "KP_Begin", lazy.spawn('slack')),  # Keypad 5
+    Key([mod], "KP_Right", lazy.spawn(browser)),  # Keypad 6
     Key([mod], "KP_Home", lazy.spawn('emacs')),  # Keypad 7
     Key([mod], "KP_Up", lazy.spawn('emacs')),  # Keypad 8
-    Key([mod], "KP_Page_Up", lazy.spawn('emacs')),  # Keypad 9
+    Key([mod], "KP_Page_Up", lazy.spawn('google-chrome')),  # Keypad 9
 ]
 
-groups = [Group(i) for i in "asdf"]
+# TODO look in to why groups are cached
+groups = [Group(i) for i in "123456789"]
 
 for i in groups:
     keys.extend([
@@ -182,34 +182,34 @@ for i in groups:
 
 # groups with special jobs. I usually navigate to these via my app_or_group
 # function.
-groups.extend([
-    # Group('edit', spawn='emacs', layout='monadTall', persist=False,
-    #       matches=[Match(wm_class=['Emacs'])]),
-    Group(
-        'www',
-        spawn=browser,
-        layout='monadtall',
-        persist=False,
-        matches=[
-            Match(wm_class=[
-                'Firefox', 'TorBrowser', 'google-chrome', 'Google-chrome'
-            ])
-        ]),
-    Group(
-        'chat',
-        spawn='slack',
-        layout='monadtall',
-        persist=False,
-        matches=[Match(wm_class=['Slack'])]),
-    # Group('music', layout='max', persist=False, init=False,
-    #       matches=[Match(wm_class=['Clementine', 'Viridian'])]),
-    Group(
-        'gitter',
-        spawn='flatpak run im.gitter.Gitter',
-        layout='monadtall',
-        persist=False,
-        matches=[Match(wm_class=['Gitter'])]),
-])
+# groups.extend([
+#     # Group('edit', spawn='emacs', layout='monadTall', persist=False,
+#     #       matches=[Match(wm_class=['Emacs'])]),
+#     Group(
+#         'www',
+#         spawn=browser,
+#         layout='monadtall',
+#         persist=False,
+#         matches=[
+#             Match(wm_class=[
+#                 'Firefox', 'TorBrowser', 'google-chrome', 'Google-chrome'
+#             ])
+#         ]),
+#     Group(
+#         'chat',
+#         spawn='slack',
+#         layout='monadtall',
+#         persist=False,
+#         matches=[Match(wm_class=['Slack'])]),
+#     # Group('music', layout='max', persist=False, init=False,
+#     #       matches=[Match(wm_class=['Clementine', 'Viridian'])]),
+#     Group(
+#         'gitter',
+#         spawn='flatpak run im.gitter.Gitter',
+#         layout='monadtall',
+#         persist=False,
+#         matches=[Match(wm_class=['Gitter'])]),
+# ])
 
 
 # -> Theme + widget options
@@ -237,7 +237,7 @@ class Theme(object):
     groupbox = widget.copy()
     groupbox.update({
         'padding': 2,
-        'borderwidth': 3,
+        'border_width': 3,
     })
     sep = {
         'background': bar['background'],
