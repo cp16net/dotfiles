@@ -39,6 +39,7 @@ home = os.path.expanduser('~')
 mod = "mod4"
 alt = "mod1"
 term = "/usr/bin/gnome-terminal"
+browser = "firefox"
 
 # setup the screens here
 subprocess.call([home + '/.config/qtile/setup_screens.sh'])
@@ -93,12 +94,21 @@ keys = [
     # Switch to screen
     Key([mod], "1", lazy.to_screen(0)),
     Key([mod], "2", lazy.to_screen(1)),
+    Key([mod, "control"], "j", lazy.next_screen()),
+    Key([mod, "control"], "k", lazy.prev_screen()),
 
     # Switch between windows in current stack pane
-    Key([mod], "k", lazy.layout.down()),
-    Key([mod], "j", lazy.layout.up()),
-    Key([mod], "l", lazy.layout.right()),
     Key([mod], "h", lazy.layout.left()),
+    Key([mod], "l", lazy.layout.right()),
+    Key([mod], "j", lazy.layout.down()),
+    Key([mod], "k", lazy.layout.up()),
+    Key([mod, "shift"], "h", lazy.layout.swap_left()),
+    Key([mod, "shift"], "l", lazy.layout.swap_right()),
+    Key([mod, "shift"], "j", lazy.layout.shuffle_down()),
+    Key([mod, "shift"], "k", lazy.layout.shuffle_up()),
+    Key([mod, "shift"], "space", lazy.layout.flip()),
+
+    # move between groups
     Key([mod], "Left", go_to_prev_group()),
     Key([mod], "Right", go_to_next_group()),
 
@@ -108,10 +118,10 @@ keys = [
 
     # Switch window focus to other pane(s) of stack
     Key([mod], "space", lazy.layout.next()),
-    Key([mod, "shift"], "space", lazy.layout.previous()),
+    # Key([mod, "shift"], "space", lazy.layout.previous()),
 
     # Swap panes of split stack
-    Key([mod, "shift"], "space", lazy.layout.rotate()),
+    # Key([mod, "shift"], "space", lazy.layout.rotate()),
 
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
@@ -140,11 +150,23 @@ keys = [
 
     # start specific apps
     # Key([mod], "i", lazy.function(app_or_group("edit", "emacs"))),
-    Key([mod], "n", lazy.function(app_or_group("www", "firefox"))),
+    Key([mod], "n", lazy.function(app_or_group("www", browser))),
     Key([mod], "c", lazy.function(app_or_group("chat", "slack"))),
     # Key([mod], "m", lazy.function(app_or_group("music", "clementine"))),
     Key([mod], "m",
         lazy.function(app_or_group("gitter", "flatpak run im.gitter.Gitter"))),
+
+    # keypad start apps
+    Key([mod], "KP_Insert", lazy.spawncmd()),  # Keypad 0
+    Key([mod], "KP_End", lazy.spawn('emacs')),  # Keypad 1
+    Key([mod], "KP_Down", lazy.spawn(term + '-e weechat')),  # Keypad 2
+    Key([mod], "KP_Page_Down", lazy.spawn(term + '-e ranger')),  # Keypad 3
+    Key([mod], "KP_Left", lazy.spawn('emacs')),  # Keypad 4
+    Key([mod], "KP_Begin", lazy.spawn('emacs')),  # Keypad 5
+    Key([mod], "KP_Right", lazy.spawn('emacs')),  # Keypad 6
+    Key([mod], "KP_Home", lazy.spawn('emacs')),  # Keypad 7
+    Key([mod], "KP_Up", lazy.spawn('emacs')),  # Keypad 8
+    Key([mod], "KP_Page_Up", lazy.spawn('emacs')),  # Keypad 9
 ]
 
 groups = [Group(i) for i in "asdf"]
@@ -165,8 +187,8 @@ groups.extend([
     #       matches=[Match(wm_class=['Emacs'])]),
     Group(
         'www',
-        spawn='firefox',
-        layout='max',
+        spawn=browser,
+        layout='monadtall',
         persist=False,
         matches=[
             Match(wm_class=[
@@ -176,7 +198,7 @@ groups.extend([
     Group(
         'chat',
         spawn='slack',
-        layout='max',
+        layout='monadtall',
         persist=False,
         matches=[Match(wm_class=['Slack'])]),
     # Group('music', layout='max', persist=False, init=False,
@@ -184,7 +206,7 @@ groups.extend([
     Group(
         'gitter',
         spawn='flatpak run im.gitter.Gitter',
-        layout='max',
+        layout='monadtall',
         persist=False,
         matches=[Match(wm_class=['Gitter'])]),
 ])
@@ -194,12 +216,12 @@ groups.extend([
 # https://github.com/qtile/qtile-examples/blob/master/zordsdavini/qtile_config.py
 class Theme(object):
     bar = {
-        'size': 24,
+        'size': 25,
         'background': '15181a',
     }
     widget = {
         'font': 'Andika',
-        'fontsize': 11,
+        'fontsize': 13,
         'background': bar['background'],
         'foreground': '00ff00',
     }
@@ -224,7 +246,7 @@ class Theme(object):
     }
     systray = widget.copy()
     systray.update({
-        'icon_size': 16,
+        'icon_size': 20,
         'padding': 3,
     })
     battery = widget.copy()
@@ -236,19 +258,21 @@ class Theme(object):
         'format': '{char}{hour:d}:{min:02d}',
     })
 
+    clock = {'format': '%A, %B %d  %I:%M'}
+
 
 layout_style = {
     # 'font': 'ubuntu',
     'margin': 0,
-    'border_width': 1,
+    'border_width': 2,
     'border_normal': '#000000',
-    'border_focus': '#0000FF',
+    'border_focus': '#770000',
 }
 
 layouts = [
     layout.MonadTall(**layout_style),
     layout.Tile(**layout_style),
-    layout.Max(**layout_style),
+    # layout.Max(**layout_style),
     # layout.Columns(num_columns=2, autosplit=True, **layout_style),
     # layout.Stack(num_stacks=1, **layout_style),
     # layout.Matrix(**layout_style),
@@ -258,7 +282,7 @@ layouts = [
 
 widget_defaults = dict(
     font='sans',
-    fontsize=12,
+    fontsize=13,
     padding=3,
 )
 extension_defaults = widget_defaults.copy()
@@ -267,31 +291,29 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.GroupBox(),
+                widget.GroupBox(**Theme.groupbox),
                 widget.Prompt(),
                 widget.WindowName(),
-                widget.TextBox("my config", name="default"),
+                widget.Sep(**Theme.sep),
                 widget.Systray(**Theme.systray),
+                widget.Sep(**Theme.sep),
                 # widget.YahooWeather(),
                 widget.Volume(emoji=True),
                 # widget.CPUGraph(),
                 # widget.MemoryGraph(),
                 widget.Battery(**Theme.battery_text),
-                # widget.CheckUpdates(distro="Debian", update_interval=3600),
-                widget.Clock(format='%Y-%m-%d %a %H:%M %p'),
-                widget.CurrentLayout(**Theme.widget),
+                widget.Sep(**Theme.sep),
+                widget.Clock(**Theme.clock),
+                widget.CurrentLayoutIcon(),
             ],
-            40,
-        ), ),
+            **Theme.bar), ),
     Screen(
-        bottom=bar.Bar(
-            [
-                widget.WindowName(),
-                widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
-                widget.CurrentLayout(**Theme.widget),
-            ],
-            24,
-        ), ),
+        bottom=bar.Bar([
+            widget.CurrentLayoutIcon(),
+            widget.CurrentLayout(**Theme.widget),
+            widget.WindowName(),
+            widget.Clock(**Theme.clock),
+        ], **Theme.bar), ),
 ]
 
 # Drag floating layouts.
@@ -380,6 +402,6 @@ def autostart():
     try:
         subprocess.call([home + '/.config/qtile/autostart.sh'])
     except Exception as e:
-        with open('qtile_log', 'a+') as f:
+        with open('/var/log/qtile_log', 'a+') as f:
             f.write(datetime.now().strftime('%Y-%m-%dT%H:%M') + + ' ' +
                     str(e) + '\n')
