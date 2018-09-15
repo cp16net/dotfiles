@@ -30,6 +30,10 @@ from libqtile import layout, bar, widget, hook
 import os
 import subprocess
 
+from lib import colors
+from lib import weather
+# from lib import utils
+
 try:
     from typing import List  # noqa: F401
 except ImportError:
@@ -69,25 +73,8 @@ def go_to_prev_group():
     return __inner
 
 
-# def app_or_group(group, app):
-#     """ Go to specified group if it exists. Otherwise, run the specified app.
-#     When used in conjunction with dgroups to auto-assign apps to specific
-#     groups, this can be used as a way to go to an app if it is already
-#     running. """
-
-#     def f(qtile):
-#         try:
-#             qtile.groupMap[group].cmd_toscreen()
-#         except KeyError:
-#             qtile.cmd_spawn(app)
-
-#     return f
-
-# TODO make some of the keys more like awesome because i think it was a little better.
-# * use mod+control+j(next screen) and k(prev screen) with shift to move the current window to screen
-# * use mod+1-9 for groups with shift to move the window to group
-# * would be nice to have a display of the shortcuts like mod+s in awesomewm
-# * better current time on the bar
+# TODO use mod+control+j(next screen) and k(prev screen) with shift to move the current window to screen
+# TODO would be nice to have a display of the shortcuts like mod+s in awesomewm
 
 keys = [
     # Switch to screen
@@ -105,22 +92,12 @@ keys = [
     Key([mod, "shift"], "l", lazy.layout.swap_right()),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down()),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up()),
+    Key([mod], "space", lazy.layout.next()),
     Key([mod, "shift"], "space", lazy.layout.flip()),
 
     # move between groups
     Key([mod], "Left", go_to_prev_group()),
     Key([mod], "Right", go_to_next_group()),
-
-    # Move windows up or down in current stack
-    # Key([mod, "control"], "k", lazy.layout.shuffle_down()),
-    # Key([mod, "control"], "j", lazy.layout.shuffle_up()),
-
-    # Switch window focus to other pane(s) of stack
-    Key([mod], "space", lazy.layout.next()),
-    # Key([mod, "shift"], "space", lazy.layout.previous()),
-
-    # Swap panes of split stack
-    # Key([mod, "shift"], "space", lazy.layout.rotate()),
 
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
@@ -136,6 +113,7 @@ keys = [
     Key([mod, "control"], "r", lazy.restart()),
     Key([mod, "control"], "q", lazy.shutdown()),
     Key([mod], "Scroll_Lock", lazy.spawn("i3lock -c 000000")),
+    Key([mod], "slash", lazy.switchgroup()),
 
     # Key([mod], "r", lazy.spawncmd()),
     Key([mod], "r", lazy.spawn("rofi -show run")),
@@ -146,26 +124,26 @@ keys = [
         lazy.spawn("amixer -D pulse sset Master 5%-")),
     Key([], "XF86AudioRaiseVolume",
         lazy.spawn("amixer -D pulse sset Master 5%+")),
-
-    # start specific apps
-    # Key([mod], "i", lazy.function(app_or_group("edit", "emacs"))),
-    # Key([mod], "n", lazy.function(app_or_group("www", browser))),
-    # Key([mod], "c", lazy.function(app_or_group("chat", "slack"))),
-    # Key([mod], "m", lazy.function(app_or_group("music", "clementine"))),
-    # Key([mod], "m", lazy.function(app_or_group("gitter", "flatpak run im.gitter.Gitter"))),
+    Key([], "XF86MonBrightnessUp", lazy.spawn('xbacklight -inc 10')),
+    Key([], "XF86MonBrightnessDown", lazy.spawn('xbacklight -dec 10')),
 
     # keypad start apps
-    Key([mod], "KP_Insert", lazy.spawncmd()),  # Keypad 0
-    Key([mod], "KP_End", lazy.spawn('emacs')),  # Keypad 1
-    Key([mod], "KP_Down", lazy.spawn(term + ' -- ranger')),  # Keypad 2
-    Key([mod], "KP_Page_Down", lazy.spawn(term + ' -- weechat')),  # Keypad 3
+    Key([mod], "KP_Insert", lazy.spawncmd(), desc="cmd"),  # Keypad 0
+    Key([mod], "KP_End", lazy.spawn('emacs'), desc="emacs"),  # Keypad 1
+    Key([mod], "KP_Down", lazy.spawn(term + ' -- ranger'),
+        desc="ranger"),  # Keypad 2
+    Key([mod], "KP_Page_Down", lazy.spawn(term + ' -- htop')),  # Keypad 3
     Key([mod], "KP_Left",
         lazy.spawn('flatpak run im.gitter.Gitter')),  # Keypad 4
     Key([mod], "KP_Begin", lazy.spawn('slack')),  # Keypad 5
-    Key([mod], "KP_Right", lazy.spawn(browser)),  # Keypad 6
-    Key([mod], "KP_Home", lazy.spawn('emacs')),  # Keypad 7
-    Key([mod], "KP_Up", lazy.spawn('emacs')),  # Keypad 8
+    Key([mod], "KP_Right", lazy.spawn(term + ' -- weechat')),  # Keypad 6
+    Key([mod], "KP_Home", lazy.spawn('spotify')),  # Keypad 7
+    Key([mod], "KP_Up", lazy.spawn(browser)),  # Keypad 8
     Key([mod], "KP_Page_Up", lazy.spawn('google-chrome')),  # Keypad 9
+
+    # TODO make screenshot current window;
+    # you can drag and draw the region to snap (use mouse)
+    # Key([mod], "Print", lazy.spawn("scrot '%Y-%m-%d_$wx$h_scrot.png' -e 'mv $f ~/' -b -s -z")),
 ]
 
 # TODO look in to why groups are cached
@@ -175,11 +153,37 @@ for i in groups:
     keys.extend([
         # mod1 + letter of group = switch to group
         Key([mod], i.name, lazy.group[i.name].toscreen()),
-
         # mod1 + shift + letter of group = switch to & move focused window to group
         Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
     ])
 
+
+def help_menu():
+    options = []
+    for key in keys:
+        options.append("{} {} {}".format(key.modifiers, key.key, key.commands))
+    cmd = 'echo -e "{}" | rofi -dmenu'.format("\n".join(options))
+    print("{}".format(cmd))
+    return cmd
+
+
+# TODO mod+s i'd like to display a keymap like awesomewm
+# keys.extend([Key([mod], "s", lazy.spawn(help_menu(keys)))])
+# keys.extend([Key([mod], "s", lazy.display_kb())])
+
+# def app_or_group(group, app):
+#     """ Go to specified group if it exists. Otherwise, run the specified app.
+#     When used in conjunction with dgroups to auto-assign apps to specific
+#     groups, this can be used as a way to go to an app if it is already
+#     running. """
+
+#     def f(qtile):
+#         try:
+#             qtile.groupMap[group].cmd_toscreen()
+#         except KeyError:
+#             qtile.cmd_spawn(app)
+
+#     return f
 # groups with special jobs. I usually navigate to these via my app_or_group
 # function.
 # groups.extend([
@@ -217,7 +221,7 @@ for i in groups:
 class Theme(object):
     bar = {
         'size': 25,
-        'background': '15181a',
+        'background': colors.background,  #'15181a',
     }
     widget = {
         'font': 'Andika',
@@ -238,6 +242,7 @@ class Theme(object):
     groupbox.update({
         'padding': 2,
         'border_width': 3,
+        'this_current_screen_border': '00bFFF',
     })
     sep = {
         'background': bar['background'],
@@ -258,7 +263,20 @@ class Theme(object):
         'format': '{char}{hour:d}:{min:02d}',
     })
 
-    clock = {'format': '%A, %B %d  %I:%M'}
+    clock = {
+        'format': '%A, %B %d  %H:%M',
+    }
+
+    layout_icon = {
+        'scale': .85,
+    }
+
+    clipboard = widget.copy()
+    clipboard.update({
+        'max_width': 20,
+        'timeout': 5,
+        'foreground': '39CCCC',
+    })
 
 
 layout_style = {
@@ -272,9 +290,9 @@ layout_style = {
 layouts = [
     layout.MonadTall(**layout_style),
     layout.Tile(**layout_style),
+    layout.Stack(num_stacks=2, **layout_style),
     # layout.Max(**layout_style),
     # layout.Columns(num_columns=2, autosplit=True, **layout_style),
-    # layout.Stack(num_stacks=1, **layout_style),
     # layout.Matrix(**layout_style),
     # layout.Zoomy(**layout_style),
     # layout.Floating(**layout_style),
@@ -287,33 +305,47 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-screens = [
-    Screen(
-        top=bar.Bar(
-            [
-                widget.GroupBox(**Theme.groupbox),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Sep(**Theme.sep),
-                widget.Systray(**Theme.systray),
-                widget.Sep(**Theme.sep),
-                # widget.YahooWeather(),
-                widget.Volume(emoji=True),
-                # widget.CPUGraph(),
-                # widget.MemoryGraph(),
-                widget.Battery(**Theme.battery_text),
-                widget.Sep(**Theme.sep),
-                widget.Clock(**Theme.clock),
-                widget.CurrentLayoutIcon(),
-            ],
-            **Theme.bar), ),
-    Screen(
-        bottom=bar.Bar([
-            widget.CurrentLayoutIcon(),
-            widget.CurrentLayout(**Theme.widget),
-            widget.WindowName(),
+
+def get_top_bar():
+    return bar.Bar(
+        [
+            widget.Prompt(),
+            widget.Sep(**Theme.sep),
+            widget.TaskList(),
+            widget.Clipboard(**Theme.clipboard),
+            widget.Sep(**Theme.sep),
+            # my custom weather widget that is working now.
+            # need to figure out how to store and get my secret tokens before checking it in
+            weather.NetatmoWeather(),
+            widget.Sep(**Theme.sep),
+            widget.Systray(**Theme.systray),
+            widget.Sep(**Theme.sep),
+            widget.Volume(),
+            widget.Sep(**Theme.sep),
+            widget.Battery(**Theme.battery_text),
+            widget.Sep(**Theme.sep),
+            # This doesnt seems to do much?
+            # widget.Notify(),
+            # widget.Sep(**Theme.sep),
             widget.Clock(**Theme.clock),
-        ], **Theme.bar), ),
+            widget.CurrentLayoutIcon(**Theme.layout_icon),
+        ],
+        **Theme.bar)
+
+
+def get_bottom_bar():
+    return bar.Bar([
+        widget.CurrentLayoutIcon(**Theme.layout_icon),
+        widget.GroupBox(**Theme.groupbox),
+        widget.WindowName(),
+        widget.CPUGraph(),
+        widget.MemoryGraph(),
+    ], **Theme.bar)
+
+
+screens = [
+    Screen(top=get_top_bar(), bottom=get_bottom_bar()),
+    Screen(bottom=get_bottom_bar(), ),
 ]
 
 # Drag floating layouts.
@@ -331,56 +363,59 @@ mouse = [
     Click([mod], "Button2", lazy.window.bring_to_front())
 ]
 
+wmname = "qtile"
 dgroups_key_binder = None
-dgroups_app_rules = []  # type: List
-main = None
+dgroups_app_rules = []
+# main = None
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
-floating_layout = layout.Floating(float_rules=[
-    {
-        'wmclass': 'confirm'
-    },
-    {
-        'wmclass': 'dialog'
-    },
-    {
-        'wmclass': 'download'
-    },
-    {
-        'wmclass': 'error'
-    },
-    {
-        'wmclass': 'file_progress'
-    },
-    {
-        'wmclass': 'notification'
-    },
-    {
-        'wmclass': 'splash'
-    },
-    {
-        'wmclass': 'toolbar'
-    },
-    {
-        'wmclass': 'confirmreset'
-    },  # gitk
-    {
-        'wmclass': 'makebranch'
-    },  # gitk
-    {
-        'wmclass': 'maketag'
-    },  # gitk
-    {
-        'wname': 'branchdialog'
-    },  # gitk
-    {
-        'wname': 'pinentry'
-    },  # GPG key password entry
-    {
-        'wmclass': 'ssh-askpass'
-    },  # ssh-askpass
-])
+floating_layout = layout.Floating(
+    float_rules=[
+        {
+            'wmclass': 'confirm'
+        },
+        {
+            'wmclass': 'dialog'
+        },
+        {
+            'wmclass': 'download'
+        },
+        {
+            'wmclass': 'error'
+        },
+        {
+            'wmclass': 'file_progress'
+        },
+        {
+            'wmclass': 'notification'
+        },
+        {
+            'wmclass': 'splash'
+        },
+        {
+            'wmclass': 'toolbar'
+        },
+        {
+            'wmclass': 'confirmreset'
+        },  # gitk
+        {
+            'wmclass': 'makebranch'
+        },  # gitk
+        {
+            'wmclass': 'maketag'
+        },  # gitk
+        {
+            'wname': 'branchdialog'
+        },  # gitk
+        {
+            'wname': 'pinentry'
+        },  # GPG key password entry
+        {
+            'wmclass': 'ssh-askpass'
+        },  # ssh-askpass
+    ],
+    **layout_style)
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 
@@ -405,3 +440,17 @@ def autostart():
         with open('/var/log/qtile_log', 'a+') as f:
             f.write(datetime.now().strftime('%Y-%m-%dT%H:%M') + + ' ' +
                     str(e) + '\n')
+
+
+# Let some things just use the floating layout
+@hook.subscribe.client_new
+def floating_dialogs(window):
+    dialog = window.window.get_wm_type() == 'dialog'
+    transient = window.window.get_wm_transient_for()
+    if dialog or transient:
+        window.floating = True
+
+
+def main(qtile):
+    # set logging level
+    qtile.cmd_info()
