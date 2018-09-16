@@ -363,7 +363,6 @@ mouse = [
     Click([mod], "Button2", lazy.window.bring_to_front())
 ]
 
-wmname = "qtile"
 dgroups_key_binder = None
 dgroups_app_rules = []
 # main = None
