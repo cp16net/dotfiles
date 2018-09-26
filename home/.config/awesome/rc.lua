@@ -378,7 +378,7 @@ globalkeys = gears.table.join(
                   }
               end,
               {description = "lua execute prompt", group = "awesome"}),
-    awful.key({ "Control", "Shift" }, "l", function() awful.util.spawn("i3lock -c 000000") end,
+    awful.key({ modkey }, "Scroll_Lock", function() awful.util.spawn("i3lock -c 000000") end,
               {description = "lock desktop", group = "launcher"}),
     -- Menubar
     awful.key({ modkey }, "p", function() menubar.show() end,
@@ -638,7 +638,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- {{{ run once
 -- startup synergys automatically
-awful.util.spawn_with_shell("synergys")
+awful.util.spawn_with_shell("start-synergy.sh")
 
 -- startup the keyring so i dont have to type passphrases all the time
 awful.util.spawn_with_shell("gnome-keyring-daemon --start")
