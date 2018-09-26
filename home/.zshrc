@@ -58,19 +58,21 @@ DEFAULT_USER="craig"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git
-#         vagrant
          python
          pip
          history
          docker
+         docker-compose
          golang
          git-extras
          zsh_reload
          kubectl
+         tmuxinator
          z
-	 debian
-	 command-not-found
-	 common-aliases
+         # debian
+         ubuntu
+	       command-not-found
+	       common-aliases
         )
 
 

@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from libqtile.config import Key, Screen, Group, Drag, Click, Match
+from libqtile.config import Key, Screen, Group, Drag, Click
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 import os
@@ -32,7 +32,7 @@ import subprocess
 
 from lib import colors
 from lib import weather
-# from lib import utils
+from lib import utils
 
 try:
     from typing import List  # noqa: F401
@@ -42,7 +42,8 @@ except ImportError:
 home = os.path.expanduser('~')
 mod = "mod4"
 alt = "mod1"
-term = "/usr/bin/gnome-terminal"
+# term = "/usr/bin/gnome-terminal"
+term = "urxvt"
 browser = "firefox"
 
 # setup the screens here
@@ -82,6 +83,10 @@ keys = [
     # Key([mod], "2", lazy.to_screen(1)),
     Key([mod, "control"], "j", lazy.next_screen()),
     Key([mod, "control"], "k", lazy.prev_screen()),
+    Key([mod, "control", "shift"], "1",
+        lazy.function(utils.move_window_to_screen(0))),
+    Key([mod, "control", "shift"], "2",
+        lazy.function(utils.move_window_to_screen(1))),
 
     # Switch between windows in current stack pane
     Key([mod], "h", lazy.layout.left()),
@@ -130,20 +135,26 @@ keys = [
     # keypad start apps
     Key([mod], "KP_Insert", lazy.spawncmd(), desc="cmd"),  # Keypad 0
     Key([mod], "KP_End", lazy.spawn('emacs'), desc="emacs"),  # Keypad 1
-    Key([mod], "KP_Down", lazy.spawn(term + ' -- ranger'),
+    Key([mod], "KP_Down", lazy.spawn(term + ' -e ranger'),
         desc="ranger"),  # Keypad 2
-    Key([mod], "KP_Page_Down", lazy.spawn(term + ' -- htop')),  # Keypad 3
+    Key([mod], "KP_Page_Down", lazy.spawn(term + ' -e htop')),  # Keypad 3
     Key([mod], "KP_Left",
         lazy.spawn('flatpak run im.gitter.Gitter')),  # Keypad 4
     Key([mod], "KP_Begin", lazy.spawn('slack')),  # Keypad 5
-    Key([mod], "KP_Right", lazy.spawn(term + ' -- weechat')),  # Keypad 6
+    Key([mod], "KP_Right", lazy.spawn(term + ' -e weechat')),  # Keypad 6
     Key([mod], "KP_Home", lazy.spawn('spotify')),  # Keypad 7
     Key([mod], "KP_Up", lazy.spawn(browser)),  # Keypad 8
     Key([mod], "KP_Page_Up", lazy.spawn('google-chrome')),  # Keypad 9
 
     # TODO make screenshot current window;
     # you can drag and draw the region to snap (use mouse)
-    # Key([mod], "Print", lazy.spawn("scrot '%Y-%m-%d_$wx$h_scrot.png' -e 'mv $f ~/' -b -s -z")),
+    Key([mod], "Print",
+        lazy.spawn(term +
+                   " -e scrot -e 'mv $f ~/Pictures/Screenshots/' -b -s -z")),
+    Key([mod, "shift"], "Print",
+        lazy.spawn(
+            term +
+            " -e scrot -s -e 'mv $f ~/Pictures/Screenshots/' -b -s -z")),
 ]
 
 # TODO look in to why groups are cached
@@ -345,7 +356,10 @@ def get_bottom_bar():
 
 screens = [
     Screen(top=get_top_bar(), bottom=get_bottom_bar()),
-    Screen(bottom=get_bottom_bar(), ),
+    Screen(
+        top=get_top_bar(),
+        bottom=get_bottom_bar(),
+    ),
 ]
 
 # Drag floating layouts.

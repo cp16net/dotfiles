@@ -22,7 +22,7 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
 local weather_widget = require("awesome-wm-widgets.weather-widget.weather")
 local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
-local spotify_widget = require("awesome-wm-widgets.spotify-widget.spotify")
+-- local spotify_widget = require("awesome-wm-widgets.spotify-widget.spotify")
 local spotify_shell = require("awesome-wm-widgets.spotify-shell.spotify-shell")
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local calendar = require("calendar.calendar")
@@ -57,7 +57,8 @@ end
 beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "urxvt"
+--terminal = "x-terminal-emulator"
 editor = os.getenv("EDITOR") or "emacs"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -70,12 +71,12 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
     awful.layout.suit.fair,
+    -- awful.layout.suit.floating,
+    -- awful.layout.suit.tile.left,
+    -- awful.layout.suit.tile.bottom,
+    -- awful.layout.suit.tile.top,
     -- awful.layout.suit.fair.horizontal,
     -- awful.layout.suit.spiral,
     -- awful.layout.suit.spiral.dwindle,
@@ -133,7 +134,7 @@ else
 end
 
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
+local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 
 -- Menubar configuration
@@ -215,7 +216,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "1:main", "2:chat", "3:dev", "4:?", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    awful.tag({ "1:dev", "2:slack", "3:web", "4", "5", "6", "7", "8:spotify", "9:irc" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -236,8 +237,8 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "top", screen = s })
 
-    sprtr = wibox.widget.textbox()
-    sprtr:set_text(" : ")
+    local sprtr = wibox.widget.textbox()
+    sprtr:set_text(" | ")
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -251,9 +252,9 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            wibox.widget.systray(),
-            sprtr,
-            spotify_widget,
+            -- wibox.widget.systray(),
+            -- sprtr,
+            -- spotify_widget,
             sprtr,
             cpu_widget,
             sprtr,
@@ -361,8 +362,11 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"}),
+    -- awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
+    --           {description = "run prompt", group = "launcher"}),
+    awful.key({ modkey },            "r",     function () awful.util.spawn("rofi -show run") end,
+      {description = "run rofi", group = "launcher"}),
+
 
     awful.key({ modkey }, "x",
               function ()
@@ -384,7 +388,24 @@ globalkeys = gears.table.join(
     awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -D pulse sset Master 5%+") end),
     awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -D pulse sset Master 5%-") end),
     awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer -D pulse sset Master toggle") end),
-    awful.key({ modkey,        }, "d", function () spotify_shell.launch() end, {description = "spotify shell", group = "music"})
+    awful.key({ modkey,        }, "d", function () spotify_shell.launch() end, {description = "spotify shell", group = "music"}),
+
+    -- keypad start apps
+    awful.key({ modkey }, "KP_Insert", function() awful.util.spawn(terminal) end, {description = "0 - terminal", group = "keypad"}),        --# Keypad 0
+    awful.key({ modkey }, "KP_End", function() awful.util.spawn("emacs") end, {description = "1 - emacs", group = "keypad"}), --# Keypad 1
+    awful.key({ modkey }, "KP_Down", function() awful.util.spawn(terminal .. " -e ranger") end, {description = "2 - ranger", group = "keypad"}), --# Keypad 2
+    awful.key({ modkey }, "KP_Page_Down", function() awful.util.spawn(terminal .. " -e htop") end, {description = "3 - htop", group = "keypad"}), --end.spawn(term + ' -e htop')),  # Keypad 3
+    awful.key({ modkey }, "KP_Left", function() awful.util.spawn("flatpak run im.gitter.Gitter") end, {description = "4 - gitter", group = "keypad"}), --end.spawn('flatpak run im.gitter.Gitter')),  # Keypad 4
+    awful.key({ modkey }, "KP_Begin", function() awful.util.spawn("slack") end, {description = "5 - slack", group = "keypad"}), --end.spawn('slack')),  # Keypad 5
+    awful.key({ modkey }, "KP_Right", function() awful.util.spawn(terminal .. " -e ssh cp16net@files.local -t tmux attach") end, {description = "6 - weechat remote", group = "keypad"}), --end.spawn(term + ' -e weechat')),  # Keypad 6
+    awful.key({ modkey }, "KP_Home", function() awful.util.spawn("spotify") end, {description = "7 - spotify", group = "keypad"}), --end.spawn('spotify')),  # Keypad 7
+    awful.key({ modkey }, "KP_Up", function() awful.util.spawn("firefox") end, {description = "8 - firefox", group = "keypad"}), --end.spawn(browser)),  # Keypad 8
+    awful.key({ modkey }, "KP_Page_Up", function() awful.util.spawn("google-chrome") end, {description = "9 - chrome", group = "keypad"}), --end.spawn('google-chrome')),  # Keypad 9
+
+    -- TODO make screenshot current window;
+    -- you can drag and draw the region to snap (use mouse)
+    awful.key({ modkey }, "Print", function() awful.util.spawn(terminal .. " -e scrot -e 'mv $f ~/Pictures/Screenshots/' -b -s -z") end, {description = "full screenshot", group = "screenshot"}), --end.spawn(term + " -e scrot -e 'mv $f ~/Pictures/Screenshots/' -b -s -z")),
+    awful.key({ modkey, "shift"}, "Print", function() awful.util.spawn(terminal .. " -e scrot -s -e 'mv $f ~/Pictures/Screenshots/' -b -s -z") end, {description = "area screenshot", group = "screenshot"}) --end.spawn(            term +            " -e scrot -s -e 'mv $f ~/Pictures/Screenshots/' -b -s -z")),
 )
 
 clientkeys = gears.table.join(

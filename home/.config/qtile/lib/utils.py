@@ -26,3 +26,17 @@ def make_scratchpad(modifiers, *entries):
         dropdowns.append(new_dropdown)
 
     return ScratchPad(name, dropdowns), keys
+
+
+# found this helper function here
+# https://github.com/Virtuos86/qtile-config/blob/3836807e6eb999a6a2bca1c07227e0fab01fa6e4/config.py
+def move_window_to_screen(screen):
+    def cmd(qtile):
+        w = qtile.currentWindow
+        # XXX: strange behaviour - w.focus() doesn't work
+        # if toScreen is called after togroup...
+        qtile.toScreen(screen)
+        if w is not None:
+            w.togroup(qtile.screens[screen].group.name)
+
+    return cmd
