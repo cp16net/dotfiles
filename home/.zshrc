@@ -150,8 +150,8 @@ kube_prompt()
 	echo ""
 	return
     fi
-    if [ ! kubectl &>/dev/null ]; then;
-	echo "kubectl missing"
+    if ! [ -x "$(command -v kubectl)" ]; then
+	echo 'none'
 	return
     fi
 
