@@ -19,13 +19,18 @@ local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
 
 -- my libraries
-local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
-local weather_widget = require("awesome-wm-widgets.weather-widget.weather")
-local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
+-- local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+-- local weather_widget = require("awesome-wm-widgets.weather-widget.weather")
+local netatmo_widget = require("netatmo")
+-- local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
 -- local spotify_widget = require("awesome-wm-widgets.spotify-widget.spotify")
 local spotify_shell = require("awesome-wm-widgets.spotify-shell.spotify-shell")
 local cpu_widget = require("awesome-wm-widgets.cpu-widget.cpu-widget")
 local calendar = require("calendar.calendar")
+
+-- added libs
+local sharedtags = require("awesome-sharedtags")
+local vicious = require("vicious")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -88,6 +93,19 @@ awful.layout.layouts = {
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
 }
+
+local tags = sharedtags({
+    { name = "1:dev",     layout = awful.layout.layouts[1] },
+    { name = "2:slack",   layout = awful.layout.layouts[1] },
+    { name = "3:web",     layout = awful.layout.layouts[1] },
+    { name = "4",         layout = awful.layout.layouts[1] },
+    { name = "5",         layout = awful.layout.layouts[1] },
+    { name = "6",         layout = awful.layout.layouts[1] },
+    { name = "7",         layout = awful.layout.layouts[1] },
+    { name = "8:spotify", layout = awful.layout.layouts[1] },
+    { name = "9:irc",     layout = awful.layout.layouts[1] },
+})
+
 -- }}}
 
 -- {{{ Helper functions
@@ -146,12 +164,25 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock()
+local mytextclock = wibox.widget.textclock()
 calendar_widget = calendar({
   fdow = 7,                  -- Set Sunday as first day of the week (default is
                              -- 1 = Monday)
 })
 calendar_widget:attach(mytextclock)
+
+-- volume widget
+local volwidget = wibox.widget.textbox()
+vicious.register(volwidget, vicious.widgets.volume,
+  function(widget, args)
+    local label = { ["♫"] = "♫", ["♩"] = "M" }
+    return "Vol: " .. args[1] .. "% " .. label[args[2]]
+  end, 2, "Master")
+
+-- memory widget
+-- memwidget = wibox.widget.textbox()
+-- vicious.cache(vicious.widgets.mem)
+-- vicious.register(memwidget, vicious.widgets.mem, "$1 ($2MB/$3MB)", 13)
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -216,7 +247,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "1:dev", "2:slack", "3:web", "4", "5", "6", "7", "8:spotify", "9:irc" }, s, awful.layout.layouts[1])
+    -- awful.tag({ "1:dev", "2:slack", "3:web", "4", "5", "6", "7", "8:spotify", "9:irc" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -252,19 +283,14 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            -- wibox.widget.systray(),
-            -- sprtr,
-            -- spotify_widget,
-            sprtr,
-            cpu_widget,
-            sprtr,
-            weather_widget,
-            sprtr,
-            volume_widget,
-            sprtr,
-            batteryarc_widget,
-            sprtr,
-            mytextclock,
+            wibox.widget.systray(),
+            sprtr, cpu_widget,
+            -- sprtr, memwidget,
+            -- sprtr, weather_widget,
+            sprtr, netatmo_widget,
+            sprtr, volwidget,
+            -- sprtr, batteryarc_widget,
+            sprtr, mytextclock,
             s.mylayoutbox,
         },
     }
@@ -302,7 +328,7 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+    awful.key({ modkey,           }, "e", function () mymainmenu:show() end,
               {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
@@ -388,6 +414,8 @@ globalkeys = gears.table.join(
     awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -D pulse sset Master 5%+") end),
     awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -D pulse sset Master 5%-") end),
     awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer -D pulse sset Master toggle") end),
+    awful.key({}, "#198", function () awful.util.spawn("amixer set Capture toggle") end),
+
     awful.key({ modkey,        }, "d", function () spotify_shell.launch() end, {description = "spotify shell", group = "music"}),
 
     -- keypad start apps
@@ -415,7 +443,7 @@ clientkeys = gears.table.join(
             c:raise()
         end,
         {description = "toggle fullscreen", group = "client"}),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end,
+    awful.key({ modkey,           }, "w",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
               {description = "toggle floating", group = "client"}),
@@ -461,9 +489,9 @@ for i = 1, 9 do
         awful.key({ modkey }, "#" .. i + 9,
                   function ()
                         local screen = awful.screen.focused()
-                        local tag = screen.tags[i]
+                        local tag = tags[i]
                         if tag then
-                           tag:view_only()
+                           sharedtags.viewonly(tag, screen)
                         end
                   end,
                   {description = "view tag #"..i, group = "tag"}),
@@ -471,9 +499,9 @@ for i = 1, 9 do
         awful.key({ modkey, "Control" }, "#" .. i + 9,
                   function ()
                       local screen = awful.screen.focused()
-                      local tag = screen.tags[i]
+                      local tag = tags[i]
                       if tag then
-                         awful.tag.viewtoggle(tag)
+                         sharedtags.viewtoggle(tag, screen)
                       end
                   end,
                   {description = "toggle tag #" .. i, group = "tag"}),
@@ -481,7 +509,7 @@ for i = 1, 9 do
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
                   function ()
                       if client.focus then
-                          local tag = client.focus.screen.tags[i]
+                          local tag = tags[i]
                           if tag then
                               client.focus:move_to_tag(tag)
                           end
@@ -492,7 +520,7 @@ for i = 1, 9 do
         awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
                   function ()
                       if client.focus then
-                          local tag = client.focus.screen.tags[i]
+                          local tag = tags[i]
                           if tag then
                               client.focus:toggle_tag(tag)
                           end

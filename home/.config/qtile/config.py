@@ -152,9 +152,7 @@ keys = [
         lazy.spawn(term +
                    " -e scrot -e 'mv $f ~/Pictures/Screenshots/' -b -s -z")),
     Key([mod, "shift"], "Print",
-        lazy.spawn(
-            term +
-            " -e scrot -s -e 'mv $f ~/Pictures/Screenshots/' -b -s -z")),
+        lazy.spawn("scrot -s -e 'mv $f ~/Pictures/Screenshots/' -b -s -z")),
 ]
 
 # TODO look in to why groups are cached

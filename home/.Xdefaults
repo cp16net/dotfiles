@@ -43,19 +43,15 @@ URxvt.scrollBar:            false
 
 !! Extensions
 !! path for default ext: /usr/lib/x86_64-linux-gnu/urxvt/perl/
-URxvt.perl-ext-common:	default,matcher,font-size,keyboard-select,clipboard,selection-to-clipboard
+URxvt.perl-ext-common:	default,matcher,font-size,keyboard-select,selection-to-clipboard
 URxvt.colorUL:		#4682B4
 
-
-!! keyboard-select:
-URxvt.keysym.M-s: perl:keyboard-select:activate
-URxvt.keysym.M-r: perl:keyboard-select:search
-
-!! clipboard
-URxvt.clipboard.autocopy:   true
-URxvt.keysym.M-c:   perl:clipboard:copy
-URxvt.keysym.M-v:   perl:clipboard:paste
-URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
+!! Matcher
+URxvt.url-launcher: /usr/bin/xdg-open
+URxvt.matcher.button:	1
+URxvt.keysym.C-u: matcher:last
+URxvt.keysym.M-u: matcher:list
+URxvt.keysym.C-M-u: matcher:select
 
 !! font-size
 URxvt.keysym.C-minus:     font-size:decrease
@@ -64,12 +60,15 @@ URxvt.keysym.C-0:         font-size:reset
 URxvt.keysym.C-question:  font-size:show
 URxvt.font-size.step: 2
 
-!! Matcher
-URxvt.url-launcher: /usr/bin/xdg-open
-URxvt.matcher.button:	1
-URxvt.keysym.C-u: matcher:last
-URxvt.keysym.M-u: matcher:list
-URxvt.keysym.C-M-u: matcher:select
+!! keyboard-select:
+URxvt.keysym.M-s: perl:keyboard-select:activate
+URxvt.keysym.M-r: perl:keyboard-select:search
+
+!! clipboard
+! URxvt.clipboard.autocopy:   true
+! URxvt.keysym.M-c:   perl:clipboard:copy
+! URxvt.keysym.M-v:   perl:clipboard:paste
+! URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
 
 !! move cursor by words
 URxvt.keysym.Control-Left:     \033[1;5D
