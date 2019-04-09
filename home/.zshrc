@@ -2,10 +2,9 @@
 export ZSH=~/.oh-my-zsh
 
 export PATH="/Users/cp16net/bin:/home/cp16net/bin:/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/usr/local/games:/usr/games"
-export PATH="$PATH:/usr/local/go/bin"
 export GOPATH=$HOME/gospace
 export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN:$HOME/bin
+export PATH="$GOBIN:$HOME/bin:/usr/local/go/bin:$PATH"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -146,13 +145,13 @@ export NPM_CONFIG_PREFIX=~/.npm-global
 kube_prompt()
 {
     # mac is weird and i'm not using it for this anyway
-    if [[ $(uname) == "Darwin" ]]; then;
-	echo ""
-	return
+    if [[ $(uname) == "Darwin" ]]; then
+	      echo ""
+	      return
     fi
     if ! [ -x "$(command -v kubectl)" ]; then
-	echo 'none'
-	return
+	      echo 'none'
+	      return
     fi
 
     local kubectl_current_context=$(kubectl config current-context)
@@ -162,8 +161,8 @@ kube_prompt()
 }
 dir_prompt()
 {
-   local prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}%~%{\e[0;34m%}%B]%b%{\e[0m%}"
-   echo $prompt
+    local prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}%~%{\e[0;34m%}%B]%b%{\e[0m%}"
+    echo $prompt
 }
 time_prompt()
 {

@@ -88,12 +88,13 @@ This function should only modify configuration layer settings."
      (go :variables
          gofmt-command "goimports"
          go-format-before-save t
-         go-use-gometalinter t
-         flycheck-gometalinter-vendor t
-         flycheck-gometalinter-deadline "10s"
-         flycheck-gometalinter-fast t
-         flycheck-gometalinter-tests t
-         flycheck-gometalinter-concurrency 2
+         go-use-golangci-lint t
+         flycheck-golangci-lint-fast t
+         ;; flycheck-gometalinter-vendor t
+         ;; flycheck-gometalinter-deadline "10s"
+         ;; flycheck-gometalinter-fast t
+         ;; flycheck-gometalinter-tests t
+         ;; flycheck-gometalinter-concurrency 2
          )
      (sql :variables
           sql-capitalize-keywords t
@@ -134,6 +135,7 @@ This function should only modify configuration layer settings."
      (templates :variables
                 templates-private-directory "~/.spacemacs.d/templates")
      games
+     jsonnet
      )
 
    ;; List of additional packages that will be installed without being
@@ -547,8 +549,10 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  (server-start)
-  (require 'org-protocol)
+  (with-eval-after-load 'org
+    (server-start)
+    (require 'org-protocol)
+  )
   (add-to-list 'exec-path "/home/craig/.npm-global/bin" t)
   )
 
@@ -600,10 +604,13 @@ before packages are loaded."
                                   ;; ... more templates here ...
                                   )
           ))
-  (require 'golden-ratio)
-  (golden-ratio-mode 1)
+  ;;(require 'golden-ratio)
+  ;;(golden-ratio-mode 1)
   (spacemacs/toggle-automatic-symbol-highlight-on)
 
+  (with-eval-after-load 'jsonnet)
+    (add-to-list 'auto-mode-alist '("\\.libsonnet\\'" . jsonnet-mode))
+    (add-to-list 'auto-mode-alist '("\\.jsonnet\\'" . jsonnet-mode))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
