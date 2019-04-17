@@ -96,9 +96,9 @@ This function should only modify configuration layer settings."
          ;; flycheck-gometalinter-tests t
          ;; flycheck-gometalinter-concurrency 2
          )
-     (sql :variables
-          sql-capitalize-keywords t
-          sql-capitalize-keywords-blacklist '("name" "varchar"))
+     ;; (sql :variables
+     ;;      sql-capitalize-keywords t
+     ;;      sql-capitalize-keywords-blacklist '("name" "varchar"))
      yaml
 ;;     (elfeed :variables
 ;;             rmh-elfeed-org-files (list "~/Dropbox/orgfiles/elfeed.org")
