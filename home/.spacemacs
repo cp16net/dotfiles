@@ -33,7 +33,8 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(rust
+   '(sql
+     rust
      ruby
      lua
      systemd
@@ -115,7 +116,7 @@ This function should only modify configuration layer settings."
      spell-checking
      syntax-checking
      (version-control :variables
-                      version-control-diff-tool 'diff-so-fancy
+                      version-control-diff-tool 'diff-hl
                       version-control-diff-side 'left
                       version-control-global-margin t)
      (c-c++ :variables
@@ -125,9 +126,10 @@ This function should only modify configuration layer settings."
      cscope
      (html :variables
            web-fmt-tool 'web-beautify)
+     json
      (javascript :variables
-                 js2-basic-offset 2
-                 js-indent-level 2)
+                 js2-basic-offset 4
+                 js-indent-level 4)
      (python :variables
              python-enable-yapf-format-on-save t
              python-backend 'anaconda)
@@ -276,10 +278,6 @@ It should only modify the values of Spacemacs settings."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
                          spacemacs-dark
-                         monokai
-                         zenburn
-                         cyberpunk
-                         spacemacs-light
                          )
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
@@ -641,7 +639,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (zenburn-theme writeroom-mode visual-fill-column web-mode ruby-hash-syntax robe racer org-journal org-brain magit-todos json-navigator helm-xref editorconfig doom-modeline cython-mode cyberpunk-theme counsel-projectile counsel swiper ivy centered-cursor-mode browse-at-remote inf-ruby rust-mode anaconda-mode lua-mode smartparens flycheck company window-purpose imenu-list magit powerline goto-chg projectile avy f dash yasnippet-snippets emojify ht emoji-cheat-sheet-plus company-emoji xterm-color shell-pop multi-term insert-shebang fish-mode eshell-z eshell-prompt-extras esh-help company-shell ox-twbs ox-gfm company-quickhelp helm helm-core org-plus-contrib hydra flycheck-gometalinter magithub ghub+ apiwrap elfeed-web elfeed-org elfeed-goodies noflet elfeed web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode sql-indent git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter diff-hl yaml-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org spaceline smeargle restart-emacs rainbow-delimiters popwin persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree mwim move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word company-statistics company-go column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (sqlup-mode yasnippet-snippets emojify ht emoji-cheat-sheet-plus company-emoji xterm-color shell-pop multi-term insert-shebang fish-mode eshell-z eshell-prompt-extras esh-help company-shell ox-twbs ox-gfm company-quickhelp helm helm-core org-plus-contrib hydra flycheck-gometalinter magithub ghub+ apiwrap elfeed-web elfeed-org elfeed-goodies noflet elfeed web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode sql-indent git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter diff-hl yaml-mode ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org spaceline smeargle restart-emacs rainbow-delimiters popwin persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree mwim move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word company-statistics company-go column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
