@@ -119,6 +119,7 @@ export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
 # commented this out since ubuntu 17.04 gave some grief with it
 #export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
 export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
 export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
 source /usr/local/bin/virtualenvwrapper_lazy.sh
@@ -197,3 +198,5 @@ if [ -f '/home/craig/google-cloud-sdk/path.zsh.inc' ]; then source '/home/craig/
 if [ -f '/home/craig/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/craig/google-cloud-sdk/completion.zsh.inc'; fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+[ -f ~/bin/gktl ] && source ~/bin/gktl

@@ -16,3 +16,31 @@ I've been using [spacemacs](https://github.com/syl20bnr/spacemacs/) for a few mo
 git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
 cd ~/.emacs.d && git checkout develop
 ```
+
+# other programs
+
+## fzf
+https://github.com/junegunn/fzf
+
+```
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+```
+
+## bat
+https://github.com/sharkdp/bat/releases/latest
+
+## slack
+https://slack.com/downloads/linux
+
+## vscode
+https://code.visualstudio.com/Download or `sudo snap install code --classic`
+
+## spotify
+`sudo snap install spotify`
+
+## node
+`sudo snap install node --classic`
+
+## golang
+https://golang.org/dl/
