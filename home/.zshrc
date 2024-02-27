@@ -70,7 +70,6 @@ plugins=(git
          docker-compose
          golang
          git-extras
-         zsh_reload
          kubectl
          tmuxinator
          z
