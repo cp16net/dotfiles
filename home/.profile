@@ -25,8 +25,10 @@ export GOPATH=$HOME/gospace
 export GOBIN=$GOPATH/bin
 PATH="/usr/local/sbin:/usr/sbin:/sbin:$PATH:/usr/local/go/bin:$GOBIN"
 
-export PATH="$HOME/.cargo/bin:$PATH"
+#export PATH="$HOME/.cargo/bin:$PATH"
 
 ### npm local global setup
-export PATH=~/.npm-global/bin:${PATH}
-export NPM_CONFIG_PREFIX=~/.npm-global
+#export PATH=~/.npm-global/bin:${PATH}
+#export NPM_CONFIG_PREFIX=~/.npm-global
+
+#export PATH="$HOME/.poetry/bin:$PATH"

@@ -1,10 +1,16 @@
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 
-export PATH="/Users/cp16net/bin:/home/cp16net/bin:/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/usr/local/games:/usr/games"
-export GOPATH=$HOME/gospace
-export GOBIN=$GOPATH/bin
-export PATH="$GOBIN:$HOME/bin:/usr/local/go/bin:$PATH"
+## goenv init
+# eval "$(goenv init -)"
+export PATH="/Users/cp16net/bin:/home/cp16net/bin:/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/usr/local/games:/usr/games:$PATH"
+
+# old go old version for mono repo
+# export GOPATH=$HOME/gospace
+# export GOBIN=$GOPATH/bin
+# export PATH="$GOBIN:$HOME/bin:/usr/local/go/bin:$PATH"
+
+
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -115,24 +121,24 @@ fi
 
 export EDITOR=emacs
 
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Devel
-# commented this out since ubuntu 17.04 gave some grief with it
-#export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
-export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
-export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
-source /usr/local/bin/virtualenvwrapper_lazy.sh
+# export WORKON_HOME=$HOME/.virtualenvs
+# export PROJECT_HOME=$HOME/Devel
+# # commented this out since ubuntu 17.04 gave some grief with it
+# export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+# #export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
+# export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
+# export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
+# source /usr/local/bin/virtualenvwrapper_lazy.sh
 
 # tmux window names displaying properly
-export DISABLE_AUTO_TITLE=true
+# export DISABLE_AUTO_TITLE=true
 
 # add rust cmds to path
-export PATH=$PATH:$HOME/.cargo/bin
+#export PATH=$PATH:$HOME/.cargo/bin
 
 ### npm local global setup
-export PATH=~/.npm-global/bin:${PATH}
-export NPM_CONFIG_PREFIX=~/.npm-global
+# export PATH=~/.npm-global/bin:${PATH}
+# export NPM_CONFIG_PREFIX=~/.npm-global
 
 
 #
@@ -184,19 +190,22 @@ PROMPT=$'$(system_info) - $(dir_prompt) - $(kube_prompt) - $(time_prompt)
 
 PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 if [ -f ~/.zprofile ]; then
     source ~/.zprofile
 fi
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/craig/google-cloud-sdk/path.zsh.inc' ]; then source '/home/craig/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/home/craig/google-cloud-sdk/completion.zsh.inc' ]; then source '/home/craig/google-cloud-sdk/completion.zsh.inc'; fi
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [ -f ~/bin/gktl ] && source ~/bin/gktl
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/craig/google-cloud-sdk/path.zsh.inc' ]; then . '/home/craig/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/craig/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/craig/google-cloud-sdk/completion.zsh.inc'; fi
+
+# export PATH="$HOME/.poetry/bin:$PATH"
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
