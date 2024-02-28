@@ -68,16 +68,15 @@ plugins=(git
          history
          docker
          docker-compose
+         gcloud
          golang
          git-extras
          kubectl
          tmuxinator
          z
-         # debian
          ubuntu
-	       command-not-found
-	       common-aliases
-        )
+         command-not-found
+         common-aliases)
 
 
 # User configuration
