@@ -188,8 +188,9 @@ PROMPT=$'$(system_info) - $(dir_prompt) - $(kube_prompt) - $(time_prompt)
 
 PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
 
-# export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 if [ -f ~/.zprofile ]; then
     source ~/.zprofile
@@ -206,4 +207,3 @@ if [ -f '/home/craig/google-cloud-sdk/path.zsh.inc' ]; then . '/home/craig/googl
 if [ -f '/home/craig/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/craig/google-cloud-sdk/completion.zsh.inc'; fi
 
 # export PATH="$HOME/.poetry/bin:$PATH"
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
