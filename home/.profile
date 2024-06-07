@@ -32,3 +32,5 @@ PATH="/usr/local/sbin:/usr/sbin:/sbin:$PATH:/usr/local/go/bin:$GOBIN"
 #export NPM_CONFIG_PREFIX=~/.npm-global
 
 #export PATH="$HOME/.poetry/bin:$PATH"
+
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"

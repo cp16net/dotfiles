@@ -204,11 +204,16 @@ export LSCOLORS=ExFxCxDxBxegedabagacad
 alias clean_pyc_files='find . -name "*.pyc" -exec rm -rf {} \;'
 alias uuid="python -c 'import sys,uuid; sys.stdout.write(uuid.uuid4().hex)' | pbcopy && pbpaste && echo"
 
-export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
-source /usr/local/bin/virtualenvwrapper_lazy.sh
-source "$HOME/.git-completion.sh"
+if [ -f "/usr/local/bin/virtualenvwrapper_lazy.sh" ]; then
+    export VIRTUALENVWRAPPER_SCRIPT=/usr/local/bin/virtualenvwrapper.sh
+    source /usr/local/bin/virtualenvwrapper_lazy.sh
+fi
 
-source "$HOME/.homesick/repos/homeshick/homeshick.sh"
-source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
+[ -f "$HOME/.git-completion.sh" ] && source "$HOME/.git-completion.sh"
+
+if [ -d "$HOME/.homesick/repos/homeshick" ]; then
+    source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+    source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
+fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
