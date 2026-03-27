@@ -21,9 +21,9 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-export GOPATH=$HOME/gospace
-export GOBIN=$GOPATH/bin
-PATH="/usr/local/sbin:/usr/sbin:/sbin:$PATH:/usr/local/go/bin:$GOBIN"
+# export GOPATH=$HOME/gospace
+# export GOBIN=$GOPATH/bin
+# PATH="/usr/local/sbin:/usr/sbin:/sbin:$PATH:/usr/local/go/bin:$GOBIN"
 
 #export PATH="$HOME/.cargo/bin:$PATH"
 

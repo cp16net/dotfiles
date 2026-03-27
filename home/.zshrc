@@ -63,18 +63,26 @@ DEFAULT_USER="craig"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git
-         python
-         pip
+        #  python
+         dotnet
+         nvm
+         aws
+         brew
+         yarn
+         vscode
+         azure
+        #  pip
          history
          docker
          docker-compose
          gcloud
-         golang
+         macos
+        #  golang
          git-extras
-         kubectl
-         tmuxinator
+        #  kubectl
+        #  tmuxinator
          z
-         ubuntu
+        #  ubuntu
          command-not-found
          common-aliases)
 
@@ -134,11 +142,6 @@ export EDITOR=emacs
 # add rust cmds to path
 #export PATH=$PATH:$HOME/.cargo/bin
 
-### npm local global setup
-# export PATH=~/.npm-global/bin:${PATH}
-# export NPM_CONFIG_PREFIX=~/.npm-global
-
-
 #
 # (cp16net) customized the theme slightly modified from xiong-chiamiov-plus.zsh-theme
 # user, host, full path, and time/date
@@ -147,23 +150,24 @@ export EDITOR=emacs
 #
 # requirements here are that you install `npm install any-json -g` on your system
 #
-kube_prompt()
-{
-    # mac is weird and i'm not using it for this anyway
-    if [[ $(uname) == "Darwin" ]]; then
-	      echo ""
-	      return
-    fi
-    if ! [ -x "$(command -v kubectl)" ]; then
-	      echo 'none'
-	      return
-    fi
+# NOTE: removing this for now, since i'm not using k8s - 3/2025
+# kube_prompt()
+# {
+#     # mac is weird and i'm not using it for this anyway
+#     if [[ $(uname) == "Darwin" ]]; then
+# 	      echo ""
+# 	      return
+#     fi
+#     if ! [ -x "$(command -v kubectl)" ]; then
+# 	      echo 'none'
+# 	      return
+#     fi
 
-    local kubectl_current_context=$(kubectl config current-context)
-    local kubectl_current_namespace=$(kubectl config view -o jsonpath="{.contexts[?(@.name==\"${kubectl_current_context}\")].context.namespace}")
-    local kubectl_prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}k8s:($fg[cyan]$kubectl_current_context$fg[white]:$fg[cyan]$kubectl_current_namespace%{\e[1;37m%})%{\e[0;34m%}%B]%b%{\e[0m%}"
-    echo $kubectl_prompt
-}
+#     local kubectl_current_context=$(kubectl config current-context)
+#     local kubectl_current_namespace=$(kubectl config view -o jsonpath="{.contexts[?(@.name==\"${kubectl_current_context}\")].context.namespace}")
+#     local kubectl_prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}k8s:($fg[cyan]$kubectl_current_context$fg[white]:$fg[cyan]$kubectl_current_namespace%{\e[1;37m%})%{\e[0;34m%}%B]%b%{\e[0m%}"
+#     echo $kubectl_prompt
+# }
 dir_prompt()
 {
     local prompt="%b%{\e[0;34m%}%B[%b%{\e[1;37m%}%~%{\e[0;34m%}%B]%b%{\e[0m%}"
@@ -179,12 +183,13 @@ system_info()
     echo '%{\e[0;34m%}%B┌─[%b%{\e[0m%}%{\e[1;32m%}%n%{\e[1;30m%}@%{\e[0m%}%{\e[0;36m%}%m%{\e[0;34m%}%B]%b%{\e[0m%}'
 }
 
-PROMPT=$'$(system_info) - $(dir_prompt) - $(kube_prompt) - $(time_prompt)
-%{\e[0;34m%}%B└─%B[%{\e[1;35m%}$%{\e[0;34m%}%B] <$(git_prompt_info)>%{\e[0m%}%b '
+# NOTE: prompt with kubectl info 3/2025
+# PROMPT=$'$(system_info) - $(dir_prompt) - $(kube_prompt) - $(time_prompt)
+# %{\e[0;34m%}%B└─%B[%{\e[1;35m%}$%{\e[0;34m%}%B] <$(git_prompt_info)>%{\e[0m%}%b '
 
 # NOTE: prompt without kubectl info
-#PROMPT=$'%{\e[0;34m%}%B┌─[%b%{\e[0m%}%{\e[1;32m%}%n%{\e[1;30m%}@%{\e[0m%}%{\e[0;36m%}%m%{\e[0;34m%}%B]%b%{\e[0m%} - $(dir_prompt) - $(time_prompt)
-#%{\e[0;34m%}%B└─%B[%{\e[1;35m%}$%{\e[0;34m%}%B] <$(git_prompt_info)>%{\e[0m%}%b '
+PROMPT=$'%{\e[0;34m%}%B┌─[%b%{\e[0m%}%{\e[1;32m%}%n%{\e[1;30m%}@%{\e[0m%}%{\e[0;36m%}%m%{\e[0;34m%}%B]%b%{\e[0m%} - $(dir_prompt) - $(time_prompt)
+%{\e[0;34m%}%B└─%B[%{\e[1;35m%}$%{\e[0;34m%}%B] <$(git_prompt_info)>%{\e[0m%}%b '
 
 PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
 
@@ -196,15 +201,17 @@ if [ -f ~/.zprofile ]; then
     source ~/.zprofile
 fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-[ -f ~/bin/gktl ] && source ~/bin/gktl
+### updated 11/2024
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source <(fzf --zsh)
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/craig/google-cloud-sdk/path.zsh.inc' ]; then . '/home/craig/google-cloud-sdk/path.zsh.inc'; fi
+### remove 11/2024
+# if [ -f '/home/craig/google-cloud-sdk/path.zsh.inc' ]; then . '/home/craig/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/home/craig/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/craig/google-cloud-sdk/completion.zsh.inc'; fi
+### remove 11/2024
+# if [ -f '/home/craig/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/craig/google-cloud-sdk/completion.zsh.inc'; fi
 
 # export PATH="$HOME/.poetry/bin:$PATH"
 
@@ -216,9 +223,16 @@ if [ -f '/home/craig/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/craig
 # ~/.bash_profile if it exists, otherwise ~/.profile (for login shells)
 # and ~/.bashrc (for interactive shells) :
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+### remove 11/2024
+# export PYENV_ROOT="$HOME/.pyenv"
+# [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
 #####################################
 
-[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+### remove 11/2024
+# [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+# added 11/2024
+
+# export AWS_CA_BUNDLE="/Library/Application Support/Cloudflare/installed_cert.pem" # commented out because it was causing issues with AWS CLI (7/10/2025)
+export NODE_EXTRA_CA_CERTS="/Library/Application Support/"

@@ -19,7 +19,7 @@ if [ "$(uname)" == "Darwin" ]; then
     # export DEFAULT_SUPERNOVA_ENV=fabric-inova-ord
     # alias emacs='emacs-24.3'
     export EDITOR=emacs
-    export VAGRANT_DEFAULT_PROVIDER='vmware_fusion'
+    # export VAGRANT_DEFAULT_PROVIDER='vmware_fusion'
 
     # trove vagrant vm memory default
     # export TROVE_VM_MEMORY=4096
@@ -28,21 +28,21 @@ if [ "$(uname)" == "Darwin" ]; then
     alias la='ls -A'
     alias l='ls -CF'
 
-    alias sublime='open -a Sublime\ Text .'
+    # alias sublime='open -a Sublime\ Text .'
     # alias cdb='cd ~/code/private/Cloud-Database/'
-    alias pt='cd ~/code/public/trove'
-    alias ptv='cd ~/code/public/trove-vagrant-vmware'
+    # alias pt='cd ~/code/public/trove'
+    # alias ptv='cd ~/code/public/trove-vagrant-vmware'
     # alias cdbv='cd ~/code/private/Cloud-Database/vagrant/puppet'
-    alias public='cd ~/code/public/'
+    # alias public='cd ~/code/public/'
     # alias fabhelper='cd ~/code/backup/code/helpers/; workon supernova'
-    alias irc="ssh -t irc 'screen -dr'"
+    # alias irc="ssh -t irc 'screen -dr'"
 
-    export PATH=/usr/local/mysql/bin:$PATH
-    export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
+    # export PATH=/usr/local/mysql/bin:$PATH
+    # export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
 
     # added these 2 flags for pycrpto to install with pip
-    export CFLAGS=-Qunused-arguments
-    export CPPFLAGS=-Qunused-arguments
+    # export CFLAGS=-Qunused-arguments
+    # export CPPFLAGS=-Qunused-arguments
 
     # IRC notification setup
     # irssi_notifier() {
@@ -62,12 +62,12 @@ if [ "$(uname)" == "Darwin" ]; then
     # fi
 
     # adding bash completion for vagrant
-    if [ -f `brew --prefix`/etc/bash_completion.d/vagrant ]; then
-        source `brew --prefix`/etc/bash_completion.d/vagrant
-    fi
+    # if [ -f `brew --prefix`/etc/bash_completion.d/vagrant ]; then
+    #     source `brew --prefix`/etc/bash_completion.d/vagrant
+    # fi
 
-    PERL_MB_OPT="--install_base \"/Users/craig.vyvial/perl5\""; export PERL_MB_OPT;
-    PERL_MM_OPT="INSTALL_BASE=/Users/craig.vyvial/perl5"; export PERL_MM_OPT;
+    # PERL_MB_OPT="--install_base \"/Users/craig.vyvial/perl5\""; export PERL_MB_OPT;
+    # PERL_MM_OPT="INSTALL_BASE=/Users/craig.vyvial/perl5"; export PERL_MM_OPT;
 
     # swap ssh configs
     # alias swapsshhome='cp ~/.ssh/home.config ~/.ssh/config'
@@ -75,7 +75,7 @@ if [ "$(uname)" == "Darwin" ]; then
     # alias sshw='ssh -F ~/.ssh/work.config $@'
 
     # to build lxml on mac 10.9
-    STATIC_DEPS=true
+    # STATIC_DEPS=true
 
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Do something under Linux platform

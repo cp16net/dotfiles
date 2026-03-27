@@ -46,4 +46,4 @@ if [ -f ~/.bash_aliases ]; then
    . ~/.local.bash_aliases
 fi
 
-alias pbcopy='xsel --clipboard --input'
+# alias pbcopy='xsel --clipboard --input'
