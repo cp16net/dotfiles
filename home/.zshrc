@@ -4,6 +4,7 @@ export ZSH=~/.oh-my-zsh
 ## goenv init
 # eval "$(goenv init -)"
 export PATH="/Users/cp16net/bin:/home/cp16net/bin:/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin:/usr/local/games:/usr/games:$PATH"
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
 # old go old version for mono repo
 # export GOPATH=$HOME/gospace
